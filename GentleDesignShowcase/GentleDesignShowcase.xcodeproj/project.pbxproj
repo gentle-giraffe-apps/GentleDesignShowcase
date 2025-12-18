@@ -78,6 +78,7 @@
 				8826A5322EF26F6900BF5E1E /* GentleDesignShowcase */,
 				8826A5402EF26F6A00BF5E1E /* GentleDesignShowcaseTests */,
 				8826A54A2EF26F6A00BF5E1E /* GentleDesignShowcaseUITests */,
+				8826A6732EF2761000BF5E1E /* Frameworks */,
 				8826A5312EF26F6900BF5E1E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +91,13 @@
 				8826A5472EF26F6A00BF5E1E /* GentleDesignShowcaseUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8826A6732EF2761000BF5E1E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +120,7 @@
 			);
 			name = GentleDesignShowcase;
 			packageProductDependencies = (
+				8826A6122EF274DF00BF5E1E /* GentleUIComponents */,
 			);
 			productName = GentleDesignShowcase;
 			productReference = 8826A5302EF26F6900BF5E1E /* GentleDesignShowcase.app */;
@@ -195,6 +204,8 @@
 			);
 			mainGroup = 8826A5272EF26F6900BF5E1E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8826A5312EF26F6900BF5E1E /* Products */;
 			projectDirPath = "";
@@ -578,6 +589,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8826A6122EF274DF00BF5E1E /* GentleUIComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GentleUIComponents;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8826A5282EF26F6900BF5E1E /* Project object */;
 }
