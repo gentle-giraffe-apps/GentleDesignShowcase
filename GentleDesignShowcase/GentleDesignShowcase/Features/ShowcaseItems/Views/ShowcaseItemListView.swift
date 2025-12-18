@@ -29,11 +29,11 @@ struct ShowcaseItemListView: View {
             }
             Spacer()
         }
-        // .toolbar(.hidden, for: .navigationBar)
         .padding(.horizontal, 16)
         .task {
             await loadShowcaseItems()
         }
+        .navigationTitle(viewModel.title)
     }
     
     private func loadShowcaseItems() async {

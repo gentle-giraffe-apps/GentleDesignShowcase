@@ -1,9 +1,21 @@
 //  Jonathan Ritchey
 import Foundation
 
+enum ShowcaseTemplate: String, Codable, CaseIterable, Hashable {
+    case loginFlow
+    case chartAndStats
+    case storefrontGrid
+    case onboardingPager
+    case settingsForm
+    case profileHeader
+    case emptyState
+}
+
 struct ShowcaseItem: Identifiable, Codable, Hashable {
     let id: String
 
+    let template: ShowcaseTemplate
+    
     // Primary identity
     let title: String
     let subtitle: String?
@@ -22,9 +34,9 @@ struct ShowcaseItem: Identifiable, Codable, Hashable {
     // State / timing (optional, keeps your date UI useful)
     let createdAt: Date
     let updatedAt: Date?
-
-    // Optional value signal (e.g. complexity, effort, priority)
-    let score: Int?
+    
+    let isFavorite: Bool
+    let isViewed: Bool
 }
 
 struct Metadata: Codable, Hashable, Identifiable {
@@ -33,65 +45,165 @@ struct Metadata: Codable, Hashable, Identifiable {
     let value: String
 }
 
+extension Metadata {
+    static func make(label: String, value: String) -> Metadata {
+        Metadata(
+            id: UUID().uuidString,
+            label: label,
+            value: value
+        )
+    }
+}
+
 extension ShowcaseItem {
 
-    static let mockOne = ShowcaseItem(
-        id: "showcase-1",
-        title: "Catalog Grid",
-        subtitle: "Adaptive layout example",
-        symbolName: "square.grid.2x2",
-        category: "Layouts",
-        description: "A responsive grid layout demonstrating adaptive spacing, dynamic type support, and selection states across device sizes.",
-        tags: ["SwiftUI", "Grid", "Adaptive"],
+    static let loginFlow = ShowcaseItem(
+        id: "login-flow",
+        template: .loginFlow,
+        title: "Login Flow",
+        subtitle: "Authentication and access control",
+        symbolName: "lock",
+        category: "Authentication",
+        description: "Demonstrates a simple login flow with validation and primary actions.",
+        tags: ["Login", "Authentication", "Forms", "Navigation"],
         metadata: [
-            Metadata(id: "m1", label: "Complexity", value: "Medium"),
-            Metadata(id: "m2", label: "Supports iPad", value: "Yes"),
-            Metadata(id: "m3", label: "Accessibility", value: "Dynamic Type")
+            .make(label: "Fields", value: "Email, Password"),
+            .make(label: "Validation", value: "Inline"),
+            .make(label: "CTA", value: "Primary Button")
         ],
-        createdAt: Date().addingTimeInterval(-60 * 60 * 24 * 3),
-        updatedAt: Date().addingTimeInterval(-60 * 60 * 24),
-        score: 3
-    )
-
-    static let mockTwo = ShowcaseItem(
-        id: "showcase-2",
-        title: "Detail View",
-        subtitle: "Hero + metadata layout",
-        symbolName: "rectangle.stack",
-        category: "Components",
-        description: "A detail screen with a hero header, structured metadata sections, and clear visual hierarchy for scanning content.",
-        tags: ["SwiftUI", "Layout", "Hierarchy"],
-        metadata: [
-            Metadata(id: "m4", label: "Complexity", value: "Low"),
-            Metadata(id: "m5", label: "Reusable", value: "Yes"),
-            Metadata(id: "m6", label: "State Handling", value: "Static")
-        ],
-        createdAt: Date().addingTimeInterval(-60 * 60 * 24 * 5),
+        createdAt: Date(),
         updatedAt: nil,
-        score: 2
+        isFavorite: false,
+        isViewed: false
+    )
+    
+    static let chartAndStats = ShowcaseItem(
+        id: "chart-and-stats",
+        template: .chartAndStats,
+        title: "Chart & Stats",
+        subtitle: "Visualize trends with summary metrics",
+        symbolName: "chart.xyaxis.line",
+        category: "Data",
+        description: "Demonstrates a chart paired with key metrics and a supporting list.",
+        tags: ["Charts", "Metrics", "Lists"],
+        metadata: [
+            .make(label: "Data Points", value: "30"),
+            .make(label: "Time Range", value: "Last 30 days"),
+            .make(label: "Metric Type", value: "Aggregate")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
     )
 
-    static let mockThree = ShowcaseItem(
-        id: "showcase-3",
-        title: "Loading & Error States",
-        subtitle: "Skeletons and retry flow",
-        symbolName: "sparkles",
-        category: "State",
-        description: "Demonstrates loading skeletons, empty states, and error recovery using async/await with mock latency.",
-        tags: ["Async/Await", "State", "UX"],
+    static let storefrontGrid = ShowcaseItem(
+        id: "storefront-grid",
+        template: .storefrontGrid,
+        title: "Storefront Grid",
+        subtitle: "Product cards in a responsive grid",
+        symbolName: "square.grid.2x2",
+        category: "Commerce",
+        description: "Shows a grid-based layout with cards, images, and actions.",
+        tags: ["Grid", "Cards", "Images"],
         metadata: [
-            Metadata(id: "m7", label: "Complexity", value: "High"),
-            Metadata(id: "m8", label: "Includes Retry", value: "Yes"),
-            Metadata(id: "m9", label: "Preview Ready", value: "Yes")
+            .make(label: "Columns", value: "Adaptive"),
+            .make(label: "Items", value: "12"),
+            .make(label: "Layout", value: "LazyVGrid")
         ],
-        createdAt: Date().addingTimeInterval(-60 * 60 * 24 * 10),
-        updatedAt: Date().addingTimeInterval(-60 * 60 * 12),
-        score: 4
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
+    static let onboardingPager = ShowcaseItem(
+        id: "onboarding-pager",
+        template: .onboardingPager,
+        title: "Onboarding Flow",
+        subtitle: "Paged onboarding with call-to-action",
+        symbolName: "rectangle.on.rectangle.angled",
+        category: "Navigation",
+        description: "Illustrates a paged onboarding experience with simple messaging.",
+        tags: ["Paging", "Onboarding", "Animation"],
+        metadata: [
+            .make(label: "Pages", value: "3"),
+            .make(label: "Interaction", value: "Swipe"),
+            .make(label: "CTA", value: "Primary Button")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
+    static let settingsForm = ShowcaseItem(
+        id: "settings-form",
+        template: .settingsForm,
+        title: "Settings Form",
+        subtitle: "Preferences and configuration",
+        symbolName: "gearshape",
+        category: "Forms",
+        description: "Demonstrates toggles, pickers, and grouped form sections.",
+        tags: ["Forms", "Toggles", "Pickers"],
+        metadata: [
+            .make(label: "Sections", value: "3"),
+            .make(label: "Controls", value: "Toggle, Picker"),
+            .make(label: "Validation", value: "Inline")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
+    static let profileHeader = ShowcaseItem(
+        id: "profile-header",
+        template: .profileHeader,
+        title: "Profile Header",
+        subtitle: "Identity-focused header layout",
+        symbolName: "person.crop.circle",
+        category: "Identity",
+        description: "Shows a profile header with avatar, actions, and summary info.",
+        tags: ["Profile", "Header", "Layout"],
+        metadata: [
+            .make(label: "Avatar", value: "Circle"),
+            .make(label: "Actions", value: "Primary + Secondary"),
+            .make(label: "Alignment", value: "Vertical")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
+    static let emptyState = ShowcaseItem(
+        id: "empty-state",
+        template: .emptyState,
+        title: "Empty State",
+        subtitle: "No content, clear guidance",
+        symbolName: "tray",
+        category: "UX",
+        description: "Illustrates a friendly empty state with guidance and actions.",
+        tags: ["Empty State", "UX", "Messaging"],
+        metadata: [
+            .make(label: "Illustration", value: "System Symbol"),
+            .make(label: "Action", value: "Primary Button"),
+            .make(label: "Tone", value: "Friendly")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
     )
 
     static let mocks: [ShowcaseItem] = [
-        mockOne,
-        mockTwo,
-        mockThree
+        loginFlow,
+        chartAndStats,
+        storefrontGrid,
+        onboardingPager,
+        settingsForm,
+        profileHeader,
+        emptyState
     ]
 }

@@ -134,7 +134,7 @@ extension ShowcaseItemDetailView {
 #Preview("DetailView") {
     ShowcaseItemDetailView(
         viewModel: ShowcaseItemDetailViewModel(
-            itemModel: ShowcaseItem.mockOne,
+            itemModel: ShowcaseItem.chartAndStats,
             repository: ShowcaseRepository(showcaseItemsService: ShowcaseItemsService())
         )
     )

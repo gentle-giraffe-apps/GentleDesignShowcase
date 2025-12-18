@@ -17,7 +17,8 @@ struct TabContainerView: View {
         TabView(selection: $selectedTab) {
             ItemsListTabRoot()
                 .tabItem {
-                    Label("Items", systemImage: "shippingbox")
+                    Label("Items", systemImage: selectedTab == .items ? "shippingbox.fill" : "shippingbox")
+                        .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.items)
             Text("Favorites")

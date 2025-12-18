@@ -29,7 +29,8 @@ struct ShowcaseItemCellView: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        // .frame(maxWidth: .infinity)
+        .frame(minHeight: 400)
+        .aspectRatio(3 / 4, contentMode: .fit)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(Color(.separator), lineWidth: 1.0)
