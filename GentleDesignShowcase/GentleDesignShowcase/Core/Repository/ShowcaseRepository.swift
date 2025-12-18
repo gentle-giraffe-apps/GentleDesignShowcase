@@ -10,8 +10,6 @@ final class ShowcaseRepository {
     private let completionStore: CompletedShowcaseItemsStore
 
     var showcaseItems: [ShowcaseItem] = []
-    var upcomingItems: [ShowcaseItem] = []
-    var pastItems: [ShowcaseItem] = []
     var completedIDs: Set<String> = []
 
     init(

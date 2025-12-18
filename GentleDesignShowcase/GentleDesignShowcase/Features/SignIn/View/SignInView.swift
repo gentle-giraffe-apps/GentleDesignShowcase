@@ -132,8 +132,6 @@ struct SignInView: View {
 
 #Preview("SignIn") {
     SignInView()
-        .environment(
-            SessionManager(service: SessionManagerMockAuthService()
-        )
-    )
+        .environment(AppRouter.preview)
+        .environment(SessionManager.preview)
 }

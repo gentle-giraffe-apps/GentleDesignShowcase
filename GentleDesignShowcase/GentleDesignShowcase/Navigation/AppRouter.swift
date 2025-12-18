@@ -49,4 +49,8 @@ class AppRouter {
             )
         }
     }
+    
+    static var preview: AppRouter {
+        AppRouter(showcaseRepository: ShowcaseRepository.mockRepository())
+    }
 }

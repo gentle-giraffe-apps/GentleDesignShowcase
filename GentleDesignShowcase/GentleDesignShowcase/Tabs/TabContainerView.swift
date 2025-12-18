@@ -70,9 +70,6 @@ struct ItemsListTabRoot: View {
 
 #Preview {
     TabContainerView(selectedTab: .constant(.items))
-        .environment(
-            AppRouter(
-                showcaseRepository: ShowcaseRepository.mockRepository()
-            )
-        )
+        .environment(AppRouter.preview)
+        .environment(SessionManager.preview)
 }

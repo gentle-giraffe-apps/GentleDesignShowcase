@@ -57,6 +57,10 @@ final class SessionManager {
         }
         state = .signedOut
     }
+    
+    static var preview: SessionManager {
+        SessionManager(service: SessionManagerMockAuthService())
+    }
 }
 
 //extension SessionManager: TokenInvalidationHandler {

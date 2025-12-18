@@ -19,20 +19,17 @@ struct ShowcaseItemCellView: View {
                 .padding(.horizontal, 10)
                 
                 Spacer()
-                
-//                if viewModel.isUpcoming == false {
-                    Image(
-                        systemName: viewModel.isCompleted ?
-                        "checkmark.seal.fill" : "checkmark.seal"
-                    )
-                    .font(Font.system(size: 26))
-                    .foregroundColor(viewModel.isCompleted ? Color.blue : .secondary) // Color.accent
-//                }
+                Image(
+                    systemName: viewModel.isCompleted ?
+                    "checkmark.seal.fill" : "checkmark.seal"
+                )
+                .font(Font.system(size: 26))
+                .foregroundColor(viewModel.isCompleted ? Color.blue : .secondary)
             }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .frame(maxWidth: .infinity)
+        // .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(Color(.separator), lineWidth: 1.0)

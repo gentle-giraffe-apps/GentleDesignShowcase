@@ -138,4 +138,6 @@ extension ShowcaseItemDetailView {
             repository: ShowcaseRepository(showcaseItemsService: ShowcaseItemsService())
         )
     )
+    .environment(AppRouter.preview)
+    .environment(SessionManager.preview)
 }

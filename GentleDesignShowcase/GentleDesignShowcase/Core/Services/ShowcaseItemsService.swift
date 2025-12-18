@@ -8,6 +8,6 @@ protocol ShowcaseItemsServiceProtocol {
 
 struct ShowcaseItemsService: ShowcaseItemsServiceProtocol {
     func fetchShowcaseItems() async throws -> [ShowcaseItem] {
-        []
+        ShowcaseItem.mocks
     }
 }

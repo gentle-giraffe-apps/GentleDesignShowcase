@@ -29,8 +29,6 @@ struct RootView: View {
 
 #Preview("RootView") {
     RootView()
-        .environment(SessionManager(service: SessionManagerMockAuthService()))
-        .environment(
-            AppRouter(showcaseRepository: ShowcaseRepository.mockRepository())
-        )
+        .environment(AppRouter.preview)
+        .environment(SessionManager.preview)
 }

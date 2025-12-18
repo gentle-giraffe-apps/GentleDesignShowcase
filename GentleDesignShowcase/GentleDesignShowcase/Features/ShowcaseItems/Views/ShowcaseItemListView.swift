@@ -16,20 +16,20 @@ struct ShowcaseItemListView: View {
     var body: some View {
         @Bindable var router = router
         VStack {
-            Title()
-            SegmentPicker()
+            // Title()
             if viewModel.isLoading && viewModel.hasLoadedOnce == false {
                 Spacer()
                 ProgressView("Loading showcase items...")
                 Spacer()
             } else {
                 ShowcaseItemList()
-                .refreshable {
-                    await loadShowcaseItems()
-                }
+                    .refreshable {
+                        await loadShowcaseItems()
+                    }
             }
+            Spacer()
         }
-        .toolbar(.hidden, for: .navigationBar)
+        // .toolbar(.hidden, for: .navigationBar)
         .padding(.horizontal, 16)
         .task {
             await loadShowcaseItems()
@@ -40,7 +40,6 @@ struct ShowcaseItemListView: View {
         do {
             try await viewModel.fetchShowcaseItems()
         } catch {
-            // TODO: surface this in UI later if you want
             print("Failed to fetch items: \(error)")
         }
     }
@@ -58,42 +57,19 @@ extension ShowcaseItemListView {
         .padding(.horizontal, 22)
     }
     
-    func SegmentPicker() -> some View {
-        return Picker("Filter", selection: $viewModel.filter) {
-            ForEach(ShowcaseItemListViewModel.Filter.allCases, id: \.self) {
-                Text($0.rawValue).tag($0)
-            }
-        }
-        .padding(.horizontal, 8)
-        .padding(.top, 40)
-        .padding(.bottom, 16)
-        .labelsHidden()
-        .pickerStyle(.segmented)
-    }
-    
+    @ViewBuilder
     func ShowcaseItemList() -> some View {
-        List {
-            ForEach(
-                viewModel.filter == .upcoming
-                    ? viewModel.upcomingCellViewModels
-                    : viewModel.pastCellViewModels
-            ) { cellViewModel in
-                ShowcaseItemCellView(viewModel: cellViewModel)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())          // whole row is tappable
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(
-                        EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4)
-                    )
-                    .onTapGesture {
-                        router.push(.itemDetailView(cellViewModel.itemModel),
-                                    for: .itemsTab)
-                    }
+        let columns = [
+            GridItem(.adaptive(minimum: 300), spacing: 16)
+        ]
+        
+        ScrollView {
+            LazyVGrid(columns: columns) {
+                ForEach(viewModel.filteredViewModels) {
+                    ShowcaseItemCellView(viewModel: $0)
+                }
             }
         }
-        .listStyle(.plain)
-        .scrollContentBackground(.hidden)
-        .id(viewModel.filter)
     }
 }
 
@@ -103,7 +79,6 @@ extension ShowcaseItemListView {
             repository: ShowcaseRepository.mockRepository()
         )
     )
-    .environment(
-        AppRouter(showcaseRepository: ShowcaseRepository.mockRepository())
-    )
+    .environment(AppRouter.preview)
+    .environment(SessionManager.preview)
 }
