@@ -36,18 +36,18 @@ class AppRouter {
     @ViewBuilder
     func build(_ route: AppRoute) -> some View {
         switch route {
-        case .showcaseChartsAndStats(let item):
-            Text(item.description)
+        case .showcaseChartsAndStats(_):
+            ChartAndStatsTemplateView()
         case .showcaseSignInFlow(_):
             SignInView()
-        case .showcaseMedicalIntakeForm(let item):
-            Text(item.description)
-        case .showcaseOnboardingFlow(let item):
-            Text(item.description)
-        case .showcaseProfileHeader(let item):
-            Text(item.description)
-        case .showcaseStoreFrontGrid(let item):
-            Text(item.description)
+        case .showcaseMedicalIntakeForm(_):
+            MedicalIntakeFormTemplateView()
+        case .showcaseOnboardingFlow(_):
+            OnboardingPagerTemplateView()
+        case .showcaseProfileHeader(_):
+            ProfileHeaderTemplateView()
+        case .showcaseStoreFrontGrid(_):
+            StorefrontGridTemplateView()
         }
     }
     
