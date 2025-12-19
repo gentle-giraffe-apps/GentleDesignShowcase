@@ -9,12 +9,14 @@ struct ShowcaseItemCellView: View {
         VStack {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("name")
+                    Text(viewModel.itemModel.title)
                         .font(.footnote).fontWeight(.bold)
                         .foregroundStyle(.primary)
-                    Text("description")
-                        .font(.footnote).fontWeight(.regular)
-                        .foregroundStyle(.secondary)
+                    if let subtitle = viewModel.itemModel.subtitle {
+                        Text(subtitle)
+                            .font(.footnote).fontWeight(.regular)
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 .padding(.horizontal, 10)
                 

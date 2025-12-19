@@ -38,6 +38,25 @@ struct ShowcaseItem: Identifiable, Codable, Hashable {
     let isViewed: Bool
 }
 
+extension ShowcaseItem {
+    func route() -> AppRoute {
+        switch template {
+        case .chartAndStats:
+            return .showcaseChartsAndStats(self)
+        case .loginFlow:
+            return .showcaseSignInFlow(self)
+        case .medicalIntakeForm:
+            return .showcaseMedicalIntakeForm(self)
+        case .onboardingPager:
+            return .showcaseOnboardingFlow(self)
+        case .profileHeader:
+            return .showcaseProfileHeader(self)
+        case .storefrontGrid:
+            return .showcaseStoreFrontGrid(self)
+        }
+    }
+}
+
 struct Metadata: Codable, Hashable, Identifiable {
     let id: String
     let label: String

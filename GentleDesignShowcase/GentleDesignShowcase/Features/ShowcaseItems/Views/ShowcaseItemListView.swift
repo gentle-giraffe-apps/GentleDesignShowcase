@@ -65,8 +65,13 @@ extension ShowcaseItemListView {
         
         ScrollView {
             LazyVGrid(columns: columns) {
-                ForEach(viewModel.filteredViewModels) {
-                    ShowcaseItemCellView(viewModel: $0)
+                ForEach(viewModel.filteredViewModels) { viewModel in
+                    Button {
+                        router.push(viewModel.itemModel.route(), for: .itemsTab)
+                    } label: {
+                        ShowcaseItemCellView(viewModel: viewModel)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }
