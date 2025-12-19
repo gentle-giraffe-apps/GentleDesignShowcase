@@ -10,7 +10,6 @@ enum RootViewTab: Hashable {
 }
 
 struct TabContainerView: View {
-    @Environment(SessionManager.self) var session
     @Binding var selectedTab: RootViewTab
     
     var body: some View {
@@ -44,10 +43,10 @@ struct TabContainerView: View {
     @ViewBuilder
     func ProfileView() -> some View {
         Button("Sign Out") {
-            Task {
-                await session.signOut()
-                selectedTab = .items
-            }
+//            Task {
+//                await session.signOut()
+//                selectedTab = .items
+//            }
         }
         .buttonStyle(.bordered)
     }
@@ -72,5 +71,4 @@ struct ItemsListTabRoot: View {
 #Preview {
     TabContainerView(selectedTab: .constant(.items))
         .environment(AppRouter.preview)
-        .environment(SessionManager.preview)
 }

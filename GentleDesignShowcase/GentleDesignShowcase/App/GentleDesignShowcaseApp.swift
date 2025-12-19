@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct GentleDesignShowcaseApp: App {
-    @State private var session: SessionManager
+//    @State private var session: SessionManager
     @State private var router: AppRouter
     @Environment(\.scenePhase) private var scenePhase
     @State private var hasLaunched = false
@@ -12,11 +12,11 @@ struct GentleDesignShowcaseApp: App {
     private let useMockData = true
 
     init() {
-        _session = .init(
-            initialValue: SessionManager(
-                service: SessionManagerMockAuthService()
-            )
-        )
+//        _session = .init(
+//            initialValue: SessionManager(
+//                service: SessionManagerMockAuthService()
+//            )
+//        )
         _router = .init(
             initialValue: AppRouter(
                 showcaseRepository: ShowcaseRepository.mockRepository()
@@ -27,15 +27,16 @@ struct GentleDesignShowcaseApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(session)
+//                .environment(session)
                 .environment(router)
                 .task {
                     // Run once
                     guard !didAttemptSignIn else { return }
                     didAttemptSignIn = true
-                    do {
-                        await session.signIn()   // or `await session.signIn()` if it doesn’t throw
-                    }
+                    // MARK: - Sign in placeholder
+//                    do {
+//                        await session.signIn()   // or `await session.signIn()` if it doesn’t throw
+//                    }
                 }
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in

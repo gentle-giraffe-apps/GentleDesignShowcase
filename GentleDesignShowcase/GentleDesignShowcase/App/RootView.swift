@@ -3,32 +3,17 @@
 import SwiftUI
 
 struct RootView: View {
-    @Environment(SessionManager.self) var session
     @Environment(AppRouter.self) var router
     @State private var selectedTab: RootViewTab = .items
     
     var body: some View {
-        ZStack {
-            switch session.state {
-            case .loading:
-                ProgressView("Checking session...")
-            case .signedOut:
-                SignInView()
-                    .transition(.opacity) // very simple
-                    .environment(session)
-            case .signedIn:
-                TabContainerView(selectedTab: $selectedTab)
-                    .transition(.opacity) // very simple
-                    .environment(session)
-                    .environment(router)
-            }
-        }
-        .animation(.easeInOut(duration: 0.15), value: session.state)
+        TabContainerView(selectedTab: $selectedTab)
+            .transition(.opacity) // very simple
+            .environment(router)
     }
 }
 
 #Preview("RootView") {
     RootView()
         .environment(AppRouter.preview)
-        .environment(SessionManager.preview)
 }

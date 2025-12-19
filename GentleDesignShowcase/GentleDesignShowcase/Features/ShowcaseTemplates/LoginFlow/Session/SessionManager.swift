@@ -62,15 +62,3 @@ final class SessionManager {
         SessionManager(service: SessionManagerMockAuthService())
     }
 }
-
-//extension SessionManager: TokenInvalidationHandler {
-//    func handleInvalidToken() async {
-//        // e.g. log out or trigger refresh flow
-//        _ = await MainActor.run {
-//            Task {
-//                await self.signOut()
-//            }
-//            
-//        }
-//    }
-//}

@@ -9,7 +9,6 @@ struct SignInView: View {
         case password
     }
 
-    @Environment(SessionManager.self) var session
     @FocusState private var focusedField: Field?
     @State private var viewModel = SignInViewModel()
     
@@ -116,9 +115,9 @@ struct SignInView: View {
         Task {
             do {
                 try await viewModel.signIn()
-                await MainActor.run {
-                    session.signInSucceeded()
-                }
+//                await MainActor.run {
+//                    session.signInSucceeded()
+//                }
             } catch {
                 print("Sign-in error: \(error)")
             }
@@ -133,5 +132,4 @@ struct SignInView: View {
 #Preview("SignIn") {
     SignInView()
         .environment(AppRouter.preview)
-        .environment(SessionManager.preview)
 }

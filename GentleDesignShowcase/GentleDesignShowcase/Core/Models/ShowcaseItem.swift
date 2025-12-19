@@ -6,9 +6,8 @@ enum ShowcaseTemplate: String, Codable, CaseIterable, Hashable {
     case chartAndStats
     case storefrontGrid
     case onboardingPager
-    case settingsForm
+    case medicalIntakeForm
     case profileHeader
-    case emptyState
 }
 
 struct ShowcaseItem: Identifiable, Codable, Hashable {
@@ -137,19 +136,26 @@ extension ShowcaseItem {
         isViewed: false
     )
 
-    static let settingsForm = ShowcaseItem(
-        id: "settings-form",
-        template: .settingsForm,
-        title: "Settings Form",
-        subtitle: "Preferences and configuration",
-        symbolName: "gearshape",
+    static let medicalIntakeForm = ShowcaseItem(
+        id: "medical-intake-form",
+        template: .medicalIntakeForm,
+        title: "Medical Intake Form",
+        subtitle: "Patient information and health history",
+        symbolName: "cross.case",
         category: "Forms",
-        description: "Demonstrates toggles, pickers, and grouped form sections.",
-        tags: ["Forms", "Toggles", "Pickers"],
+        description: "Demonstrates a structured medical intake form with multiple sections, validation, and conditional fields.",
+        tags: [
+            "Forms",
+            "Healthcare",
+            "Validation",
+            "Accessibility",
+            "State Management"
+        ],
         metadata: [
-            .make(label: "Sections", value: "3"),
-            .make(label: "Controls", value: "Toggle, Picker"),
-            .make(label: "Validation", value: "Inline")
+            .make(label: "Sections", value: "Personal Info, History, Emergency"),
+            .make(label: "Field Types", value: "Text, Date, Selection"),
+            .make(label: "Validation", value: "Required & Conditional"),
+            .make(label: "Accessibility", value: "VoiceOver-ready")
         ],
         createdAt: Date(),
         updatedAt: nil,
@@ -177,33 +183,12 @@ extension ShowcaseItem {
         isViewed: false
     )
 
-    static let emptyState = ShowcaseItem(
-        id: "empty-state",
-        template: .emptyState,
-        title: "Empty State",
-        subtitle: "No content, clear guidance",
-        symbolName: "tray",
-        category: "UX",
-        description: "Illustrates a friendly empty state with guidance and actions.",
-        tags: ["Empty State", "UX", "Messaging"],
-        metadata: [
-            .make(label: "Illustration", value: "System Symbol"),
-            .make(label: "Action", value: "Primary Button"),
-            .make(label: "Tone", value: "Friendly")
-        ],
-        createdAt: Date(),
-        updatedAt: nil,
-        isFavorite: false,
-        isViewed: false
-    )
-
     static let mocks: [ShowcaseItem] = [
         loginFlow,
         chartAndStats,
         storefrontGrid,
         onboardingPager,
-        settingsForm,
-        profileHeader,
-        emptyState
+        medicalIntakeForm,
+        profileHeader
     ]
 }

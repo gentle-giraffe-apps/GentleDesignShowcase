@@ -139,5 +139,4 @@ extension ShowcaseItemDetailView {
         )
     )
     .environment(AppRouter.preview)
-    .environment(SessionManager.preview)
 }
