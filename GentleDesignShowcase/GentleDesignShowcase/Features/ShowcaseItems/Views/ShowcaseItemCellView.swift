@@ -1,41 +1,36 @@
 //  Jonathan Ritchey
-
+import GentleDesignSystem
 import SwiftUI
 
 struct ShowcaseItemCellView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let viewModel: ShowcaseItemCellViewModel
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(viewModel.itemModel.title)
-                        .font(.footnote).fontWeight(.bold)
-                        .foregroundStyle(.primary)
+                        .gentleText(.headline_m)
                     if let subtitle = viewModel.itemModel.subtitle {
                         Text(subtitle)
-                            .font(.footnote).fontWeight(.regular)
-                            .foregroundStyle(.secondary)
+                            .gentleText(.subheadline_ms)
                     }
                 }
                 .padding(.horizontal, 10)
-                
                 Spacer()
-                Image(
-                    systemName: viewModel.isCompleted ?
-                    "checkmark.seal.fill" : "checkmark.seal"
-                )
-                .font(Font.system(size: 26))
-                .foregroundColor(viewModel.isCompleted ? Color.blue : .secondary)
             }
+            .padding(.horizontal, 16)
         }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 16)
-        .frame(minHeight: 400)
-        .aspectRatio(3 / 4, contentMode: .fit)
+        .frame(
+            maxWidth: horizontalSizeClass == .compact ? .infinity : 450,
+            minHeight: 400
+        )
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(Color(.separator), lineWidth: 1.0)
         )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
 }

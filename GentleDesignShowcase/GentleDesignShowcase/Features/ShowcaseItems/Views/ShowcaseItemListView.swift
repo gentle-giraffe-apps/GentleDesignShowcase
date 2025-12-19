@@ -78,6 +78,7 @@ extension ShowcaseItemListView {
                 }
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 
