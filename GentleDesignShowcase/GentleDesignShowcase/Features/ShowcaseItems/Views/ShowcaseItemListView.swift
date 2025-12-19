@@ -70,6 +70,9 @@ extension ShowcaseItemListView {
                         router.push(viewModel.itemModel.route(), for: .itemsTab)
                     } label: {
                         ShowcaseItemCellView(viewModel: viewModel)
+                            .contentShape(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            ) // makes entire card tappable
                     }
                     .buttonStyle(.plain)
                 }
