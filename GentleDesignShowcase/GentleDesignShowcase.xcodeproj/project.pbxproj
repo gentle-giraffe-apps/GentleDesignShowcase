@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		88FBFB262EF4FFC700482E47 /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88FBFB252EF4FFC700482E47 /* GentleDesignSystem */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8826A53E2EF26F6A00BF5E1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88FBFB262EF4FFC700482E47 /* GentleDesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +126,7 @@
 			name = GentleDesignShowcase;
 			packageProductDependencies = (
 				8826A6122EF274DF00BF5E1E /* GentleUIComponents */,
+				88FBFB252EF4FFC700482E47 /* GentleDesignSystem */,
 			);
 			productName = GentleDesignShowcase;
 			productReference = 8826A5302EF26F6900BF5E1E /* GentleDesignShowcase.app */;
@@ -205,6 +211,7 @@
 			mainGroup = 8826A5272EF26F6900BF5E1E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				88FBFB242EF4FFC700482E47 /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8826A5312EF26F6900BF5E1E /* Products */;
@@ -590,10 +597,21 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		88FBFB242EF4FFC700482E47 /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../GentleDesignSystem;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		8826A6122EF274DF00BF5E1E /* GentleUIComponents */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GentleUIComponents;
+		};
+		88FBFB252EF4FFC700482E47 /* GentleDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GentleDesignSystem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
