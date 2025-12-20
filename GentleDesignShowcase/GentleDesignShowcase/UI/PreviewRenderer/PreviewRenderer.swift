@@ -8,7 +8,7 @@ import UIKit
 final class PreviewRenderer {
 
     // tweak these once and forget them
-    let deviceSize = CGSize(width: 393, height: 450)
+    let deviceSize = CGSize(width: 420, height: 700) // 400, 700
     let cropInsets = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)
     private var cache: [ShowcaseTemplate: Image] = [:]
 
@@ -95,8 +95,8 @@ final class PreviewRenderer {
         )
 
         // ✅ outline *cropped* result
-        // return imageWithRedBorder(cropped)
-        return cropped
+        return imageWithRedBorder(cropped)
+        // return cropped
     }
 
     @ViewBuilder

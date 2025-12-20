@@ -16,12 +16,14 @@ struct ShowcaseFrame<Content: View>: View {
     }
 }
 
+public let previewCardSize: CGSize = CGSize(width: 320, height: 600)
+
 struct ShowcaseItemCellView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(PreviewRenderer.self) private var previewRenderer
     @GentleDesignRuntime private var gentleDesignRuntime
     let viewModel: ShowcaseItemCellViewModel
-    let thumbNailDisplaySize = CGSize(width: 360, height: 400)
+    let thumbNailDisplaySize = previewCardSize // CGSize(width: 320, height: 600) // 520,  was 560
     
     var body: some View {
         ZStack {
@@ -32,16 +34,18 @@ struct ShowcaseItemCellView: View {
             .mask(
                 LinearGradient(
                     gradient: Gradient(stops: [
-                        .init(color: .white, location: 0.66),
-                        .init(color: .clear, location: 0.88),
-                        .init(color: .clear, location: 0.99)
+                        .init(color: .white, location: 0.0),
+                        .init(color: .white, location: 0.55),
+                        .init(color: .clear, location: 0.92)
                     ]),
                     startPoint: .top,
                     endPoint: .bottom
                 )
             )
+
             VStack {
                 Spacer()
+
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.itemModel.title)
@@ -49,6 +53,7 @@ struct ShowcaseItemCellView: View {
                                 .title3_ml,
                                 colorRole: .onSurfaceOverlayPrimary
                             )
+
                         if let subtitle = viewModel.itemModel.subtitle {
                             Text(subtitle)
                                 .gentleText(
@@ -58,41 +63,25 @@ struct ShowcaseItemCellView: View {
                         }
                     }
                     .padding(.horizontal, 10)
+
                     Spacer()
                 }
                 .padding(.horizontal, 16)
-                .padding(.vertical, 16)
+                .padding(.vertical, 20)
                 .gentleSurface(.surfaceOverlay)
                 .opacity(0.9)
+                .overlay(
+                    Rectangle()
+                        .fill(Color.white.opacity(0.10))
+                        .frame(height: 0.5),
+                    alignment: .top
+                )
             }
         }
         .frame(
-            maxWidth: horizontalSizeClass == .compact ? 350 : 450,
-            minHeight: 400
+            width: thumbNailDisplaySize.width,
+            height: thumbNailDisplaySize.height
         )
         .gentleSurface(.cardChrome)
-    }
-    
-    @ViewBuilder
-    var preview: some View {
-        switch viewModel.itemModel.template {
-        case .signInFlow:
-            SignInView(
-                viewModel: SignInViewModel(
-                    username: "Username",
-                    password: "Password"
-                )
-            )
-        case .chartAndStats:
-            ChartAndStatsTemplateView()
-        case .storefrontGrid:
-            StorefrontGridTemplateView()
-        case .onboardingPager:
-            OnboardingPagerTemplateView()
-        case .medicalIntakeForm:
-            MedicalIntakeFormTemplateView()
-        case .profileHeader:
-            ProfileHeaderTemplateView()
-        }
     }
 }

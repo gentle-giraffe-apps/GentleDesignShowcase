@@ -18,21 +18,15 @@ struct ShowcaseItemListView: View {
     
     var body: some View {
         @Bindable var router = router
-        VStack {
+        Group {
             let isLoading = viewModel.isLoading && viewModel.hasLoadedOnce == false
             if isLoading || isRenderingPreviews {
-                Spacer()
                 ProgressView("Loading showcase items...")
-                Spacer()
             } else {
                 ShowcaseItemList()
-                    .refreshable {
-                        await loadShowcaseItems()
-                    }
             }
-            Spacer()
         }
-        .padding(.horizontal, 16)
+        // .padding(.horizontal, 16)
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await loadShowcaseItems()
@@ -61,12 +55,12 @@ struct ShowcaseItemListView: View {
 extension ShowcaseItemListView {
     @ViewBuilder
     func ShowcaseItemList() -> some View {
-        let columns = [
-            GridItem(.adaptive(minimum: 300), spacing: 16)
+        // let cardSize = CGSize(width: 320, height: 600)
+        let rows = [
+            GridItem(.fixed(previewCardSize.height))
         ]
-        
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 16) {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHGrid(rows: rows, spacing: 16) {
                 ForEach(viewModel.filteredViewModels) { viewModel in
                     Button {
                         router.push(viewModel.itemModel.route(), for: .itemsTab)
@@ -80,7 +74,10 @@ extension ShowcaseItemListView {
                 }
             }
         }
-        .scrollIndicators(.hidden)
+        .frame(
+            height: previewCardSize.height
+        )
+        .clipped()
     }
 }
 
