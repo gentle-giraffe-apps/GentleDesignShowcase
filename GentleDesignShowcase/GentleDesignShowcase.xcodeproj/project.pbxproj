@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		88FBFB262EF4FFC700482E47 /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88FBFB252EF4FFC700482E47 /* GentleDesignSystem */; };
+		887E8DFC2EF706CB00DF68BE /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88FBFB252EF4FFC700482E47 /* GentleDesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88FBFB262EF4FFC700482E47 /* GentleDesignSystem in Frameworks */,
+				887E8DFC2EF706CB00DF68BE /* GentleDesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +125,6 @@
 			);
 			name = GentleDesignShowcase;
 			packageProductDependencies = (
-				8826A6122EF274DF00BF5E1E /* GentleUIComponents */,
 				88FBFB252EF4FFC700482E47 /* GentleDesignSystem */,
 			);
 			productName = GentleDesignShowcase;
@@ -211,7 +210,7 @@
 			mainGroup = 8826A5272EF26F6900BF5E1E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				88FBFB242EF4FFC700482E47 /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */,
+				887E8EAE2EF7073800DF68BE /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8826A5312EF26F6900BF5E1E /* Products */;
@@ -598,17 +597,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		88FBFB242EF4FFC700482E47 /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */ = {
+		887E8EAE2EF7073800DF68BE /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../GentleDesignSystem;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8826A6122EF274DF00BF5E1E /* GentleUIComponents */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GentleUIComponents;
-		};
 		88FBFB252EF4FFC700482E47 /* GentleDesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GentleDesignSystem;

@@ -205,10 +205,10 @@ extension ShowcaseItem {
 
     static let mocks: [ShowcaseItem] = [
         signInFlow,
-        chartAndStats,
-        storefrontGrid,
-        onboardingPager,
         medicalIntakeForm,
-        profileHeader
+        chartAndStats,
+        profileHeader,
+        storefrontGrid,
+        onboardingPager
     ]
 }

@@ -124,25 +124,71 @@ final class PreviewRenderer {
     @ViewBuilder
     private func preview(for template: ShowcaseTemplate) -> some View {
         switch template {
+
         case .signInFlow:
             SignInView(
-                viewModel: SignInViewModel(
-                    username: "Username",
-                    password: "Password"
-                )
+                viewModel: SignInViewModel(username: "Username", password: "Password")
             )
+
         case .chartAndStats:
-            ChartAndStatsTemplateView()
+            NavigationStack {
+                ChartAndStatsTemplateView()
+                    .navigationTitle("Charts + Stats")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+
         case .storefrontGrid:
-            StorefrontGridTemplateView()
+            NavigationStack {
+                StorefrontGridTemplateView()
+                    .navigationTitle("Storefront")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+
         case .onboardingPager:
-            OnboardingPagerTemplateView()
+            NavigationStack {
+                OnboardingPagerTemplateView()
+                    .navigationTitle("Onboarding")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+
         case .medicalIntakeForm:
-            MedicalIntakeFormTemplateView()
+            NavigationStack {
+                MedicalIntakeFormTemplateView()
+                    .navigationTitle("Intake")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+
         case .profileHeader:
-            ProfileHeaderTemplateView()
+            NavigationStack {
+                ProfileHeaderTemplateView()
+                    .navigationTitle("Profile")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
+
+//    @ViewBuilder
+//    private func preview(for template: ShowcaseTemplate) -> some View {
+//        switch template {
+//        case .signInFlow:
+//            SignInView(
+//                viewModel: SignInViewModel(
+//                    username: "Username",
+//                    password: "Password"
+//                )
+//            )
+//        case .chartAndStats:
+//            ChartAndStatsTemplateView()
+//        case .storefrontGrid:
+//            StorefrontGridTemplateView()
+//        case .onboardingPager:
+//            OnboardingPagerTemplateView()
+//        case .medicalIntakeForm:
+//            MedicalIntakeFormTemplateView()
+//        case .profileHeader:
+//            ProfileHeaderTemplateView()
+//        }
+//    }
     
     func prefetch() async {
         for t in ShowcaseTemplate.allCases {
