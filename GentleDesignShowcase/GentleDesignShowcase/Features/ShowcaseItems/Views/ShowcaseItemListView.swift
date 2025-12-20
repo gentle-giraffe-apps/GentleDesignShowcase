@@ -57,8 +57,10 @@ extension ShowcaseItemListView {
         let rows = [
             GridItem(.fixed(previewCardSize.height))
         ]
+        let shim: CGFloat = 4
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHGrid(rows: rows, spacing: 16) {
+                Color.clear.frame(width: shim)
                 ForEach(viewModel.filteredViewModels) { viewModel in
                     Button {
                         router.push(viewModel.itemModel.route(), for: .itemsTab)
@@ -70,6 +72,7 @@ extension ShowcaseItemListView {
                     }
                     .buttonStyle(.plain)
                 }
+                Color.clear.frame(width: shim)
             }
         }
         .frame(

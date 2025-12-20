@@ -60,9 +60,11 @@ struct ShowcaseItemCellView: View {
                         if let subtitle = viewModel.itemModel.subtitle {
                             Text(subtitle)
                                 .gentleText(
-                                    .bodySecondary_m,
+                                    .callout_ms,
                                     colorRole: .onSurfaceOverlaySecondary
                                 )
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.7)
                         }
                     }
                     .padding(.horizontal, 10)
