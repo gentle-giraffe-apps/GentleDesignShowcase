@@ -19,28 +19,52 @@ struct ShowcaseFrame<Content: View>: View {
 struct ShowcaseItemCellView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(PreviewRenderer.self) private var previewRenderer
+    @GentleDesignRuntime private var gentleDesignRuntime
     let viewModel: ShowcaseItemCellViewModel
     let thumbNailDisplaySize = CGSize(width: 360, height: 400)
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        ZStack {
             previewRenderer.previewContainer(
                 template: viewModel.itemModel.template,
                 displaySize: thumbNailDisplaySize
             )
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.itemModel.title)
-                        .gentleText(.headline_m)
-                    if let subtitle = viewModel.itemModel.subtitle {
-                        Text(subtitle)
-                            .gentleText(.subheadline_ms)
-                    }
-                }
-                .padding(.horizontal, 10)
+            .mask(
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: .white, location: 0.66),
+                        .init(color: .clear, location: 0.88),
+                        .init(color: .clear, location: 0.99)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            VStack {
                 Spacer()
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(viewModel.itemModel.title)
+                            .gentleText(
+                                .title3_ml,
+                                colorRole: .onSurfaceOverlayPrimary
+                            )
+                        if let subtitle = viewModel.itemModel.subtitle {
+                            Text(subtitle)
+                                .gentleText(
+                                    .bodySecondary_m,
+                                    colorRole: .onSurfaceOverlaySecondary
+                                )
+                        }
+                    }
+                    .padding(.horizontal, 10)
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .gentleSurface(.surfaceOverlay)
+                .opacity(0.9)
             }
-            .padding(.horizontal, 16)
         }
         .frame(
             maxWidth: horizontalSizeClass == .compact ? 350 : 450,

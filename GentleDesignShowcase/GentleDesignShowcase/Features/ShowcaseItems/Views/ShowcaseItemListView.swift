@@ -19,7 +19,6 @@ struct ShowcaseItemListView: View {
     var body: some View {
         @Bindable var router = router
         VStack {
-            // Title()
             let isLoading = viewModel.isLoading && viewModel.hasLoadedOnce == false
             if isLoading || isRenderingPreviews {
                 Spacer()
@@ -60,17 +59,6 @@ struct ShowcaseItemListView: View {
 }
 
 extension ShowcaseItemListView {
-    func Title() -> some View {
-        return HStack(alignment: .center) {
-            Text(viewModel.title)
-                .font(.largeTitle.bold())
-            Spacer()
-        }
-        .padding(.top, 8)
-        .padding(.bottom, 8)
-        .padding(.horizontal, 22)
-    }
-    
     @ViewBuilder
     func ShowcaseItemList() -> some View {
         let columns = [
