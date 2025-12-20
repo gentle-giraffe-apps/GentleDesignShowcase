@@ -1,4 +1,5 @@
 //  Jonathan Ritchey
+import GentleDesignSystem
 import Observation
 import SwiftUI
 
@@ -34,6 +35,7 @@ struct ShowcaseItemListView: View {
             await loadShowcaseItems()
         }
         .navigationTitle(viewModel.title)
+        .gentleSurface(.appBackground)
     }
     
     private func loadShowcaseItems() async {

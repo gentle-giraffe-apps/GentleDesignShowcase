@@ -10,7 +10,13 @@ struct SignInView: View {
     }
 
     @FocusState private var focusedField: Field?
-    @State private var viewModel = SignInViewModel()
+    @State private var viewModel: SignInViewModel
+    
+    init(
+        viewModel: SignInViewModel = SignInViewModel()
+    ) {
+        _viewModel = State(initialValue: viewModel)
+    }
     
     var body: some View {
         ZStack(alignment: .bottom) {

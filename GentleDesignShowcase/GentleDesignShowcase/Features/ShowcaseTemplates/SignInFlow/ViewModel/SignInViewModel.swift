@@ -14,7 +14,9 @@ final class SignInViewModel {
     
     init(
         service: SignInServiceProtocol = MockSignInService(),
-        date: Date = Date()
+        date: Date = Date(),
+        username: String = "",
+        password: String = ""
     ) {
         self.service = service
         let formatter = DateFormatter()
@@ -34,6 +36,8 @@ final class SignInViewModel {
             greeting = "Welcome"
             backgroundImageName = "SignInBackgroundMorning"
         }
+        self.username = username
+        self.password = password
     }
     
     func signIn() async throws {

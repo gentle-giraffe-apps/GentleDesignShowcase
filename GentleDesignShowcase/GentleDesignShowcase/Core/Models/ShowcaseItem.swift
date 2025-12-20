@@ -2,7 +2,7 @@
 import Foundation
 
 enum ShowcaseTemplate: String, Codable, CaseIterable, Hashable {
-    case loginFlow
+    case signInFlow
     case chartAndStats
     case storefrontGrid
     case onboardingPager
@@ -43,7 +43,7 @@ extension ShowcaseItem {
         switch template {
         case .chartAndStats:
             return .showcaseChartsAndStats(self)
-        case .loginFlow:
+        case .signInFlow:
             return .showcaseSignInFlow(self)
         case .medicalIntakeForm:
             return .showcaseMedicalIntakeForm(self)
@@ -75,9 +75,9 @@ extension Metadata {
 
 extension ShowcaseItem {
 
-    static let loginFlow = ShowcaseItem(
-        id: "login-flow",
-        template: .loginFlow,
+    static let signInFlow = ShowcaseItem(
+        id: "signin-flow",
+        template: .signInFlow,
         title: "Login Flow",
         subtitle: "Authentication and access control",
         symbolName: "lock",
@@ -203,7 +203,7 @@ extension ShowcaseItem {
     )
 
     static let mocks: [ShowcaseItem] = [
-        loginFlow,
+        signInFlow,
         chartAndStats,
         storefrontGrid,
         onboardingPager,
