@@ -138,4 +138,5 @@ struct SignInView: View {
 #Preview("SignIn") {
     SignInView()
         .environment(AppRouter.preview)
+        .environment(PreviewRenderer())
 }

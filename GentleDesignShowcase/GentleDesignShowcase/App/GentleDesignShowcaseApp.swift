@@ -4,6 +4,7 @@ import SwiftUI
 @main
 struct GentleDesignShowcaseApp: App {
     @State private var router: AppRouter
+    @State private var previewRenderer: PreviewRenderer
     @Environment(\.scenePhase) private var scenePhase
     @State private var hasLaunched = false
     @State private var didAttemptSignIn = false   // add this
@@ -17,6 +18,7 @@ struct GentleDesignShowcaseApp: App {
                 showcaseRepository: ShowcaseRepository.mockRepository()
             )
         )
+        _previewRenderer = .init(initialValue: PreviewRenderer())
     }
 
     var body: some Scene {
@@ -24,6 +26,7 @@ struct GentleDesignShowcaseApp: App {
             GentleThemeRoot(theme: .default) {
                 RootView()
                     .environment(router)
+                    .environment(previewRenderer)
                     .task {
                         // Run once
                         guard !didAttemptSignIn else { return }

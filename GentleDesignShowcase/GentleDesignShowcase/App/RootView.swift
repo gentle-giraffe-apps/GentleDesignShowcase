@@ -16,4 +16,5 @@ struct RootView: View {
 #Preview("RootView") {
     RootView()
         .environment(AppRouter.preview)
+        .environment(PreviewRenderer())
 }

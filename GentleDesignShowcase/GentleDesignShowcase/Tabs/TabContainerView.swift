@@ -71,4 +71,5 @@ struct ItemsListTabRoot: View {
 #Preview {
     TabContainerView(selectedTab: .constant(.items))
         .environment(AppRouter.preview)
+        .environment(PreviewRenderer())
 }

@@ -5,8 +5,10 @@ import SwiftUI
 
 struct ShowcaseItemListView: View {
     @Environment(AppRouter.self) private var router
+    @Environment(PreviewRenderer.self) private var previewRenderer
     @Environment(\.scenePhase) private var scenePhase
     @State private var viewModel: ShowcaseItemListViewModel
+    @State private var isRenderingPreviews: Bool = true
     
     init(
         viewModel: ShowcaseItemListViewModel
@@ -18,7 +20,8 @@ struct ShowcaseItemListView: View {
         @Bindable var router = router
         VStack {
             // Title()
-            if viewModel.isLoading && viewModel.hasLoadedOnce == false {
+            let isLoading = viewModel.isLoading && viewModel.hasLoadedOnce == false
+            if isLoading || isRenderingPreviews {
                 Spacer()
                 ProgressView("Loading showcase items...")
                 Spacer()
@@ -31,8 +34,10 @@ struct ShowcaseItemListView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .task {
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
             await loadShowcaseItems()
+            await renderPreviews()
         }
         .navigationTitle(viewModel.title)
         .gentleSurface(.appBackground)
@@ -44,6 +49,13 @@ struct ShowcaseItemListView: View {
         } catch {
             print("Failed to fetch items: \(error)")
         }
+    }
+    
+    @MainActor
+    private func renderPreviews() async {
+        guard isRenderingPreviews else { return }
+        defer { isRenderingPreviews = false }
+        await previewRenderer.prefetch()
     }
 }
 
@@ -66,7 +78,7 @@ extension ShowcaseItemListView {
         ]
         
         ScrollView {
-            LazyVGrid(columns: columns) {
+            LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(viewModel.filteredViewModels) { viewModel in
                     Button {
                         router.push(viewModel.itemModel.route(), for: .itemsTab)
@@ -91,4 +103,5 @@ extension ShowcaseItemListView {
         )
     )
     .environment(AppRouter.preview)
+    .environment(PreviewRenderer())
 }

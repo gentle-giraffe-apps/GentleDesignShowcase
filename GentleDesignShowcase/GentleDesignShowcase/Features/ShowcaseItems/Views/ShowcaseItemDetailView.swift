@@ -139,4 +139,5 @@ extension ShowcaseItemDetailView {
         )
     )
     .environment(AppRouter.preview)
+    .environment(PreviewRenderer())
 }
