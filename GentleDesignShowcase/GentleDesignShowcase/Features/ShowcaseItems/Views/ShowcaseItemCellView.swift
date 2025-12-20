@@ -19,6 +19,15 @@ struct ShowcaseFrame<Content: View>: View {
 @MainActor
 @Observable
 class ThumbnailSnapshot {
+    
+    class WrappedKey: NSObject {
+        let template: ShowcaseTemplate
+        init(template: ShowcaseTemplate) {
+            self.template = template
+        }
+    }
+    
+    static var cache = NSCache<WrappedKey, UIImage>()
     private var thumbnail: Image?
 
     private func imageWithRedBorder(_ image: UIImage, lineWidth: CGFloat = 2) -> UIImage {
@@ -107,7 +116,7 @@ class ThumbnailSnapshot {
     }
 
     @ViewBuilder
-    func previewContainer(preview: some View, deviceSize: CGSize, displaySize: CGSize) -> some View {
+    func previewContainer(template: ShowcaseTemplate, preview: some View, deviceSize: CGSize, displaySize: CGSize) -> some View {
         ZStack {
             if let thumbnail {
                 thumbnail
@@ -121,13 +130,18 @@ class ThumbnailSnapshot {
         .aspectRatio(deviceSize.width / deviceSize.height, contentMode: .fit)
         .clipped()
         .task { [weak self] in
-            await self?.generateThumbnailIfNeeded(for: preview, deviceSize: deviceSize)
+            await self?.generateThumbnailIfNeeded(
+                template: template,
+                for: preview,
+                deviceSize: deviceSize
+            )
         }
     }
-
     
-    private func generateThumbnailIfNeeded(for preview: some View, deviceSize: CGSize) async {
-        guard thumbnail == nil else { return }
+    private func generateThumbnailIfNeeded(template: ShowcaseTemplate, for preview: some View, deviceSize: CGSize) async {
+        guard thumbnail == nil else {
+            return
+        }
         if let uiImage = snapshotInHiddenContainer(
             view: ShowcaseFrame(
                 size: deviceSize
@@ -141,6 +155,8 @@ class ThumbnailSnapshot {
             size: deviceSize,
             cropInsetsPoints: UIEdgeInsets.init(top: 32, left: 0, bottom: 0, right: 0)
         ) {
+            let wrappedKey = WrappedKey(template: template)
+            ThumbnailSnapshot.cache.setObject(uiImage, forKey: wrappedKey)
             thumbnail = Image(uiImage: uiImage)
         }
     }
@@ -162,6 +178,7 @@ struct ShowcaseItemCellView: View {
         let deviceSize = CGSize(width: 393, height: 450)
         VStack(alignment: .leading, spacing: 0) {
             thumbNail.previewContainer(
+                template: viewModel.itemModel.template,
                 preview: preview,
                 deviceSize: deviceSize,
                 displaySize: thumbNailDisplaySize
