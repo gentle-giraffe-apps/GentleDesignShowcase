@@ -95,8 +95,8 @@ final class PreviewRenderer {
         )
 
         // ✅ outline *cropped* result
-        return imageWithRedBorder(cropped)
-        // return cropped
+        // return imageWithRedBorder(cropped)
+        return cropped
     }
 
     @ViewBuilder
@@ -105,7 +105,13 @@ final class PreviewRenderer {
             if let thumbnail = cache[template] {
                 thumbnail
                     .resizable()
-                    .scaledToFill()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(
+                        width: displaySize.width,
+                        height: displaySize.height,
+                        alignment: .topLeading
+                    )
+                    .clipped()
             } else {
                 Color(.secondarySystemBackground)
             }
@@ -162,10 +168,6 @@ final class PreviewRenderer {
                 size: deviceSize
             ) {
                 preview
-                    .ignoresSafeArea()
-                    .statusBarHidden(true)
-                    .toolbar(.hidden, for: .navigationBar)
-                    .toolbar(.hidden, for: .tabBar)
             },
             size: deviceSize,
             cropInsetsPoints: UIEdgeInsets.init(top: 32, left: 0, bottom: 0, right: 0)

@@ -6,25 +6,29 @@ import UIKit
 
 struct ShowcaseFrame<Content: View>: View {
     let size: CGSize
+    let topInset = CGFloat(20)
     @ViewBuilder var content: () -> Content
 
     var body: some View {
         content()
+            .padding(.top, topInset) // add a little padding at the top?
             .frame(width: size.width, height: size.height)
             .clipped()
             .background(Color(.systemBackground))
     }
 }
 
-public let previewCardSize: CGSize = CGSize(width: 320, height: 600)
+public let previewCardSize: CGSize = CGSize(width: 320, height: 580)
 
 struct ShowcaseItemCellView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(PreviewRenderer.self) private var previewRenderer
     @GentleDesignRuntime private var gentleDesignRuntime
     let viewModel: ShowcaseItemCellViewModel
-    let thumbNailDisplaySize = previewCardSize // CGSize(width: 320, height: 600) // 520,  was 560
-    
+    let thumbNailDisplaySize = CGSize(
+        width: previewCardSize.width,
+        height: previewCardSize.height
+    )
     var body: some View {
         ZStack {
             previewRenderer.previewContainer(
@@ -45,7 +49,6 @@ struct ShowcaseItemCellView: View {
 
             VStack {
                 Spacer()
-
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.itemModel.title)
@@ -79,8 +82,8 @@ struct ShowcaseItemCellView: View {
             }
         }
         .frame(
-            width: thumbNailDisplaySize.width,
-            height: thumbNailDisplaySize.height
+            width: previewCardSize.width,
+            height: previewCardSize.height
         )
         .gentleSurface(.cardChrome)
     }

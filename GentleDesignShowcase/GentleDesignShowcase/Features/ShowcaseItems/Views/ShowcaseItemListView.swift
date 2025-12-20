@@ -26,7 +26,6 @@ struct ShowcaseItemListView: View {
                 ShowcaseItemList()
             }
         }
-        // .padding(.horizontal, 16)
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await loadShowcaseItems()
@@ -55,7 +54,6 @@ struct ShowcaseItemListView: View {
 extension ShowcaseItemListView {
     @ViewBuilder
     func ShowcaseItemList() -> some View {
-        // let cardSize = CGSize(width: 320, height: 600)
         let rows = [
             GridItem(.fixed(previewCardSize.height))
         ]
