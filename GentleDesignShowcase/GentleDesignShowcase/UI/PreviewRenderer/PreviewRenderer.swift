@@ -127,7 +127,7 @@ final class PreviewRenderer {
 
         case .signInFlow:
             SignInView(
-                viewModel: SignInViewModel() // username: "Username", password: "Password")
+                viewModel: SignInViewModel()
             )
 
         case .chartAndStats:

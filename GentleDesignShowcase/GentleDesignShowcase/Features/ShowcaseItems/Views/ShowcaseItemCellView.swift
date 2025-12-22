@@ -23,7 +23,6 @@ public let previewCardSize: CGSize = CGSize(width: 320, height: 580)
 struct ShowcaseItemCellView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(PreviewRenderer.self) private var previewRenderer
-    @GentleDesignRuntime private var gentleDesignRuntime
     let viewModel: ShowcaseItemCellViewModel
     let thumbNailDisplaySize = CGSize(
         width: previewCardSize.width,
