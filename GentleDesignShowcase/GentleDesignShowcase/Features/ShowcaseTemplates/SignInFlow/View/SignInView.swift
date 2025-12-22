@@ -55,14 +55,14 @@ struct SignInView: View {
                 
                 VStack(spacing: 16) {
                     TextField("Enter username", text: $viewModel.username)
-                        .gentleTextField(.body_m)
+                        .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
                         .textContentType(.username)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                         .submitLabel(.next)
                     
                     SecureField("Enter password", text: $viewModel.password)
-                        .gentleTextField(.body_m)
+                        .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
                         .textContentType(.password)
                         .submitLabel(.go)
                     
