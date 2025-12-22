@@ -1,0 +1,46 @@
+//  Jonathan Ritchey
+
+import Foundation
+import Observation
+
+@Observable
+final class SignInViewModel_previous {
+    let title = "App Title"
+    let greeting: String
+    let backgroundImageName: String
+    var username = ""
+    var password = ""
+    var service: SignInServiceProtocol
+    
+    init(
+        service: SignInServiceProtocol = MockSignInService(),
+        date: Date = Date(),
+        username: String = "",
+        password: String = ""
+    ) {
+        self.service = service
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH" // 24 hours
+        if let hour = Int(formatter.string(from: date)) {
+            if hour > 3 && hour < 12 {
+                greeting = "Good Morning"
+                backgroundImageName = "SignInBackgroundMorning"
+            } else if hour >= 12 && hour < 18 {
+                greeting = "Good Afternoon"
+                backgroundImageName = "SignInBackgroundNoon"
+            } else {
+                greeting = "Good Evening"
+                backgroundImageName = "SignInBackgroundEvening"
+            }
+        } else {
+            greeting = "Welcome"
+            backgroundImageName = "SignInBackgroundMorning"
+        }
+        self.username = username
+        self.password = password
+    }
+    
+    func signIn() async throws {
+        try await service.signIn(username: username, password: password)
+    }
+}

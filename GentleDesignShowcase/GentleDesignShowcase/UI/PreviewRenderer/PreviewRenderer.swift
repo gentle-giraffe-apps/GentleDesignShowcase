@@ -127,7 +127,7 @@ final class PreviewRenderer {
 
         case .signInFlow:
             SignInView(
-                viewModel: SignInViewModel(username: "Username", password: "Password")
+                viewModel: SignInViewModel() // username: "Username", password: "Password")
             )
 
         case .chartAndStats:
@@ -166,29 +166,6 @@ final class PreviewRenderer {
             }
         }
     }
-
-//    @ViewBuilder
-//    private func preview(for template: ShowcaseTemplate) -> some View {
-//        switch template {
-//        case .signInFlow:
-//            SignInView(
-//                viewModel: SignInViewModel(
-//                    username: "Username",
-//                    password: "Password"
-//                )
-//            )
-//        case .chartAndStats:
-//            ChartAndStatsTemplateView()
-//        case .storefrontGrid:
-//            StorefrontGridTemplateView()
-//        case .onboardingPager:
-//            OnboardingPagerTemplateView()
-//        case .medicalIntakeForm:
-//            MedicalIntakeFormTemplateView()
-//        case .profileHeader:
-//            ProfileHeaderTemplateView()
-//        }
-//    }
     
     func prefetch() async {
         for t in ShowcaseTemplate.allCases {
