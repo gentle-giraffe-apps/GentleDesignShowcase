@@ -18,27 +18,12 @@ struct SignInView: View {
     ) {
         _viewModel = State(initialValue: viewModel)
     }
-    
+        
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Circle()
-                        .fill(gentleDesign.themePrimary)
-                        .frame(width: 400, height: 400)
-                        .offset(x: -150, y: -100)
-                        .mask(
-                            LinearGradient(
-                                gradient: Gradient(stops: [
-                                    Gradient.Stop(color: Color.white, location: 0.0),
-                                    Gradient.Stop(color: Color.clear, location: 1.0)
-                                ]),
-                                startPoint: .topTrailing,
-                                endPoint: .bottomLeading
-                            )
-                        )
-                        .opacity(0.3)
-                        .ignoresSafeArea()
+                    offsetCircleWithFadedGradient()
                     Spacer()
                 }
                 Spacer()
@@ -104,38 +89,27 @@ struct SignInView: View {
     private func credentialsPresent() -> Bool {
         !viewModel.username.isEmpty && !viewModel.password.isEmpty
     }
+    
+    private func offsetCircleWithFadedGradient() -> some View {
+        return Circle()
+            .fill(gentleDesign.themePrimary)
+            .frame(width: 400, height: 400)
+            .offset(x: -150, y: -100)
+            .mask(
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        Gradient.Stop(color: Color.white, location: 0.0),
+                        Gradient.Stop(color: Color.clear, location: 1.0)
+                    ]),
+                    startPoint: .topTrailing,
+                    endPoint: .bottomLeading
+                )
+            )
+            .opacity(0.3)
+            .ignoresSafeArea()
+    }
 }
 
 #Preview {
     SignInView()
-}
-
-struct AppleStyleCornerShade: View {
-    var body: some View {
-        GeometryReader { geo in
-            let d = max(geo.size.width, geo.size.height) * 2.2
-
-            Circle()
-                .fill(
-                    RadialGradient(
-                        stops: [
-                            .init(color: Color.black.opacity(0.20), location: 0.00),
-                            .init(color: Color.black.opacity(0.10), location: 0.35),
-                            .init(color: Color.black.opacity(0.04), location: 0.55),
-                            .init(color: Color.clear,              location: 0.75)
-                        ],
-                        center: .center,
-                        startRadius: 0,
-                        endRadius: d * 0.5
-                    )
-                )
-                .frame(width: d, height: d)
-                // Push circle up-left so only the curved edge remains
-                .position(
-                    x: -d * 0.15,
-                    y: -d * 0.10
-                )
-        }
-        .ignoresSafeArea()
-    }
 }

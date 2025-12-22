@@ -6,14 +6,17 @@ import Charts
 struct ChartAndStatsTemplateView: View {
     let points: [ChartPoint] = ChartPoint.sample
     let stats: [StatRow] = StatRow.sample
-
+    @GentleDesignRuntime private var gentleDesign
+    
     var body: some View {
         VStack(spacing: 16) {
             Chart(points) { p in
-                LineMark(
+                BarMark(
                     x: .value("Day", p.day),
-                    y: .value("Value", p.value)
+                    y: .value("Value", max(p.value, 1))
                 )
+                .cornerRadius(gentleDesign.radii.large)
+                .opacity(0.9)
             }
             .frame(height: 220)
             .padding(.horizontal)
@@ -30,6 +33,10 @@ struct ChartAndStatsTemplateView: View {
         }
         .navigationTitle("Chart + Stats")
     }
+}
+
+#Preview {
+    ChartAndStatsTemplateView()
 }
 
 struct ChartPoint: Identifiable {
