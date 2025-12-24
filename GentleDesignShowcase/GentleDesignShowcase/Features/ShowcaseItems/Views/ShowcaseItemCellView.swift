@@ -23,6 +23,8 @@ public let previewCardSize: CGSize = CGSize(width: 320, height: 580)
 struct ShowcaseItemCellView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(PreviewRenderer.self) private var previewRenderer
+    @Environment(\.colorScheme) private var colorScheme
+    
     let viewModel: ShowcaseItemCellViewModel
     let thumbNailDisplaySize = CGSize(
         width: previewCardSize.width,
@@ -32,7 +34,8 @@ struct ShowcaseItemCellView: View {
         ZStack {
             previewRenderer.previewContainer(
                 template: viewModel.itemModel.template,
-                displaySize: thumbNailDisplaySize
+                displaySize: thumbNailDisplaySize,
+                colorScheme: colorScheme
             )
             .mask(
                 LinearGradient(
@@ -45,6 +48,7 @@ struct ShowcaseItemCellView: View {
                     endPoint: .bottom
                 )
             )
+            .id(colorScheme)
 
             VStack {
                 Spacer()

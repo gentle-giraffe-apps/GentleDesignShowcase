@@ -11,7 +11,7 @@ final class PreviewRenderer {
     // tweak these once and forget them
     let deviceSize = CGSize(width: 420, height: 700) // 400, 700
     let cropInsets = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)
-    private var cache: [ShowcaseTemplate: Image] = [:]
+    private var cache: [String: Image] = [:]
 
     private func imageWithRedBorder(_ image: UIImage, lineWidth: CGFloat = 2) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
@@ -109,9 +109,9 @@ final class PreviewRenderer {
     }
 
     @ViewBuilder
-    func previewContainer(template: ShowcaseTemplate, displaySize: CGSize) -> some View {
+    func previewContainer(template: ShowcaseTemplate, displaySize: CGSize, colorScheme: ColorScheme) -> some View {
         ZStack {
-            if let thumbnail = cache[template] {
+            if let thumbnail = cache[template.key(using: colorScheme)] {
                 thumbnail
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -131,48 +131,48 @@ final class PreviewRenderer {
     }
     
     @ViewBuilder
-    private func preview(for template: ShowcaseTemplate) -> some View {
+    private func preview(for template: ShowcaseTemplate, colorScheme: ColorScheme) -> some View {
         switch template {
 
         case .signInFlow:
             SignInView(
                 viewModel: SignInViewModel()
-            )
+            ).colorScheme(colorScheme)
 
         case .chartAndStats:
             NavigationStack {
                 ChartAndStatsTemplateView()
                     .navigationTitle("Charts + Stats")
                     .navigationBarTitleDisplayMode(.inline)
-            }
+            }.colorScheme(colorScheme)
 
         case .storefrontGrid:
             NavigationStack {
                 StorefrontGridTemplateView()
                     .navigationTitle("Storefront")
                     .navigationBarTitleDisplayMode(.inline)
-            }
+            }.colorScheme(colorScheme)
 
         case .onboardingPager:
             NavigationStack {
                 OnboardingPagerTemplateView()
                     .navigationTitle("Onboarding")
                     .navigationBarTitleDisplayMode(.inline)
-            }
+            }.colorScheme(colorScheme)
 
         case .medicalIntakeForm:
             NavigationStack {
                 MedicalIntakeFormTemplateView()
                     .navigationTitle("Intake")
                     .navigationBarTitleDisplayMode(.inline)
-            }
+            }.colorScheme(colorScheme)
 
         case .profileHeader:
             NavigationStack {
                 ProfileHeaderTemplateView()
                     .navigationTitle("Profile")
                     .navigationBarTitleDisplayMode(.inline)
-            }
+            }.colorScheme(colorScheme)
         }
     }
     
@@ -183,8 +183,15 @@ final class PreviewRenderer {
         for t in ShowcaseTemplate.allCases {
             await generateThumbnailIfNeeded(
                 template: t,
-                for: preview(for: t),
-                deviceSize: deviceSize
+                for: preview(for: t, colorScheme: .light),
+                deviceSize: deviceSize,
+                colorScheme: .light
+            )
+            await generateThumbnailIfNeeded(
+                template: t,
+                for: preview(for: t, colorScheme: .dark),
+                deviceSize: deviceSize,
+                colorScheme: .dark
             )
         }
     }
@@ -217,8 +224,8 @@ final class PreviewRenderer {
         [.profileHeader]
     }
 
-    func generateThumbnailIfNeeded(template: ShowcaseTemplate, for preview: some View, deviceSize: CGSize) async {
-        guard cache[template] == nil else {
+    func generateThumbnailIfNeeded(template: ShowcaseTemplate, for preview: some View, deviceSize: CGSize, colorScheme: ColorScheme) async {
+        guard cache[template.key(using: colorScheme)] == nil else {
             return
         }
 
@@ -237,7 +244,7 @@ final class PreviewRenderer {
             cropInsetsPoints: UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0),
             waitForAsync: waitDuration
         ) {
-            cache[template] = Image(uiImage: uiImage)
+            cache[template.key(using: colorScheme)] = Image(uiImage: uiImage)
         }
     }
     

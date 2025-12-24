@@ -5,10 +5,8 @@ import SwiftUI
 struct RootView: View {
     @Environment(AppRouter.self) var router
     @State private var selectedTab: RootViewTab = .items
-    @GentleDesignRuntime private var gentleDesignRuntime
     
     init() {
-        gentleDesignRuntime.theme.applyNavBarTitleColor(colorRole: .textPrimary)
     }
     
     var body: some View {
