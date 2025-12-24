@@ -9,6 +9,7 @@ struct SignInView: View {
         case password
     }
 
+    let isLoaded = true
     @FocusState private var focusedField: Field?
     @State private var viewModel: SignInViewModel
     @GentleDesignRuntime private var gentleDesign

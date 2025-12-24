@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		887E8DFC2EF706CB00DF68BE /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88FBFB252EF4FFC700482E47 /* GentleDesignSystem */; };
+		88C404F02EFB8B3100499B47 /* SmartAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88C404EF2EFB8B3100499B47 /* SmartAsyncImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				887E8DFC2EF706CB00DF68BE /* GentleDesignSystem in Frameworks */,
+				88C404F02EFB8B3100499B47 /* SmartAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +128,7 @@
 			name = GentleDesignShowcase;
 			packageProductDependencies = (
 				88FBFB252EF4FFC700482E47 /* GentleDesignSystem */,
+				88C404EF2EFB8B3100499B47 /* SmartAsyncImage */,
 			);
 			productName = GentleDesignShowcase;
 			productReference = 8826A5302EF26F6900BF5E1E /* GentleDesignShowcase.app */;
@@ -211,6 +214,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				887E8EAE2EF7073800DF68BE /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */,
+				88C404F12EFB8E3300499B47 /* XCLocalSwiftPackageReference "../../SmartAsyncImage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8826A5312EF26F6900BF5E1E /* Products */;
@@ -601,9 +605,17 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../GentleDesignSystem;
 		};
+		88C404F12EFB8E3300499B47 /* XCLocalSwiftPackageReference "../../SmartAsyncImage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../SmartAsyncImage;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		88C404EF2EFB8B3100499B47 /* SmartAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SmartAsyncImage;
+		};
 		88FBFB252EF4FFC700482E47 /* GentleDesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GentleDesignSystem;

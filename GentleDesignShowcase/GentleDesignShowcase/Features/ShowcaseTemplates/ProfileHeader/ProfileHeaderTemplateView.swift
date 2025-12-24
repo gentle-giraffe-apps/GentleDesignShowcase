@@ -1,49 +1,30 @@
 //  Jonathan Ritchey
 import GentleDesignSystem
+import Observation
+import SmartAsyncImage
 import SwiftUI
 
-struct ProfileHeaderTemplateView: View {
-    let profile = Profile.sample
-
-    var body: some View {
-        VStack(spacing: 16) {
-            AsyncImage(url: URL(string: profile.avatarURL)) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFill()
-                default:
-                    Circle().fill(.gray.opacity(0.25))
-                }
-            }
-            .frame(width: 96, height: 96)
-            .clipShape(Circle())
-
-            Text(profile.name)
-                .gentleText(.title2_l)
-            Text(profile.subtitle)
-                .gentleText(.bodySecondary_m)
-            
-            List(profile.stats) { stat in
-                HStack {
-                    Text(stat.label)
-                        .gentleText(.body_m)
-                    Spacer()
-                    Text(stat.value)
-                        .gentleText(.bodySecondary_m)
-                }
-            }
-        }
-        .navigationTitle("Profile")
+@Observable
+class ProfileHeaderTemplateViewModel {
+    struct ProfileStat: Identifiable {
+        let id = UUID()
+        let label: String
+        let value: String
     }
-}
 
-struct Profile {
     let name: String
     let subtitle: String
     let avatarURL: String
     let stats: [ProfileStat]
-
-    static let sample = Profile(
+    
+    init(name: String, subtitle: String, avatarURL: String, stats: [ProfileStat]) {
+        self.name = name
+        self.subtitle = subtitle
+        self.avatarURL = avatarURL
+        self.stats = stats
+    }
+    
+    static let sample = ProfileHeaderTemplateViewModel(
         name: "Taylor Example",
         subtitle: "iOS • SwiftUI • Charts",
         avatarURL: "https://picsum.photos/200",
@@ -56,8 +37,42 @@ struct Profile {
     )
 }
 
-struct ProfileStat: Identifiable {
-    let id = UUID()
-    let label: String
-    let value: String
+struct ProfileHeaderTemplateView: View {
+    let isLoaded = true
+    let viewModel = ProfileHeaderTemplateViewModel.sample
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            avatarImage()
+
+            Text(viewModel.name)
+                .gentleText(.title2_l)
+            Text(viewModel.subtitle)
+                .gentleText(.bodySecondary_m)
+            
+            List(viewModel.stats) { stat in
+                HStack {
+                    Text(stat.label)
+                        .gentleText(.body_m)
+                    Spacer()
+                    Text(stat.value)
+                        .gentleText(.bodySecondary_m)
+                }
+            }
+        }
+        .navigationTitle("Profile")
+    }
+    
+    func avatarImage() -> some View {
+        return SmartAsyncImage(url: URL(string: viewModel.avatarURL)) { phase in
+            switch phase {
+            case .success(let image):
+                image.resizable().scaledToFill()
+            default:
+                Circle().fill(.gray.opacity(0.25))
+            }
+        }
+        .frame(width: 96, height: 96)
+        .clipShape(Circle())
+    }
 }

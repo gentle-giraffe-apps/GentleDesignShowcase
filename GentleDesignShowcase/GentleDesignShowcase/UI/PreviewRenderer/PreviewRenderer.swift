@@ -1,4 +1,5 @@
 //  Jonathan Ritchey
+import SmartAsyncImage
 import SwiftUI
 import Observation
 import UIKit
@@ -33,8 +34,9 @@ final class PreviewRenderer {
     func snapshotInHiddenContainer<V: View>(
         view: V,
         size: CGSize,
-        cropInsetsPoints: UIEdgeInsets = .zero   // in points
-    ) -> UIImage? {
+        cropInsetsPoints: UIEdgeInsets = .zero,   // in points
+        waitForAsync: Duration = .zero
+    ) async -> UIImage? {
         guard let windowScene = activeWindowScene(),
               let window = windowScene.windows.first(where: { $0.isKeyWindow })
         else {
@@ -48,7 +50,7 @@ final class PreviewRenderer {
         hosting.additionalSafeAreaInsets = .zero
         hosting.view.insetsLayoutMarginsFromSafeArea = false
         hosting.view.layoutMargins = .zero
-        
+
         let container = UIView(frame: hosting.view.bounds)
         container.isHidden = true
         container.alpha = 0.0
@@ -57,6 +59,13 @@ final class PreviewRenderer {
         container.addSubview(hosting.view)
         hosting.view.setNeedsLayout()
         hosting.view.layoutIfNeeded()
+
+        // Wait for async content (e.g., AsyncImage) to load from cache
+        if waitForAsync > .zero {
+            try? await Task.sleep(for: waitForAsync)
+            hosting.view.setNeedsLayout()
+            hosting.view.layoutIfNeeded()
+        }
 
         let format = UIGraphicsImageRendererFormat()
         format.scale = window.windowScene?.screen.scale ?? hosting.traitCollection.displayScale
@@ -168,6 +177,9 @@ final class PreviewRenderer {
     }
     
     func prefetch() async {
+        // Pre-warm the URL cache so AsyncImage loads instantly from cache
+        await preloadAsyncImageURLs()
+
         for t in ShowcaseTemplate.allCases {
             await generateThumbnailIfNeeded(
                 template: t,
@@ -176,24 +188,54 @@ final class PreviewRenderer {
             )
         }
     }
+
+    /// URLs used by AsyncImage in template views that need pre-loading
+    private var asyncImageURLs: [URL] {
+        [
+            URL(string: ProfileHeaderTemplateViewModel.sample.avatarURL)
+        ].compactMap { $0 }
+    }
+
+    /// Pre-downloads images into URLCache so AsyncImage can load them synchronously
+    private func preloadAsyncImageURLs() async {
+        let memoryCache = SmartAsyncImageMemoryCache.shared
+        await withTaskGroup(of: Void.self) { group in
+            for url in asyncImageURLs {
+                group.addTask {
+                    do {
+                        try await _ = memoryCache.image(for: url)
+                    } catch {
+                        print("Failed to preload image: \(url) - \(error)")
+                    }
+                }
+            }
+        }
+    }
     
+    /// Templates that contain AsyncImage or other async-loading content
+    private var templatesWithAsyncContent: Set<ShowcaseTemplate> {
+        [.profileHeader]
+    }
+
     func generateThumbnailIfNeeded(template: ShowcaseTemplate, for preview: some View, deviceSize: CGSize) async {
         guard cache[template] == nil else {
             return
         }
-        // check cache
-        if let _ = cache[template] {
-            return
-        }
-        // finally generate from snapshot
-        if let uiImage = snapshotInHiddenContainer(
+
+        // Allow extra time for templates with async content to load from cache
+        let waitDuration: Duration = templatesWithAsyncContent.contains(template)
+            ? .milliseconds(100)
+            : .zero
+
+        if let uiImage = await snapshotInHiddenContainer(
             view: ShowcaseFrame(
                 size: deviceSize
             ) {
                 preview
             },
             size: deviceSize,
-            cropInsetsPoints: UIEdgeInsets.init(top: 32, left: 0, bottom: 0, right: 0)
+            cropInsetsPoints: UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0),
+            waitForAsync: waitDuration
         ) {
             cache[template] = Image(uiImage: uiImage)
         }

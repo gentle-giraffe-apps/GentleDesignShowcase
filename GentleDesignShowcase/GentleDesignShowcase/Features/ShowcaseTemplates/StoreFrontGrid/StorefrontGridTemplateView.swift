@@ -3,6 +3,7 @@ import GentleDesignSystem
 import SwiftUI
 
 struct StorefrontGridTemplateView: View {
+    let isLoaded = true
     let items: [StoreItem] = StoreItem.sample
 
     private let columns = [
