@@ -135,9 +135,12 @@ final class PreviewRenderer {
         switch template {
 
         case .signInFlow:
-            SignInView(
-                viewModel: SignInViewModel()
-            ).colorScheme(colorScheme)
+            NavigationStack {
+                SignInView(
+                    viewModel: SignInViewModel()
+                )
+            }
+            .colorScheme(colorScheme)
 
         case .chartAndStats:
             NavigationStack {
