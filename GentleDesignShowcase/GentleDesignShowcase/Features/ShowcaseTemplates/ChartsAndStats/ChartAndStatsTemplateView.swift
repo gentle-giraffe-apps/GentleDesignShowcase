@@ -15,6 +15,7 @@ struct ChartAndStatsTemplateView: View {
                     x: .value("Day", p.day),
                     y: .value("Value", max(p.value, 1))
                 )
+                .foregroundStyle(gentleDesign.themePrimary)
                 .cornerRadius(gentleDesign.radii.large)
                 .opacity(0.9)
             }
