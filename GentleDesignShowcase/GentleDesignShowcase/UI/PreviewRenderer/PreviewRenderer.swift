@@ -145,7 +145,7 @@ final class PreviewRenderer {
         case .chartAndStats:
             NavigationStack {
                 ChartAndStatsTemplateView()
-                    .navigationTitle("Charts + Stats")
+                    .navigationTitle("Charts")
                     .navigationBarTitleDisplayMode(.inline)
             }.colorScheme(colorScheme)
 

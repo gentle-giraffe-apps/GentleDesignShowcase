@@ -64,8 +64,7 @@ struct SignInView: View {
                     .opacity(isButtonDisabled ? 0.4 : 1.0)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .gentlePadding(.screen)
-            .gentlePadding(.screen)
+            .gentleInset(.screen)
         }
     }
     

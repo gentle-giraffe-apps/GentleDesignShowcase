@@ -89,8 +89,8 @@ extension ShowcaseItem {
     static let chartAndStats = ShowcaseItem(
         id: "chart-and-stats",
         template: .chartAndStats,
-        title: "Chart + Stats",
-        subtitle: "Visualize trends with summary metrics",
+        title: "Charts",
+        subtitle: "Visualize trends",
         symbolName: "chart.xyaxis.line",
         category: "Data",
         description: "Demonstrates a chart paired with key metrics and a supporting list.",

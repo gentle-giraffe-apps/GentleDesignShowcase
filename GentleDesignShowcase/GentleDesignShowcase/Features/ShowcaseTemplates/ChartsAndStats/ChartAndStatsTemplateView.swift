@@ -4,7 +4,7 @@ import SwiftUI
 import Charts
 
 struct ChartAndStatsTemplateView: View {
-    @GentleDesignRuntime private var gentleDesign
+    @GentleDesignRuntime private var design
     
     // Donut data (like your screenshot)
     private let categories: [CalorieCategory] = [
@@ -48,7 +48,7 @@ struct ChartAndStatsTemplateView: View {
 
                 // ===== Card 1: Donut + right-side legend =====
                 card(title: "Calorie Intake") {
-                    HStack(spacing: gentleDesign.spacing.s) {
+                    HStack(spacing: design.layout.stack.regular) {
 
                         // Donut
                         Chart(categories) { item in
@@ -73,7 +73,7 @@ struct ChartAndStatsTemplateView: View {
                                     Circle()
                                         .fill(colorForCategory.color(for: item.name) ?? .clear)
                                         .frame(width: 14, height: 14)
-                                        .padding(.horizontal, gentleDesign.spacing.m)
+                                        .gentleInset(.horizontal, .control)
 
                                     Text(item.name)
                                         .gentleText(.callout_ms)
@@ -93,7 +93,7 @@ struct ChartAndStatsTemplateView: View {
 
                 // ===== Card 2: Stacked bars + bottom legend =====
                 card(title: "Nutrition Intake") {
-                    VStack(spacing: 14) {
+                    VStack(spacing: design.layout.stack.loose) {
 
                         HStack {
                             // Match the screenshot-style left labels
@@ -128,7 +128,6 @@ struct ChartAndStatsTemplateView: View {
                             macroLegendItem(.protein)
                             macroLegendItem(.fat)
                         }
-                        .padding(.top, 8)
                     }
                 }
             }
@@ -140,10 +139,9 @@ struct ChartAndStatsTemplateView: View {
     // MARK: - UI helpers
 
     private func card<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(spacing: 14) {
+        VStack(spacing: design.layout.stack.regular) {
             Text(title)
-                .font(.system(size: 26, weight: .semibold))
-                .foregroundStyle(.secondary)
+                .gentleText(.title_xl)
                 .padding(.top, 8)
 
             Divider()
@@ -152,8 +150,7 @@ struct ChartAndStatsTemplateView: View {
             content()
                 .padding(.vertical, 6)
         }
-        .gentlePadding(.card)
-        .gentleSurface(.card)
+        .gentleInset(.card)
     }
 
     private func macroLegendItem(_ macro: Macro) -> some View {
