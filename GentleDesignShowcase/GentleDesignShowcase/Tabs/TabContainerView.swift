@@ -1,5 +1,5 @@
 // Jonathan Ritchey
-
+import GentleDesignSystem
 import SwiftUI
 
 enum RootViewTab: Hashable {
@@ -11,6 +11,7 @@ enum RootViewTab: Hashable {
 
 struct TabContainerView: View {
     @Binding var selectedTab: RootViewTab
+    @GentleDesignRuntime private var design
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -20,23 +21,27 @@ struct TabContainerView: View {
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.items)
+                .background(GentleNavigationBarStyler())
             Text("Favorites")
                 .tabItem {
                     Label("Favorites", systemImage: selectedTab == .favorites ? "heart.fill" : "heart")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.favorites)
+                .background(GentleNavigationBarStyler())
             Text("Settings")
                 .tabItem {
                     Label("Settings", systemImage: "signature")
                 }
                 .tag(RootViewTab.settings)
+                .background(GentleNavigationBarStyler())
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: selectedTab == .profile ? "person.fill" : "person")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.profile)
+                .background(GentleNavigationBarStyler())
         }
     }
     
