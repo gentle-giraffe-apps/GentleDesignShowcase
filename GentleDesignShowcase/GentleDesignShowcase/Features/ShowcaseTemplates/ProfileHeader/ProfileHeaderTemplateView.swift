@@ -24,17 +24,19 @@ class ProfileHeaderTemplateViewModel {
         self.stats = stats
     }
     
-    static let sample = ProfileHeaderTemplateViewModel(
-        name: "Taylor Example",
-        subtitle: "iOS • SwiftUI • Charts",
-        avatarURL: "https://picsum.photos/200",
-        stats: [
-            .init(label: "Followers", value: "1,284"),
-            .init(label: "Following", value: "312"),
-            .init(label: "Posts", value: "48"),
-            .init(label: "Streak", value: "16 days"),
-        ]
-    )
+    static var sample: ProfileHeaderTemplateViewModel {
+        return ProfileHeaderTemplateViewModel(
+            name: "Taylor Example",
+            subtitle: "iOS • SwiftUI • Charts",
+            avatarURL: "https://picsum.photos/200",
+            stats: [
+                .init(label: "Followers", value: "1,284"),
+                .init(label: "Following", value: "312"),
+                .init(label: "Posts", value: "48"),
+                .init(label: "Streak", value: "16 days"),
+            ]
+        )
+    }
 }
 
 struct ProfileHeaderTemplateView: View {

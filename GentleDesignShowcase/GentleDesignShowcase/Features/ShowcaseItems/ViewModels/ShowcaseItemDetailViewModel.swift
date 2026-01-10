@@ -11,7 +11,7 @@ final class ShowcaseItemDetailViewModel: Identifiable {
         let subTitle: String
     }
     
-    var id: String { itemModel.id }
+    nonisolated var id: String { itemModel.id }
     let itemModel: ShowcaseItem
     let repository: ShowcaseRepository
     
