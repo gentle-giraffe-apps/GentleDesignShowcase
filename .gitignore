@@ -2,6 +2,9 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+# Ignore any directory named "build" anywhere in the repo
+**/build/
+
 ## DSStore (mac finder autogenerate files)
 .DS_Store
 **/.DS_Store
