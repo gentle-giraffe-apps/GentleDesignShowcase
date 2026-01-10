@@ -6,8 +6,8 @@ on:
   pull_request:
 
 jobs:
-  ios-demo-build:
-    runs-on: macos-15
+  ios-build:
+    runs-on: macos-26
 
     defaults:
       run:
