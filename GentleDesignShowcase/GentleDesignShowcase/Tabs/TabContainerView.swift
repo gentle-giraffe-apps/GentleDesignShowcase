@@ -4,9 +4,7 @@ import SwiftUI
 
 enum RootViewTab: Hashable {
     case items
-    case favorites
-    case settings
-    case profile
+    case design
 }
 
 struct TabContainerView: View {
@@ -17,30 +15,17 @@ struct TabContainerView: View {
         TabView(selection: $selectedTab) {
             ItemsListTabRoot()
                 .tabItem {
-                    Label("Items", systemImage: selectedTab == .items ? "shippingbox.fill" : "shippingbox")
+                    Label("Showcase", systemImage: selectedTab == .items ? "photo.on.rectangle.fill" : "photo.on.rectangle")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.items)
                 .background(GentleNavigationBarStyler())
-            Text("Favorites")
+            Text("Design")
                 .tabItem {
-                    Label("Favorites", systemImage: selectedTab == .favorites ? "heart.fill" : "heart")
+                    Label("Design", systemImage: selectedTab == .design ? "paintbrush.pointed.fill" : "paintbrush.pointed")
                         .environment(\.symbolVariants, .none)
                 }
-                .tag(RootViewTab.favorites)
-                .background(GentleNavigationBarStyler())
-            Text("Settings")
-                .tabItem {
-                    Label("Settings", systemImage: "signature")
-                }
-                .tag(RootViewTab.settings)
-                .background(GentleNavigationBarStyler())
-            ProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: selectedTab == .profile ? "person.fill" : "person")
-                        .environment(\.symbolVariants, .none)
-                }
-                .tag(RootViewTab.profile)
+                .tag(RootViewTab.design)
                 .background(GentleNavigationBarStyler())
         }
     }
