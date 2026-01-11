@@ -25,7 +25,7 @@ struct GentleDesignShowcaseApp: App {
 
     var body: some Scene {
         WindowGroup {
-            GentleThemeRoot(theme: .default) {
+            GentleThemeRoot(theme: themeManager.theme) {
                 RootView()
                     .environment(router)
                     .environment(previewRenderer)
