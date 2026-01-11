@@ -7,13 +7,18 @@ struct ShowcaseItemListView: View {
     @Environment(AppRouter.self) private var router
     @Environment(PreviewRenderer.self) private var previewRenderer
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.gentleThemeManager) private var themeManager
     @State private var viewModel: ShowcaseItemListViewModel
     @State private var isRenderingPreviews: Bool = true
-    
+    @State private var refreshID = UUID()
+    @Binding var selectedTab: RootViewTab
+
     init(
-        viewModel: ShowcaseItemListViewModel
+        viewModel: ShowcaseItemListViewModel,
+        selectedTab: Binding<RootViewTab>
     ) {
         _viewModel = .init(initialValue: viewModel)
+        _selectedTab = selectedTab
     }
     
     var body: some View {
@@ -26,13 +31,28 @@ struct ShowcaseItemListView: View {
                 ShowcaseItemList()
             }
         }
+        .id(refreshID)
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await loadShowcaseItems()
             await renderPreviews()
         }
+        .onChange(of: selectedTab) { _, newValue in
+            guard newValue == .items else { return }
+            Task {
+                await refresh()
+            }
+        }
         .navigationTitle(viewModel.title)
         .gentleSurface(.appBackground)
+    }
+    
+    func refresh() async {
+        refreshID = UUID()
+        isRenderingPreviews = true
+        previewRenderer.clearCache()
+        await loadShowcaseItems()
+        await renderPreviews()
     }
     
     private func loadShowcaseItems() async {
@@ -47,6 +67,7 @@ struct ShowcaseItemListView: View {
     private func renderPreviews() async {
         guard isRenderingPreviews else { return }
         defer { isRenderingPreviews = false }
+        previewRenderer.theme = themeManager?.theme
         await previewRenderer.prefetch()
     }
 }
@@ -86,7 +107,8 @@ extension ShowcaseItemListView {
     ShowcaseItemListView(
         viewModel: ShowcaseItemListViewModel(
             repository: ShowcaseRepository.mockRepository()
-        )
+        ),
+        selectedTab: .constant(.items)
     )
     .environment(AppRouter.preview)
     .environment(PreviewRenderer())

@@ -1,4 +1,5 @@
 //  Jonathan Ritchey
+import GentleDesignSystem
 import SmartAsyncImage
 import SwiftUI
 import Observation
@@ -12,6 +13,9 @@ final class PreviewRenderer {
     let deviceSize = CGSize(width: 420, height: 700) // 400, 700
     let cropInsets = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)
     private var cache: [String: Image] = [:]
+
+    /// Reference to the theme for injecting into preview snapshots
+    var theme: GentleTheme?
 
     private func imageWithRedBorder(_ image: UIImage, lineWidth: CGFloat = 2) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
@@ -29,6 +33,10 @@ final class PreviewRenderer {
             ctx.cgContext.setLineWidth(lineWidth)
             ctx.cgContext.stroke(rect)
         }
+    }
+    
+    func clearCache() {
+        cache.removeAll()
     }
     
     func snapshotInHiddenContainer<V: View>(
@@ -132,6 +140,20 @@ final class PreviewRenderer {
     
     @ViewBuilder
     private func preview(for template: ShowcaseTemplate, colorScheme: ColorScheme) -> some View {
+        let content = previewContent(for: template)
+            .colorScheme(colorScheme)
+
+        if let theme {
+            GentleThemeRoot(theme: theme) {
+                content
+            }
+        } else {
+            content
+        }
+    }
+
+    @ViewBuilder
+    private func previewContent(for template: ShowcaseTemplate) -> some View {
         switch template {
 
         case .signInFlow:
@@ -140,42 +162,41 @@ final class PreviewRenderer {
                     viewModel: SignInViewModel()
                 )
             }
-            .colorScheme(colorScheme)
 
         case .chartAndStats:
             NavigationStack {
                 ChartAndStatsTemplateView()
                     .navigationTitle("Charts")
                     .navigationBarTitleDisplayMode(.inline)
-            }.colorScheme(colorScheme)
+            }
 
         case .storefrontGrid:
             NavigationStack {
                 StorefrontGridTemplateView()
                     .navigationTitle("Storefront")
                     .navigationBarTitleDisplayMode(.inline)
-            }.colorScheme(colorScheme)
+            }
 
         case .onboardingPager:
             NavigationStack {
                 OnboardingPagerTemplateView()
                     .navigationTitle("Onboarding")
                     .navigationBarTitleDisplayMode(.inline)
-            }.colorScheme(colorScheme)
+            }
 
         case .medicalIntakeForm:
             NavigationStack {
                 MedicalIntakeFormTemplateView()
                     .navigationTitle("Intake")
                     .navigationBarTitleDisplayMode(.inline)
-            }.colorScheme(colorScheme)
+            }
 
         case .profileHeader:
             NavigationStack {
                 ProfileHeaderTemplateView()
                     .navigationTitle("Profile")
                     .navigationBarTitleDisplayMode(.inline)
-            }.colorScheme(colorScheme)
+            }
         }
     }
     
@@ -250,7 +271,7 @@ final class PreviewRenderer {
             cache[template.key(using: colorScheme)] = Image(uiImage: uiImage)
         }
     }
-    
+        
     private func activeWindowScene() -> UIWindowScene? {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
