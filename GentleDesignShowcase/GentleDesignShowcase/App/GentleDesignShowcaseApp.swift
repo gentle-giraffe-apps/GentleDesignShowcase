@@ -9,6 +9,7 @@ struct GentleDesignShowcaseApp: App {
     @State private var hasLaunched = false
     @State private var didAttemptSignIn = false   // add this
     @GentleDesignRuntime private var gentleDesign
+    @State private var themeManager = GentleThemeManager(store: GentleFileThemeSpecStore())
     
     // Toggle this to switch between mock and live data
     private let useMockData = true
@@ -24,10 +25,11 @@ struct GentleDesignShowcaseApp: App {
 
     var body: some Scene {
         WindowGroup {
-            GentleThemeRoot(theme: .default) {
+            GentleThemeRoot(theme: themeManager.theme) {
                 RootView()
                     .environment(router)
                     .environment(previewRenderer)
+                    .environment(\.gentleThemeManager, themeManager)
                     .task {
                         // Run once
                         guard !didAttemptSignIn else { return }

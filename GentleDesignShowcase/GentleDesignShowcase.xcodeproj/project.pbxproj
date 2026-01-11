@@ -36,6 +36,7 @@
 		8878F9C12F12F92A0010E3EF /* PreviewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9A22F12F92A0010E3EF /* PreviewRenderer.swift */; };
 		8878F9C22F12F92A0010E3EF /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9942F12F92A0010E3EF /* SignInView.swift */; };
 		8878F9C32F12F92A0010E3EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8878F9A52F12F92A0010E3EF /* Assets.xcassets */; };
+		88FC57022F13427800A61A5F /* DesignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FC57002F13427800A61A5F /* DesignView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		8878F9A22F12F92A0010E3EF /* PreviewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewRenderer.swift; sourceTree = "<group>"; };
 		8878F9A52F12F92A0010E3EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88E8DC972F12C11300639965 /* GentleDesignShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GentleDesignShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		88FC57002F13427800A61A5F /* DesignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,13 +173,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8878F9892F12F92A0010E3EF /* ShowcaseItems */ = {
+		8878F9892F12F92A0010E3EF /* Showcase */ = {
 			isa = PBXGroup;
 			children = (
 				8878F9842F12F92A0010E3EF /* ViewModels */,
 				8878F9882F12F92A0010E3EF /* Views */,
 			);
-			path = ShowcaseItems;
+			path = Showcase;
 			sourceTree = "<group>";
 		};
 		8878F98B2F12F92A0010E3EF /* ChartsAndStats */ = {
@@ -270,8 +272,9 @@
 		8878F99C2F12F92A0010E3EF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				88FC57012F13427800A61A5F /* Design */,
 				8878F9802F12F92A0010E3EF /* Shared */,
-				8878F9892F12F92A0010E3EF /* ShowcaseItems */,
+				8878F9892F12F92A0010E3EF /* Showcase */,
 				8878F99B2F12F92A0010E3EF /* ShowcaseTemplates */,
 			);
 			path = Features;
@@ -338,6 +341,14 @@
 				88E8DC972F12C11300639965 /* GentleDesignShowcase.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		88FC57012F13427800A61A5F /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				88FC57002F13427800A61A5F /* DesignView.swift */,
+			);
+			path = Design;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +437,7 @@
 				8878F9AE2F12F92A0010E3EF /* SessionManager.swift in Sources */,
 				8878F9AF2F12F92A0010E3EF /* ShowcaseItemListView.swift in Sources */,
 				8878F9B02F12F92A0010E3EF /* ShowcaseRepository.swift in Sources */,
+				88FC57022F13427800A61A5F /* DesignView.swift in Sources */,
 				8878F9B12F12F92A0010E3EF /* CurrencyFormatter.swift in Sources */,
 				8878F9B22F12F92A0010E3EF /* ShowcaseItemListViewModel.swift in Sources */,
 				8878F9B32F12F92A0010E3EF /* AppRoute.swift in Sources */,

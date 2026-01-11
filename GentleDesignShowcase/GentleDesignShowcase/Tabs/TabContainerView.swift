@@ -13,14 +13,14 @@ struct TabContainerView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            ItemsListTabRoot()
+            ShowcaseListTabRoot()
                 .tabItem {
                     Label("Showcase", systemImage: selectedTab == .items ? "photo.on.rectangle.fill" : "photo.on.rectangle")
                         .environment(\.symbolVariants, .none)
                 }
                 .tag(RootViewTab.items)
                 .background(GentleNavigationBarStyler())
-            Text("Design")
+            DesignTabRoot()
                 .tabItem {
                     Label("Design", systemImage: selectedTab == .design ? "paintbrush.pointed.fill" : "paintbrush.pointed")
                         .environment(\.symbolVariants, .none)
@@ -42,15 +42,29 @@ struct TabContainerView: View {
     }
 }
 
-struct ItemsListTabRoot: View {
+struct ShowcaseListTabRoot: View {
     @Environment(AppRouter.self) private var router
 
     var body: some View {
         @Bindable var router = router
-        NavigationStack(path: $router.itemsTabPath) {
+        NavigationStack(path: $router.showcaseTabPath) {
             ShowcaseItemListView(
                 viewModel: ShowcaseItemListViewModel(repository: router.showcaseRepository)
             )
+            .navigationDestination(for: AppRoute.self) { route in
+                router.build(route)
+            }
+        }
+    }
+}
+
+struct DesignTabRoot: View {
+    @Environment(AppRouter.self) private var router
+
+    var body: some View {
+        @Bindable var router = router
+        NavigationStack(path: $router.designTabPath) {
+            DesignView()
             .navigationDestination(for: AppRoute.self) { route in
                 router.build(route)
             }
