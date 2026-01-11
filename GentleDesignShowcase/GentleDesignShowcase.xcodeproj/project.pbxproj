@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88407E122F12C19D00963DC8 /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88407E112F12C19D00963DC8 /* GentleDesignSystem */; };
 		88407E152F12C1A700963DC8 /* SmartAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 88407E142F12C1A700963DC8 /* SmartAsyncImage */; };
 		8878F9A82F12F92A0010E3EF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9712F12F92A0010E3EF /* RootView.swift */; };
 		8878F9A92F12F92A0010E3EF /* SignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9792F12F92A0010E3EF /* SignInService.swift */; };
@@ -35,7 +36,6 @@
 		8878F9C12F12F92A0010E3EF /* PreviewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9A22F12F92A0010E3EF /* PreviewRenderer.swift */; };
 		8878F9C22F12F92A0010E3EF /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878F9942F12F92A0010E3EF /* SignInView.swift */; };
 		8878F9C32F12F92A0010E3EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8878F9A52F12F92A0010E3EF /* Assets.xcassets */; };
-		88B8004A2F1449EB00A5FE0A /* GentleDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 88B800492F1449EB00A5FE0A /* GentleDesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88B8004A2F1449EB00A5FE0A /* GentleDesignSystem in Frameworks */,
+				88407E122F12C19D00963DC8 /* GentleDesignSystem in Frameworks */,
 				88407E152F12C1A700963DC8 /* SmartAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,8 +357,8 @@
 			);
 			name = GentleDesignShowcase;
 			packageProductDependencies = (
+				88407E112F12C19D00963DC8 /* GentleDesignSystem */,
 				88407E142F12C1A700963DC8 /* SmartAsyncImage */,
-				88B800492F1449EB00A5FE0A /* GentleDesignSystem */,
 			);
 			productName = GentleDesignShowcase;
 			productReference = 88E8DC972F12C11300639965 /* GentleDesignShowcase.app */;
@@ -389,8 +389,8 @@
 			mainGroup = 88E8DC8E2F12C11200639965;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				88407E102F12C19D00963DC8 /* XCRemoteSwiftPackageReference "GentleDesignSystem" */,
 				88407E132F12C1A700963DC8 /* XCRemoteSwiftPackageReference "SmartAsyncImage" */,
-				88B800482F1449EB00A5FE0A /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 88E8DC982F12C11300639965 /* Products */;
@@ -662,14 +662,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		88B800482F1449EB00A5FE0A /* XCLocalSwiftPackageReference "../../GentleDesignSystem" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../GentleDesignSystem;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		88407E102F12C19D00963DC8 /* XCRemoteSwiftPackageReference "GentleDesignSystem" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gentle-giraffe-apps/GentleDesignSystem";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.1;
+			};
+		};
 		88407E132F12C1A700963DC8 /* XCRemoteSwiftPackageReference "SmartAsyncImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gentle-giraffe-apps/SmartAsyncImage";
@@ -681,14 +682,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		88407E112F12C19D00963DC8 /* GentleDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88407E102F12C19D00963DC8 /* XCRemoteSwiftPackageReference "GentleDesignSystem" */;
+			productName = GentleDesignSystem;
+		};
 		88407E142F12C1A700963DC8 /* SmartAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 88407E132F12C1A700963DC8 /* XCRemoteSwiftPackageReference "SmartAsyncImage" */;
 			productName = SmartAsyncImage;
-		};
-		88B800492F1449EB00A5FE0A /* GentleDesignSystem */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GentleDesignSystem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
