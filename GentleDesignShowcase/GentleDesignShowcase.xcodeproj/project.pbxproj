@@ -69,6 +69,14 @@
 		88E8DC972F12C11300639965 /* GentleDesignShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GentleDesignShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		88BE0BEE2F133CCF00ED01D3 /* Design */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Design;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		88E8DC942F12C11300639965 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -171,13 +179,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8878F9892F12F92A0010E3EF /* ShowcaseItems */ = {
+		8878F9892F12F92A0010E3EF /* Showcase */ = {
 			isa = PBXGroup;
 			children = (
 				8878F9842F12F92A0010E3EF /* ViewModels */,
 				8878F9882F12F92A0010E3EF /* Views */,
 			);
-			path = ShowcaseItems;
+			path = Showcase;
 			sourceTree = "<group>";
 		};
 		8878F98B2F12F92A0010E3EF /* ChartsAndStats */ = {
@@ -270,8 +278,9 @@
 		8878F99C2F12F92A0010E3EF /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				88BE0BEE2F133CCF00ED01D3 /* Design */,
 				8878F9802F12F92A0010E3EF /* Shared */,
-				8878F9892F12F92A0010E3EF /* ShowcaseItems */,
+				8878F9892F12F92A0010E3EF /* Showcase */,
 				8878F99B2F12F92A0010E3EF /* ShowcaseTemplates */,
 			);
 			path = Features;
@@ -354,6 +363,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				88BE0BEE2F133CCF00ED01D3 /* Design */,
 			);
 			name = GentleDesignShowcase;
 			packageProductDependencies = (

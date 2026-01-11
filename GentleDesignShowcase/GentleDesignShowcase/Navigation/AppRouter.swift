@@ -4,13 +4,11 @@ import SwiftUI
 @Observable
 class AppRouter {
     enum Tab {
-        case itemsTab, favoritesTab, settingsTab, profileTab
+        case showcaseTab, designTab
     }
     
-    var itemsTabPath = NavigationPath()
-    var favoritesTabPath = NavigationPath()
-    var settingsTabPath = NavigationPath()
-    var profileTabPath = NavigationPath()
+    var showcaseTabPath = NavigationPath()
+    var designTabPath = NavigationPath()
 
     let showcaseRepository: ShowcaseRepository
     
@@ -22,14 +20,10 @@ class AppRouter {
 
     func push(_ route: AppRoute, for tab: Tab) {
         switch tab {
-        case .itemsTab:
-            itemsTabPath.append(route)
-        case .favoritesTab:
-            favoritesTabPath.append(route)
-        case .settingsTab:
-            settingsTabPath.append(route)
-        case .profileTab:
-            profileTabPath.append(route)
+        case .showcaseTab:
+            showcaseTabPath.append(route)
+        case .designTab:
+            designTabPath.append(route)
         }
     }
     

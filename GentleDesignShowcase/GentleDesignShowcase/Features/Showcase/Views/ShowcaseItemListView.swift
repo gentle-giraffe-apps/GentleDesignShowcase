@@ -63,7 +63,7 @@ extension ShowcaseItemListView {
                 Color.clear.frame(width: shim)
                 ForEach(viewModel.filteredViewModels) { viewModel in
                     Button {
-                        router.push(viewModel.itemModel.route(), for: .itemsTab)
+                        router.push(viewModel.itemModel.route(), for: .showcaseTab)
                     } label: {
                         ShowcaseItemCellView(viewModel: viewModel)
                             .contentShape(
