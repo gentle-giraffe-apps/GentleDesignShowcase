@@ -8,7 +8,7 @@ class ShowcaseItemListViewModel {
     private(set) var isLoading = false
     private(set) var hasLoadedOnce = false
 
-    let title = "Showcase Items"
+    let title = "Showcase"
     private let repository: ShowcaseRepository
 
     var filteredViewModels: [ShowcaseItemCellViewModel] {
