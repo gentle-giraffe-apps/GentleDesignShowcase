@@ -61,7 +61,6 @@ struct SignInView: View {
                 Button("Sign In", action: signIn)
                     .gentleButton(.primary, shape: .pill)
                     .disabled(isButtonDisabled)
-                    .opacity(isButtonDisabled ? 0.4 : 1.0)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .gentleInset(.screen)
