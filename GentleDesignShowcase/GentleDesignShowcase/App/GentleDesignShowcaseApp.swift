@@ -7,7 +7,6 @@ struct GentleDesignShowcaseApp: App {
     @State private var previewRenderer: PreviewRenderer
     @Environment(\.scenePhase) private var scenePhase
     @State private var hasLaunched = false
-    @State private var didAttemptSignIn = false   // add this
     @GentleDesignRuntime private var gentleDesign
     @State private var themeManager = GentleThemeManager(store: GentleFileThemeSpecStore())
     
@@ -31,10 +30,11 @@ struct GentleDesignShowcaseApp: App {
                     .environment(previewRenderer)
                     .environment(\.gentleThemeManager, themeManager)
                     .task {
-                        // Run once
-                        guard !didAttemptSignIn else { return }
-                        didAttemptSignIn = true
-                        // MARK: - Sign in placeholder
+                        do {
+                            try themeManager.load()
+                        } catch {
+                            print("themeManager.load() \(error)")
+                        }
                     }
             }
         }
