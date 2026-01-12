@@ -78,10 +78,8 @@ extension ShowcaseItemListView {
         let rows = [
             GridItem(.fixed(previewCardSize.height))
         ]
-        let shim: CGFloat = 4
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHGrid(rows: rows, spacing: 16) {
-                Color.clear.frame(width: shim)
                 ForEach(viewModel.filteredViewModels) { viewModel in
                     Button {
                         router.push(viewModel.itemModel.route(), for: .showcaseTab)
@@ -92,10 +90,13 @@ extension ShowcaseItemListView {
                             ) // makes entire card tappable
                     }
                     .buttonStyle(.plain)
+                    .id(viewModel.id) // ✅ snap target id
                 }
-                Color.clear.frame(width: shim)
             }
+            .scrollTargetLayout() // ✅ declare children as snap targets
         }
+        .safeAreaPadding(.horizontal, 16)
+        .scrollTargetBehavior(.viewAligned) // ✅ snapping
         .frame(
             height: previewCardSize.height
         )
