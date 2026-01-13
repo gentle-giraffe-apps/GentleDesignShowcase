@@ -49,6 +49,22 @@ GentleDesignShowcase serves as a living preview of the GentleDesignSystem in act
 - Xcode 26.0+
 - Swift 6.0+
 
+## Getting Started
+
+```bash
+# Install mise (if not already installed)
+curl https://mise.run | sh
+
+# Navigate to the project directory
+cd GentleDesignShowcase
+
+# Install Tuist (mise will use the version from mise.toml)
+mise install
+
+# Generate the Xcode project
+tuist generate
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

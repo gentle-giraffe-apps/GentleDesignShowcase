@@ -17,12 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install mise
+        uses: jdx/mise-action@v2
+
+      - name: Generate Xcode project
+        run: tuist generate --no-open
+
       - name: Set up Ruby (Bundler)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
           bundler-cache: true
-          working-directory: GentleDesignShowcase 
+          working-directory: GentleDesignShowcase
 
       - name: Build (Fastlane)
         run: bundle exec fastlane ios build_simulator
