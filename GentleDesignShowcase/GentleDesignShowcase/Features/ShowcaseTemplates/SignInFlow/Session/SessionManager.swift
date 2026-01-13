@@ -2,7 +2,7 @@
 
 import Observation
 
-protocol SessionManagerAuthServiceProtocol {
+protocol SessionManagerAuthServiceProtocol: Sendable {
     func loadAccessToken() async throws -> String?
     func deleteAccessToken() async throws
 }

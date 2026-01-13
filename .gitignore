@@ -67,3 +67,34 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Tuist -----
+
+# Tuist generated projects
+**/*.xcodeproj
+**/*.xcworkspace
+
+# Xcode user data
+**/*.xcuserdata
+**/*.xcuserstate
+
+# Derived data & build artifacts
+DerivedData/
+build/
+*.moved-aside
+*.xcuserdatad
+
+# Tuist cache
+.tuist-cache/
+.tuist-bin/
+
+### Projects ###
+*.xcodeproj
+*.xcworkspace
+
+### Tuist derived files ###
+graph.dot
+Derived/
+
+### Tuist managed dependencies ###
+Tuist/.build%

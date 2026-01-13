@@ -1,0 +1,24 @@
+{
+  "originHash" : "d1420e88bd84f0cf11248789abbc16b49fb9d3479e64efdd166aefca5f3c2b05",
+  "pins" : [
+    {
+      "identity" : "gentledesignsystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gentle-giraffe-apps/GentleDesignSystem",
+      "state" : {
+        "revision" : "7643370efbdecf09985944a1c26dbae98ff7aba7",
+        "version" : "0.1.3"
+      }
+    },
+    {
+      "identity" : "smartasyncimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gentle-giraffe-apps/SmartAsyncImage",
+      "state" : {
+        "revision" : "fd0e3430ca3e7868ead9cd68d7eee1f5b0d65b10",
+        "version" : "0.1.1"
+      }
+    }
+  ],
+  "version" : 3
+}

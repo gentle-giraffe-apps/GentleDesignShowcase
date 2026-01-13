@@ -2,6 +2,7 @@
 import Observation
 import SwiftUI
 
+@MainActor
 @Observable
 final class SignInViewModel {
     let title = "Login"

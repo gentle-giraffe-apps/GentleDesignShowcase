@@ -1,7 +1,7 @@
 //  Jonathan Ritchey
 import Foundation
 
-protocol ShowcaseItemsServiceProtocol {
+protocol ShowcaseItemsServiceProtocol: Sendable {
     func fetchShowcaseItems() async throws -> [ShowcaseItem]
 }
 
