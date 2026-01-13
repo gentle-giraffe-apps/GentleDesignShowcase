@@ -1,7 +1,7 @@
 //  Jonathan Ritchey
 import Foundation
 
-protocol SignInServiceProtocol {
+protocol SignInServiceProtocol: Sendable {
     mutating func signIn(username: String, password: String) async throws
 }
 

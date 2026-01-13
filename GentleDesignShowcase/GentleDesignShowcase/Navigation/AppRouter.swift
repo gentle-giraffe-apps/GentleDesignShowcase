@@ -1,6 +1,7 @@
 // Jonathan Ritchey
 import SwiftUI
 
+@MainActor
 @Observable
 class AppRouter {
     enum Tab {
