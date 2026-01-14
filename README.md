@@ -9,6 +9,8 @@
 
 A showcase app demonstrating the **GentleDesignSystem** applied to common screens and flows. Browse through curated UI templates and see how the design system brings consistency and polish to typical iOS app patterns.
 
+💬 **[Join the discussion. Feedback and questions welcome](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/discussions)**
+
 ## Demo
 
 ![GentleDesignShowcase Screenshot](GentleDesignShowcase/documentation/videos/readme_animation_preview.gif)
