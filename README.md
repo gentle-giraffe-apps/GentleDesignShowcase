@@ -71,3 +71,6 @@ tuist generate
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=gentle-giraffe-apps.GentleDesignShowcase)
+
