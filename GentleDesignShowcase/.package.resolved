@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gentle-giraffe-apps/GentleDesignSystem",
       "state" : {
-        "revision" : "7643370efbdecf09985944a1c26dbae98ff7aba7",
-        "version" : "0.1.3"
+        "revision" : "d0d024eded6f8e1a5adbd4c5e9bfe118f0ef03db",
+        "version" : "0.1.4"
       }
     },
     {
