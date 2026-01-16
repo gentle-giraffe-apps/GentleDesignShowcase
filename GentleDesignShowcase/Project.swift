@@ -4,7 +4,7 @@ let project = Project(
     name: "GentleDesignShowcase",
     packages: [
         .remote(url: "https://github.com/gentle-giraffe-apps/SmartAsyncImage", requirement: .exact("0.1.1")),
-        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.3")),
+        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.4")),
     ],
     settings: .settings(
         base: [
