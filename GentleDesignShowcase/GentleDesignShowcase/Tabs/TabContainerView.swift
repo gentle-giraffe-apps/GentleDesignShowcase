@@ -66,7 +66,7 @@ struct DesignTabRoot: View {
     var body: some View {
         @Bindable var router = router
         NavigationStack(path: $router.designTabPath) {
-            GentleDesignFoundationView()
+            GentleDesignStudioView()
             .navigationDestination(for: AppRoute.self) { route in
                 router.build(route)
             }
