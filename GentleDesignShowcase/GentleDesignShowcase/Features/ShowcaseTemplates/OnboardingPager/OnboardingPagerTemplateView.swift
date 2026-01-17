@@ -31,17 +31,19 @@ struct OnboardingPagerTemplateView: View {
                 .tag(2)
             }
             .tabViewStyle(.page)
-            .frame(height: 480)
+            .frame(height: 520)
 
-            Spacer(minLength: 16)
-
+            Color.clear.frame(height: design.layout.stack.regular)
+                        
             Button(page == 2 ? "Get Started" : "Continue") {
-                page = min(page + 1, 2)
+                withAnimation(.easeInOut(duration: 0.35)) {
+                    page = min(page + 1, 2)
+                }
             }
             .gentleButton(.primary)
             .padding(.horizontal)
-
-            Spacer(minLength: 24)
+            
+            Color.clear.frame(height: 100)
         }
         .navigationTitle("Onboarding")
         .onAppear {
@@ -52,6 +54,8 @@ struct OnboardingPagerTemplateView: View {
 }
 
 private struct OnboardPage: View {
+    @GentleDesignRuntime var design
+    
     let imageAssetName: String
     let title: String
     let description: String
@@ -67,8 +71,9 @@ private struct OnboardPage: View {
             Text(description)
                 .gentleText(.bodySecondary_m)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                .padding(.horizontal, design.layout.stack.expansive * 2)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .gentleInset(.screen)
     }
 }
