@@ -4,7 +4,7 @@ let project = Project(
     name: "GentleDesignShowcase",
     packages: [
         .remote(url: "https://github.com/gentle-giraffe-apps/SmartAsyncImage", requirement: .exact("0.1.1")),
-        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.4")),
+        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.5")),
     ],
     settings: .settings(
         base: [
@@ -40,17 +40,6 @@ let project = Project(
                 .package(product: "SmartAsyncImage"),
                 .package(product: "GentleDesignSystem"),
             ]
-        ),
-        .target(
-            name: "GentleDesignShowcaseTests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "dev.tuist.GentleDesignShowcaseTests",
-            infoPlist: .default,
-            buildableFolders: [
-                "GentleDesignShowcase/Tests"
-            ],
-            dependencies: [.target(name: "GentleDesignShowcase")]
-        ),
+        )
     ]
 )
