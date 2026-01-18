@@ -38,7 +38,7 @@ struct SignInView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 12) {
                             Image(systemName: "person")
-                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.secondary)
                             TextField("Enter username", text: $viewModel.username)
                         }
@@ -61,7 +61,7 @@ struct SignInView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 12) {
                             Image(systemName: "lock")
-                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.secondary)
                             ZStack {
                                 TextField("Enter password", text: $viewModel.password)
@@ -73,7 +73,7 @@ struct SignInView: View {
                                 isPasswordVisible.toggle()
                             } label: {
                                 Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                                    .fontWeight(.semibold)
+                                    .fontWeight(.bold)
                                     .foregroundStyle(.secondary)
                             }
                             .buttonStyle(.plain)
