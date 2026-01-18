@@ -16,10 +16,10 @@ struct ChartAndStatsTemplateView: View {
     ]
 
     private let colorForCategory: KeyValuePairs<String, Color> = [
-        "Salads":     Color.green.opacity(0.65),
-        "Sandwiches": Color.green.opacity(0.45),
-        "Ribs":       Color.green.opacity(0.28),
-        "Soups":      Color.green.opacity(0.12)
+        "Salads":     Color.green.opacity(0.7),
+        "Sandwiches": Color.orange.opacity(0.7),
+        "Ribs":       Color.red.opacity(0.7),
+        "Soups":      Color.blue.opacity(0.7)
     ]
 
     private let days: [NutritionDay] = [
@@ -146,7 +146,8 @@ struct ChartAndStatsTemplateView: View {
 
                         AreaMark(
                             x: .value("Week", point.week),
-                            y: .value("Calories", point.calories)
+                            yStart: .value("Baseline", 10000),
+                            yEnd: .value("Calories", point.calories)
                         )
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(
@@ -196,9 +197,9 @@ struct ChartAndStatsTemplateView: View {
                             .cornerRadius(4)
                         }
                         .chartForegroundStyleScale([
-                            Macro.carbs.rawValue: Color.orange.opacity(0.8),
-                            Macro.protein.rawValue: Color.orange.opacity(0.5),
-                            Macro.fat.rawValue: Color.orange.opacity(0.25)
+                            Macro.carbs.rawValue: Color.yellow.opacity(0.75),
+                            Macro.protein.rawValue: Color.red.opacity(0.7),
+                            Macro.fat.rawValue: Color.purple.opacity(0.65)
                         ])
                         .chartLegend(.hidden)
                         .chartXAxis {
@@ -303,9 +304,9 @@ struct ChartAndStatsTemplateView: View {
 
     private func colorForMacro(_ macro: Macro) -> Color {
         switch macro {
-        case .carbs:   return Color.orange.opacity(0.8)
-        case .protein: return Color.orange.opacity(0.5)
-        case .fat:     return Color.orange.opacity(0.25)
+        case .carbs:   return Color.yellow.opacity(0.75)
+        case .protein: return Color.red.opacity(0.7)
+        case .fat:     return Color.purple.opacity(0.65)
         }
     }
 }
