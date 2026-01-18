@@ -1,4 +1,4 @@
-//  Jonathan Ritchey
+//  Jonathan Ritchey
 import GentleDesignSystem
 import SwiftUI
 
@@ -9,34 +9,70 @@ struct MedicalIntakeFormTemplateView: View {
     @State private var hasAllergies = false
     @State private var notes = ""
     @State private var showSubmitted = false
+    @GentleDesignRuntime private var gentleDesign
 
     var body: some View {
-        Form {
-            Section("Patient") {
-                TextField("Full name", text: $fullName)
-                    .gentleTextField(.body_m)
-                TextField("Email", text: $email)
-                    .gentleTextField(.body_m)
-                    .textInputAutocapitalization(.never)
-                DatePicker("Birth date", selection: $birthDate, displayedComponents: .date)
-            }
+        ZStack {
+            // Decorative background gradient
+            diagonalGradient()
 
-            Section("Health") {
-                Toggle("Any allergies?", isOn: $hasAllergies)
-                TextField("Notes", text: $notes, axis: .vertical)
-                    .gentleTextField(.body_m)
-                    .lineLimit(3...6)
-            }
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Patient Section
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Patient")
+                            .gentleText(.headline_m)
 
-            Section {
-                Button("Submit") { showSubmitted = true }
-                    .gentleButton(.primary)
+                        TextField("Full name", text: $fullName)
+                            .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
+
+                        TextField("Email", text: $email)
+                            .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+
+                        DatePicker("Birth date", selection: $birthDate, displayedComponents: .date)
+                    }
+
+                    Divider()
+                        .opacity(0.25)
+
+                    // Health Section
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Health")
+                            .gentleText(.headline_m)
+
+                        Toggle("Any allergies?", isOn: $hasAllergies)
+
+                        TextField("Notes", text: $notes, prompt: Text("Additional health information"), axis: .vertical)
+                            .gentleTextField(.body_m, chrome: .standalone(shape: .rounded))
+                            .lineLimit(3...6)
+                    }
+
+                    Divider()
+                        .opacity(0.25)
+
+                    // Submit Button
+                    Button("Submit") { showSubmitted = true }
+                        .gentleButton(.primary, shape: .pill)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .gentleInset(.screen)
             }
         }
+        .gentleSurface(.appBackground)
         .navigationTitle("Medical Intake")
         .alert("Submitted", isPresented: $showSubmitted) {
             Button("OK", role: .cancel) {}
-                .gentleButton(.secondary)
         }
+    }
+
+    private func diagonalGradient() -> some View {
+        LinearGradient(
+            colors: [gentleDesign.themePrimary.opacity(0.1), Color.clear],
+            startPoint: .topLeading,
+            endPoint: .center
+        )
+        .ignoresSafeArea()
     }
 }
