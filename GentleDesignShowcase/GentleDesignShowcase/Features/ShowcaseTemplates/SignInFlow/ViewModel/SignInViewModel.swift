@@ -11,8 +11,34 @@ final class SignInViewModel {
     let backgroundImageName: String
     var username = ""
     var password = ""
+    var usernameHasBeenEdited = false
+    var passwordHasBeenEdited = false
     var service: SignInServiceProtocol
-    
+
+    var usernameError: String? {
+        guard usernameHasBeenEdited else { return nil }
+        if username.isEmpty {
+            return "Username is required"
+        } else if username.count < 4 {
+            return "Username must be at least 4 characters"
+        }
+        return nil
+    }
+
+    var passwordError: String? {
+        guard passwordHasBeenEdited else { return nil }
+        if password.isEmpty {
+            return "Password is required"
+        } else if password.count < 7 {
+            return "Password must be at least 7 characters"
+        }
+        return nil
+    }
+
+    var isSignInDisabled: Bool {
+        username.count < 4 || password.count < 7
+    }
+
     init(
         service: SignInServiceProtocol = MockSignInService(),
         backgroundImageName: String = "",
@@ -20,23 +46,6 @@ final class SignInViewModel {
         password: String = ""
     ) {
         self.service = service
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "HH" // 24 hours
-//        if let hour = Int(formatter.string(from: date)) {
-//            if hour > 3 && hour < 12 {
-//                greeting = "Good Morning"
-//                backgroundImageName = "SignInBackgroundMorning"
-//            } else if hour >= 12 && hour < 18 {
-//                greeting = "Good Afternoon"
-//                backgroundImageName = "SignInBackgroundNoon"
-//            } else {
-//                greeting = "Good Evening"
-//                backgroundImageName = "SignInBackgroundEvening"
-//            }
-//        } else {
-//            greeting = "Welcome"
-//            backgroundImageName = "SignInBackgroundMorning"
-//        }
         self.backgroundImageName = ""
         self.username = username
         self.password = password
