@@ -36,22 +36,31 @@ struct StorefrontGridTemplateView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 4) {
+        VStack(spacing: 0) {
+            // Pinned header
+            VStack(spacing: 8) {
                 searchBar
-
-                Color.clear.frame(height: 8)
-                
                 categoryChips
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+            .background {
+                Rectangle()
+                    .fill(.background)
+                    .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+            }
 
+            // Scrollable grid
+            ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(filteredItems) { item in
                         productCard(for: item)
                     }
                 }
                 .gentleInset(.card)
+                .padding()
             }
-            .padding()
         }
         .gentleBackground(.background)
         .navigationTitle("Storefront")
