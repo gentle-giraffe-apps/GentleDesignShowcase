@@ -3,7 +3,7 @@ import GentleDesignSystem
 import SwiftUI
 import Charts
 
-struct ChartAndStatsTemplateView: View {
+struct ChartsTemplateView: View {
     @GentleDesignRuntime private var design
 
     // MARK: - Data
@@ -16,10 +16,10 @@ struct ChartAndStatsTemplateView: View {
     ]
 
     private let colorForCategory: KeyValuePairs<String, Color> = [
-        "Salads":     Color.green.opacity(0.65),
-        "Sandwiches": Color.green.opacity(0.45),
-        "Ribs":       Color.green.opacity(0.28),
-        "Soups":      Color.green.opacity(0.12)
+        "Salads":     Color.green.opacity(0.7),
+        "Sandwiches": Color.orange.opacity(0.7),
+        "Ribs":       Color.red.opacity(0.7),
+        "Soups":      Color.blue.opacity(0.7)
     ]
 
     private let days: [NutritionDay] = [
@@ -33,10 +33,10 @@ struct ChartAndStatsTemplateView: View {
     ]
 
     private let weeklyTrend: [TrendPoint] = [
-        .init(week: "W1", calories: 12400),
-        .init(week: "W2", calories: 13200),
-        .init(week: "W3", calories: 11800),
-        .init(week: "W4", calories: 14100),
+        .init(week: "Week 1", calories: 12400),
+        .init(week: "Week 2", calories: 13200),
+        .init(week: "Week 3", calories: 11800),
+        .init(week: "Week 4", calories: 14100),
     ]
 
     private var macroRows: [MacroKcalRow] {
@@ -54,33 +54,12 @@ struct ChartAndStatsTemplateView: View {
         return Int(total / Double(days.count))
     }
 
-    private var totalWeeklyCalories: Int {
-        Int(days.reduce(0) { $0 + $1.kcalCarbs + $1.kcalProtein + $1.kcalFat })
-    }
-
     var body: some View {
         ScrollView {
-            VStack(spacing: design.layout.stack.loose) {
-
-                // MARK: - Hero Stats
-                HStack(spacing: design.layout.stack.regular) {
-                    statCard(
-                        value: "\(totalWeeklyCalories.formatted())",
-                        label: "Weekly Total",
-                        trend: "+12%",
-                        trendUp: true
-                    )
-
-                    statCard(
-                        value: "\(totalDailyAverage.formatted())",
-                        label: "Daily Average",
-                        trend: "-3%",
-                        trendUp: false
-                    )
-                }
+            VStack(spacing: 8) {
 
                 // MARK: - Donut Chart Card
-                card(title: "Calorie Breakdown", subtitle: "By food category") {
+                card(title: "Calorie Breakdown") {
                     HStack(spacing: design.layout.stack.loose) {
 
                         // Donut with center label
@@ -96,45 +75,47 @@ struct ChartAndStatsTemplateView: View {
                             }
                             .chartForegroundStyleScale(colorForCategory)
                             .chartLegend(.hidden)
-                            .frame(width: 140, height: 140)
+                            .frame(width: 120, height: 120)
 
                             // Center label
-                            VStack(spacing: 2) {
-                                Text("100%")
-                                    .gentleText(.title_xl)
-                                Text("Total")
-                                    .gentleText(.bodySecondary_m)
+                            VStack(spacing: 1) {
+                                Text("\(totalDailyAverage)")
+                                    .gentleText(.title3_ml)
+                                    .monospacedDigit()
+                                Text("cal/day")
+                                    .gentleText(.footnote_s)
                             }
                         }
 
                         Spacer(minLength: 0)
 
                         // Legend
-                        VStack(alignment: .leading, spacing: 14) {
+                        VStack(alignment: .leading, spacing: 10) {
                             ForEach(categories) { item in
-                                HStack(spacing: 10) {
-                                    RoundedRectangle(cornerRadius: 4)
+                                HStack(spacing: 8) {
+                                    RoundedRectangle(cornerRadius: 3)
                                         .fill(colorForCategory.color(for: item.name) ?? .clear)
-                                        .frame(width: 16, height: 16)
+                                        .frame(width: 14, height: 14)
 
                                     Text(item.name)
-                                        .gentleText(.callout_ms)
+                                        .gentleText(.subheadline_ms)
                                         .lineLimit(1)
 
                                     Spacer()
 
                                     Text("\(Int(item.percent))%")
-                                        .gentleText(.bodySecondary_m)
+                                        .gentleText(.footnote_s)
                                         .monospacedDigit()
                                 }
                             }
                         }
-                        .frame(maxWidth: 180)
+                        .frame(maxWidth: 160)
                     }
+                    .gentleInset(.horizontal, .screen)
                 }
 
                 // MARK: - Weekly Trend Card
-                card(title: "Monthly Trend", subtitle: "Last 4 weeks") {
+                card(title: "Monthly Trend") {
                     Chart(weeklyTrend) { point in
                         LineMark(
                             x: .value("Week", point.week),
@@ -146,7 +127,8 @@ struct ChartAndStatsTemplateView: View {
 
                         AreaMark(
                             x: .value("Week", point.week),
-                            y: .value("Calories", point.calories)
+                            yStart: .value("Baseline", 10000),
+                            yEnd: .value("Calories", point.calories)
                         )
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(
@@ -168,24 +150,27 @@ struct ChartAndStatsTemplateView: View {
                     .chartXAxis {
                         AxisMarks { value in
                             AxisValueLabel()
-                                .foregroundStyle(.secondary)
+                                .font(.system(.caption, weight: .semibold))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                         }
                     }
                     .chartYAxis {
                         AxisMarks(position: .leading) { value in
                             AxisGridLine()
-                                .foregroundStyle(Color.gray.opacity(0.2))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                             AxisValueLabel()
-                                .foregroundStyle(.secondary)
+                                .font(.system(.caption, weight: .semibold))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                         }
                     }
-                    .frame(height: 160)
+                    .frame(height: 112)
                     .clipped()
+                    .gentleInset(.horizontal, .screen)
                 }
 
                 // MARK: - Stacked Bar Card
-                card(title: "Daily Nutrition", subtitle: "This week's macros") {
-                    VStack(spacing: design.layout.stack.regular) {
+                card(title: "Daily Nutrition") {
+                    VStack(spacing: design.layout.stack.tight) {
 
                         Chart(macroRows) { row in
                             BarMark(
@@ -196,34 +181,37 @@ struct ChartAndStatsTemplateView: View {
                             .cornerRadius(4)
                         }
                         .chartForegroundStyleScale([
-                            Macro.carbs.rawValue: Color.orange.opacity(0.8),
-                            Macro.protein.rawValue: Color.orange.opacity(0.5),
-                            Macro.fat.rawValue: Color.orange.opacity(0.25)
+                            Macro.carbs.rawValue: Color.yellow.opacity(0.75),
+                            Macro.protein.rawValue: Color.blue.opacity(0.7),
+                            Macro.fat.rawValue: Color.green.opacity(0.65)
                         ])
                         .chartLegend(.hidden)
                         .chartXAxis {
                             AxisMarks { value in
                                 AxisValueLabel()
-                                    .foregroundStyle(.secondary)
+                                    .font(.system(.caption, weight: .semibold))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                             }
                         }
                         .chartYAxis {
                             AxisMarks(position: .leading) { value in
                                 AxisGridLine()
-                                    .foregroundStyle(Color.gray.opacity(0.2))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                                 AxisValueLabel()
-                                    .foregroundStyle(.secondary)
+                                    .font(.system(.caption, weight: .semibold))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                             }
                         }
-                        .frame(height: 180)
+                        .frame(height: 128)
 
                         // Legend
-                        HStack(spacing: design.layout.stack.loose) {
+                        HStack(spacing: design.layout.stack.regular) {
                             ForEach(Macro.allCases) { macro in
                                 macroLegendItem(macro)
                             }
                         }
                     }
+                    .gentleInset(.horizontal, .screen)
                 }
             }
             .padding(design.layout.stack.regular)
@@ -233,69 +221,38 @@ struct ChartAndStatsTemplateView: View {
 
     // MARK: - Components
 
-    private func statCard(value: String, label: String, trend: String, trendUp: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(value)
-                    .gentleText(.title_xl)
-                    .monospacedDigit()
-
-                Text("cal")
-                    .gentleText(.bodySecondary_m)
-            }
-
-            HStack(spacing: 4) {
-                Text(label)
-                    .gentleText(.bodySecondary_m)
-
-                Spacer()
-
-                HStack(spacing: 2) {
-                    Image(systemName: trendUp ? "arrow.up.right" : "arrow.down.right")
-                        .font(.system(size: 10, weight: .bold))
-                    Text(trend)
-                        .gentleText(.callout_ms)
-                }
-                .foregroundStyle(trendUp ? .green : .orange)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .gentleInset(.card)
-    }
-
     private func card<Content: View>(
         title: String,
         subtitle: String? = nil,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        VStack(alignment: .leading, spacing: design.layout.stack.regular) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: design.layout.stack.tight) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .gentleText(.title_xl)
+                    .opacity(0.7)
 
                 if let subtitle {
                     Text(subtitle)
-                        .gentleText(.bodySecondary_m)
+                        .gentleText(.footnote_s)
                 }
             }
-            .padding(.top, 4)
 
             Divider()
                 .opacity(0.25)
 
             content()
-                .padding(.vertical, 4)
         }
         .gentleInset(.card)
     }
 
     private func macroLegendItem(_ macro: Macro) -> some View {
-        HStack(spacing: 8) {
-            RoundedRectangle(cornerRadius: 4)
+        HStack(spacing: 6) {
+            RoundedRectangle(cornerRadius: 3)
                 .fill(colorForMacro(macro))
-                .frame(width: 16, height: 16)
+                .frame(width: 12, height: 12)
             Text(macro.rawValue)
-                .gentleText(.callout_ms)
+                .gentleText(.footnote_s)
         }
     }
 
@@ -303,16 +260,16 @@ struct ChartAndStatsTemplateView: View {
 
     private func colorForMacro(_ macro: Macro) -> Color {
         switch macro {
-        case .carbs:   return Color.orange.opacity(0.8)
-        case .protein: return Color.orange.opacity(0.5)
-        case .fat:     return Color.orange.opacity(0.25)
+        case .carbs:   return Color.yellow.opacity(0.75)
+        case .protein: return Color.blue.opacity(0.7)
+        case .fat:     return Color.green.opacity(0.65)
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        ChartAndStatsTemplateView()
+        ChartsTemplateView()
     }
 }
 

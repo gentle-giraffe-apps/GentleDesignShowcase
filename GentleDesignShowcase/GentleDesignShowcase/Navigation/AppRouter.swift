@@ -32,7 +32,7 @@ class AppRouter {
     func build(_ route: AppRoute) -> some View {
         switch route {
         case .showcaseChartsAndStats(_):
-            ChartAndStatsTemplateView()
+            ChartsTemplateView()
         case .showcaseSignInFlow(_):
             SignInView()
         case .showcaseMedicalIntakeForm(_):

@@ -165,7 +165,7 @@ final class PreviewRenderer {
 
         case .chartAndStats:
             NavigationStack {
-                ChartAndStatsTemplateView()
+                ChartsTemplateView()
                     .navigationTitle("Charts")
                     .navigationBarTitleDisplayMode(.inline)
             }
