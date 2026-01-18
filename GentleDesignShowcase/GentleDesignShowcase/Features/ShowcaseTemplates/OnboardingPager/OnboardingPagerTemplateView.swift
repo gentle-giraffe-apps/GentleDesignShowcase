@@ -2,53 +2,90 @@
 import GentleDesignSystem
 import SwiftUI
 
+import GentleDesignSystem
+import SwiftUI
+
 struct OnboardingPagerTemplateView: View {
-    @State private var page = 0
+    enum Page: Int, CaseIterable, Hashable, Identifiable {
+        case welcome, track, ready
+        var id: Int { rawValue }
+    }
+
+    struct Item: Identifiable {
+        let id: Page
+        let image: String
+        let title: String
+        let description: String
+    }
+
+    private let items: [Item] = [
+        .init(id: .welcome, image: "OnboardingPageWelcome",
+              title: "Welcome",
+              description: "We’re happy you’re here. Let’s get everything ready so you can start with confidence."),
+        .init(id: .track, image: "OnboardingPageTrack",
+              title: "Track progress",
+              description: "See how you’re doing over time. Small steps add up, and we’ll help you keep track."),
+        .init(id: .ready, image: "OnboardingPageReady",
+              title: "Ready to go",
+              description: "All set! Start exploring and take things one step at a time.")
+    ]
+
+    @State private var page: Page? = .welcome
     @GentleDesignRuntime var design
-        
+
     var body: some View {
         VStack {
-            TabView(selection: $page) {
-                OnboardPage(
-                    imageAssetName: "OnboardingPage1",
-                    title: "Welcome",
-                    description: "We’re happy you’re here. Let’s get everything ready so you can start with confidence."
-                )
-                .tag(0)
-
-                OnboardPage(
-                    imageAssetName: "OnboardingPage2",
-                    title: "Track progress",
-                    description: "See how you’re doing over time. Small steps add up, and we’ll help you keep track."
-                )
-                .tag(1)
-
-                OnboardPage(
-                    imageAssetName: "OnboardingPage3",
-                    title: "Ready to go",
-                    description: "All set! Start exploring and take things one step at a time."
-                )
-                .tag(2)
+            
+            Spacer(minLength: 120)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 0) {
+                    ForEach(items) { item in
+                        OnboardPage(
+                            imageAssetName: item.image,
+                            title: item.title,
+                            description: item.description
+                        )
+                        .containerRelativeFrame(.horizontal)
+                    }
+                }
+                .scrollTargetLayout()
             }
-            .tabViewStyle(.page)
-            .frame(height: 520)
+            .scrollTargetBehavior(.paging)
+            .scrollPosition(id: $page)
+            .frame(height: 500)
 
             Color.clear.frame(height: design.layout.stack.regular)
-                        
-            Button(page == 2 ? "Get Started" : "Continue") {
-                withAnimation(.easeInOut(duration: 0.35)) {
-                    page = min(page + 1, 2)
+
+            HStack(spacing: 8) {
+                ForEach(Page.allCases) { p in
+                    Circle()
+                        .fill(design.color(.themePrimary).opacity(p == page ? 1 : 0.3))
+                        .frame(width: 8, height: 8)
+                }
+            }
+
+            Color.clear.frame(height: design.layout.stack.regular)
+
+            Button(page == .ready ? "Get Started" : "Continue") {
+                guard let currentPage = page else { return }
+                withAnimation {
+                    page = nextPage(after: currentPage)
                 }
             }
             .gentleButton(.primary)
             .padding(.horizontal)
-            
-            Color.clear.frame(height: 100)
+
+            Color.clear.frame(height: 180)
         }
         .navigationTitle("Onboarding")
-        .onAppear {
-            UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(design.color(.themePrimary))
-            UIPageControl.appearance().pageIndicatorTintColor = UIColor(design.color(.themePrimary).opacity(0.3))
+    }
+
+    private func nextPage(after p: Page) -> Page {
+        switch p {
+        case .welcome: return .track
+        case .track: return .ready
+        case .ready: return .ready
         }
     }
 }
