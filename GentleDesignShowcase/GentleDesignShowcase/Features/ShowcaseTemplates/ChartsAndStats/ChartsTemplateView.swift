@@ -3,7 +3,7 @@ import GentleDesignSystem
 import SwiftUI
 import Charts
 
-struct ChartAndStatsTemplateView: View {
+struct ChartsTemplateView: View {
     @GentleDesignRuntime private var design
 
     // MARK: - Data
@@ -150,14 +150,16 @@ struct ChartAndStatsTemplateView: View {
                         AxisMarks { value in
                             AxisValueLabel()
                                 .font(.system(.caption, weight: .semibold))
+                                .foregroundStyle(design.color(.textPrimary))
                         }
                     }
                     .chartYAxis {
                         AxisMarks(position: .leading) { value in
                             AxisGridLine()
-                                .foregroundStyle(Color.gray.opacity(0.2))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                             AxisValueLabel()
                                 .font(.system(.caption, weight: .semibold))
+                                .foregroundStyle(design.color(.textPrimary))
                         }
                     }
                     .frame(height: 112)
@@ -186,14 +188,16 @@ struct ChartAndStatsTemplateView: View {
                             AxisMarks { value in
                                 AxisValueLabel()
                                     .font(.system(.caption, weight: .semibold))
+                                    .foregroundStyle(design.color(.textPrimary))
                             }
                         }
                         .chartYAxis {
                             AxisMarks(position: .leading) { value in
                                 AxisGridLine()
-                                    .foregroundStyle(Color.gray.opacity(0.2))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                                 AxisValueLabel()
                                     .font(.system(.caption, weight: .semibold))
+                                    .foregroundStyle(design.color(.textPrimary))
                             }
                         }
                         .frame(height: 128)
@@ -261,7 +265,7 @@ struct ChartAndStatsTemplateView: View {
 
 #Preview {
     NavigationStack {
-        ChartAndStatsTemplateView()
+        ChartsTemplateView()
     }
 }
 
