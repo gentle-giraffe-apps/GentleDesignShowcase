@@ -3,6 +3,7 @@ import GentleDesignSystem
 import SwiftUI
 
 struct MedicalIntakeFormTemplateView: View {
+    @FocusState private var focusedField: Field?
     @State private var fullName = ""
     @State private var email = ""
     @State private var birthDate = Date()
@@ -10,6 +11,14 @@ struct MedicalIntakeFormTemplateView: View {
     @State private var notes = ""
     @State private var showSubmitted = false
     @GentleDesignRuntime private var gentleDesign
+
+    enum Field {
+        case fullname
+        case email
+        case birthdate
+        case hasAllergies
+        case notes
+    }
 
     var body: some View {
         ZStack {
@@ -23,15 +32,39 @@ struct MedicalIntakeFormTemplateView: View {
                         Text("Patient")
                             .gentleText(.headline_m)
 
-                        TextField("Full name", text: $fullName)
-                            .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
-
-                        TextField("Email", text: $email)
+                        HStack(spacing: 12) {
+                            Image(systemName: "person")
+                                .fontWeight(.bold)
+                                .foregroundStyle(.secondary)
+                            TextField("Full name", text: $fullName)
+                        }
+                        .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
+                        .textContentType(.username)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                        .focused($focusedField, equals: .fullname)
+                        .submitLabel(.next)
+                        .onSubmit { focusedField = .email }
+                        
+                        HStack(spacing: 12) {
+                            Image(systemName: "envelope")
+                                .fontWeight(.bold)
+                                .foregroundStyle(.secondary)
+                            TextField("Email", text: $email)
+                        }
                             .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled(true)
+                            .focused($focusedField, equals: .email)
+                            .submitLabel(.next)
+                            .onSubmit { focusedField = .birthdate }
 
                         DatePicker("Birth date", selection: $birthDate, displayedComponents: .date)
+                            .focused($focusedField, equals: .birthdate)
+                            .submitLabel(.next)
+                            .onSubmit { focusedField = .hasAllergies }
+
                     }
 
                     Divider()

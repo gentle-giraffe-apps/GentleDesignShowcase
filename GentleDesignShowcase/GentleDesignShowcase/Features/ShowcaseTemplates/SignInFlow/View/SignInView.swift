@@ -95,11 +95,11 @@ struct SignInView: View {
                     Button(viewModel.forgotPassword) {
                         // todo
                     }
-                    .gentleButton(.quaternary)
+                    .tint(gentleDesign.color(.primaryCTA))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 4)
                 }
-                                
+                
                 Button("Sign In", action: signIn)
                     .gentleButton(.primary, shape: .pill)
                     .disabled(viewModel.isSignInDisabled)
