@@ -12,6 +12,7 @@ struct SignInView: View {
     let isLoaded = true
     @FocusState private var focusedField: Field?
     @State private var viewModel: SignInViewModel
+    @State private var isPasswordVisible = false
     @GentleDesignRuntime private var gentleDesign
     
     init(
@@ -37,6 +38,7 @@ struct SignInView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 12) {
                             Image(systemName: "person")
+                                .fontWeight(.semibold)
                                 .foregroundStyle(.secondary)
                             TextField("Enter username", text: $viewModel.username)
                         }
@@ -59,8 +61,22 @@ struct SignInView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 12) {
                             Image(systemName: "lock")
+                                .fontWeight(.semibold)
                                 .foregroundStyle(.secondary)
-                            SecureField("Enter password", text: $viewModel.password)
+                            ZStack {
+                                TextField("Enter password", text: $viewModel.password)
+                                    .opacity(isPasswordVisible ? 1 : 0)
+                                SecureField("Enter password", text: $viewModel.password)
+                                    .opacity(isPasswordVisible ? 0 : 1)
+                            }
+                            Button {
+                                isPasswordVisible.toggle()
+                            } label: {
+                                Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
                         }
                         .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
                         .textContentType(.password)
