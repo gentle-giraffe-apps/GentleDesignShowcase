@@ -36,20 +36,33 @@ struct StorefrontGridTemplateView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
+        VStack(spacing: 0) {
+            // Pinned header
+            VStack(spacing: 8) {
                 searchBar
-
                 categoryChips
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+            .background {
+                Rectangle()
+                    .fill(.background)
+                    .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+            }
 
+            // Scrollable grid
+            ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(filteredItems) { item in
                         productCard(for: item)
                     }
                 }
+                .gentleInset(.card)
+                .padding()
             }
-            .padding()
         }
+        .gentleBackground(.background)
         .navigationTitle("Storefront")
     }
 
@@ -61,6 +74,7 @@ struct StorefrontGridTemplateView: View {
                 .foregroundStyle(.secondary)
 
             TextField("Search products", text: $query)
+                .gentleTextField(.body_m)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
@@ -108,17 +122,16 @@ struct StorefrontGridTemplateView: View {
             }
         } label: {
             Text(category.rawValue)
-                .font(.system(size: 14, weight: isSelected ? .semibold : .medium))
-                .foregroundStyle(isSelected ? .white : .primary)
+                .gentleText(isSelected ? .body_m : .bodySecondary_m)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(
                     Capsule()
-                        .fill(isSelected ? Color.primary : Color.clear)
+                        .fill(Color.primary.opacity(isSelected ? 0.12 : 0.04))
                 )
                 .overlay(
                     Capsule()
-                        .stroke(Color.gray.opacity(isSelected ? 0 : 0.3), lineWidth: 1)
+                        .stroke(Color.gray.opacity(isSelected ? 0 : 0.15), lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)
@@ -130,60 +143,63 @@ struct StorefrontGridTemplateView: View {
         Button {
             // Card tap action (could navigate to detail)
         } label: {
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .topTrailing) {
-                    // Image container with soft shadow and dynamic height
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(.background)
-                        .overlay {
-                            Image(item.assetName)
-                                .resizable()
-                                .scaledToFit()
-                                .padding(12)
-                        }
-                        .frame(height: item.cardHeight)
-                        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-                        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
-                        .shadow(color: .black.opacity(0.04), radius: 2, x: 0, y: 1)
-
-                    // Animated heart button
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                            toggleFavorite(item)
-                        }
-                    } label: {
-                        Image(systemName: favorites.contains(item.id) ? "heart.fill" : "heart")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(favorites.contains(item.id) ? .red : .primary)
-                            .frame(width: 34, height: 34)
-                            .background(.ultraThinMaterial, in: Circle())
-                            .overlay(Circle().stroke(.black.opacity(0.08)))
-                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
-                            .scaleEffect(favorites.contains(item.id) ? 1.1 : 1.0)
+            ZStack(alignment: .topTrailing) {
+                // Image container with frosted bar
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(.background)
+                    .overlay(alignment: .top) {
+                        Image(item.assetName)
+                            .resizable()
+                            .scaledToFit()
+                            .padding(12)
                     }
-                    .buttonStyle(.plain)
-                    .padding(10)
+                    .overlay(alignment: .bottom) {
+                        HStack {
+                            Text(item.name)
+                                .gentleText(.subheadline_ms)
+
+                            Spacer(minLength: 8)
+
+                            Text(item.price)
+                                .gentleText(.subheadline_ms)
+                                .opacity(0.7)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity)
+                        .background {
+                            UnevenRoundedRectangle(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 12,
+                                bottomTrailingRadius: 12,
+                                topTrailingRadius: 0
+                            )
+                            .fill(.ultraThinMaterial)
+                            .opacity(0.75)
+                        }
+                    }
+                    .frame(height: item.cardHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.04), radius: 2, x: 0, y: 1)
+
+                // Animated heart button
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                        toggleFavorite(item)
+                    }
+                } label: {
+                    Image(systemName: favorites.contains(item.id) ? "heart.fill" : "heart")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(favorites.contains(item.id) ? .red : .primary)
+                        .frame(width: 34, height: 34)
+                        .background(.ultraThinMaterial, in: Circle())
+                        .overlay(Circle().stroke(.black.opacity(0.08)))
+                        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                        .scaleEffect(favorites.contains(item.id) ? 1.1 : 1.0)
                 }
-
-                Text(item.name)
-                    .gentleText(.body_m)
-                    .lineLimit(1)
-
-                // Star rating row
-                HStack(spacing: 4) {
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.orange)
-                    Text(String(format: "%.1f", item.rating))
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(.primary)
-                    Text("(\(item.reviewCount))")
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
-                }
-
-                Text(item.price)
-                    .gentleText(.bodySecondary_m)
+                .buttonStyle(.plain)
+                .padding(10)
             }
         }
         .buttonStyle(CardPressStyle())
@@ -234,135 +250,14 @@ struct StoreItem: Identifiable {
     static let sample: [StoreItem] = [
 
         .init(
-            name: "Continuum No. 3",
-            price: "$1,450",
-            assetName: "StoreFrontAbstractPiece",
-            description: "A museum-style abstract sculpture with layered translucent materials and organic motion. Designed as a contemplative centerpiece that invites reflection and interpretation.",
+            name: "Quiet Growth",
+            price: "$310",
+            assetName: "StoreFrontTree",
+            description: "A stylized wooden tree carved with flowing lines and organic balance. Symbolizing resilience and renewal, it brings calm structure to any room.",
             rating: 4.9,
-            reviewCount: 47,
+            reviewCount: 167,
             category: .sculptures,
-            cardHeight: 190
-        ),
-
-        .init(
-            name: "Tall Meadow Alpaca",
-            price: "$185",
-            assetName: "StoreFrontAlpaca",
-            description: "Hand-carved from light pine, this slender alpaca balances charm and refinement. A warm artisan piece that feels playful yet composed.",
-            rating: 4.8,
-            reviewCount: 156,
-            category: .animals,
-            cardHeight: 160
-        ),
-
-        .init(
-            name: "Orbital Calm",
-            price: "$460",
-            assetName: "StoreFrontSphereStone",
-            description: "A smooth, spherical stone sculpture with subtle translucence. Abstract and grounding, designed to anchor a space visually and emotionally.",
-            rating: 4.6,
-            reviewCount: 44,
-            category: .stone,
-            cardHeight: 165
-        ),
-
-        .init(
-            name: "Quiet Whiskers",
-            price: "$165",
-            assetName: "StoreFrontCat",
-            description: "A serene, slender cat carved from rustic pine. Minimal and calming, reflecting the understated elegance of modern Scandinavian craft.",
-            rating: 5.0,
-            reviewCount: 312,
-            category: .wood,
-            cardHeight: 155
-        ),
-
-        .init(
-            name: "Petit Salon Chair",
-            price: "$225",
-            assetName: "StoreFrontChair",
-            description: "An intricately detailed miniature chair inspired by classic salon furniture. Decorative, refined, and sculptural in its own right.",
-            rating: 4.6,
-            reviewCount: 89,
-            category: .wood,
-            cardHeight: 170
-        ),
-
-        .init(
-            name: "Good Listener",
-            price: "$175",
-            assetName: "StoreFrontDog",
-            description: "A smooth pine sculpture capturing the gentle attentiveness of a loyal companion. Designed to evoke warmth, presence, and quiet empathy.",
-            rating: 4.9,
-            reviewCount: 241,
-            category: .animals,
-            cardHeight: 165
-        ),
-
-        .init(
-            name: "Golden Leap",
-            price: "$210",
-            assetName: "StoreFrontDolphinBeeswax",
-            description: "Carved from translucent beeswax, this dolphin captures motion and light together. A luminous object that shifts character as lighting changes.",
-            rating: 4.8,
-            reviewCount: 67,
-            category: .animals,
-            cardHeight: 180
-        ),
-
-        .init(
-            name: "Gentle Giant",
-            price: "$395",
-            assetName: "StoreFrontElephant",
-            description: "A polished blue marble elephant with soft curves and reassuring weight. The cool stone and rounded form give this piece lasting gravitas.",
-            rating: 4.9,
-            reviewCount: 184,
-            category: .stone,
-            cardHeight: 175
-        ),
-
-        .init(
-            name: "Inner Flame",
-            price: "$520",
-            assetName: "StoreFrontFirestone",
-            description: "An abstract crystal form with internal translucency and flowing geometry. Designed as a meditative object that responds beautifully to gallery lighting.",
-            rating: 4.7,
-            reviewCount: 52,
-            category: .crystal,
-            cardHeight: 195
-        ),
-
-        .init(
-            name: "Forest Guardian Frog",
-            price: "$260",
-            assetName: "StoreFrontFrogMalachite",
-            description: "A small frog carved from rich green malachite, showcasing natural banding and depth. Symbolic, playful, and unmistakably precious.",
-            rating: 4.8,
-            reviewCount: 93,
-            category: .stone,
-            cardHeight: 150
-        ),
-
-        .init(
-            name: "Elder Presence",
-            price: "$740",
-            assetName: "StoreFrontIndian",
-            description: "A finely carved hardwood bust honoring wisdom, resilience, and tradition. The layered textures and solemn expression lend quiet authority.",
-            rating: 5.0,
-            reviewCount: 38,
-            category: .wood,
-            cardHeight: 185
-        ),
-
-        .init(
-            name: "Amber Sentinel",
-            price: "$680",
-            assetName: "StoreFrontLionAmber",
-            description: "A lioness carved from translucent amber, glowing warmly from within. A symbol of strength, grace, and watchful calm.",
-            rating: 4.9,
-            reviewCount: 71,
-            category: .crystal,
-            cardHeight: 175
+            cardHeight: 200
         ),
 
         .init(
@@ -373,7 +268,128 @@ struct StoreItem: Identifiable {
             rating: 4.7,
             reviewCount: 128,
             category: .wood,
+            cardHeight: 210
+        ),
+
+        .init(
+            name: "Tall Meadow Alpaca",
+            price: "$185",
+            assetName: "StoreFrontAlpaca",
+            description: "Hand-carved from light pine, this slender alpaca balances charm and refinement. A warm artisan piece that feels playful yet composed.",
+            rating: 4.8,
+            reviewCount: 156,
+            category: .animals,
+            cardHeight: 170
+        ),
+
+        .init(
+            name: "Forest Guardian Frog",
+            price: "$260",
+            assetName: "StoreFrontFrogMalachite",
+            description: "A small frog carved from rich green malachite, showcasing natural banding and depth. Symbolic, playful, and unmistakably precious.",
+            rating: 4.8,
+            reviewCount: 93,
+            category: .stone,
+            cardHeight: 220
+        ),
+
+        .init(
+            name: "Orbital Calm",
+            price: "$460",
+            assetName: "StoreFrontSphereStone",
+            description: "A smooth, spherical stone sculpture with subtle translucence. Abstract and grounding, designed to anchor a space visually and emotionally.",
+            rating: 4.6,
+            reviewCount: 44,
+            category: .stone,
+            cardHeight: 200
+        ),
+
+        .init(
+            name: "Quiet Whiskers",
+            price: "$165",
+            assetName: "StoreFrontCat",
+            description: "A serene, slender cat carved from rustic pine. Minimal and calming, reflecting the understated elegance of modern Scandinavian craft.",
+            rating: 5.0,
+            reviewCount: 312,
+            category: .wood,
             cardHeight: 160
+        ),
+
+        .init(
+            name: "Petit Salon Chair",
+            price: "$225",
+            assetName: "StoreFrontChair",
+            description: "An intricately detailed miniature chair inspired by classic salon furniture. Decorative, refined, and sculptural in its own right.",
+            rating: 4.6,
+            reviewCount: 89,
+            category: .wood,
+            cardHeight: 200
+        ),
+
+        .init(
+            name: "Good Listener",
+            price: "$175",
+            assetName: "StoreFrontDog",
+            description: "A smooth pine sculpture capturing the gentle attentiveness of a loyal companion. Designed to evoke warmth, presence, and quiet empathy.",
+            rating: 4.9,
+            reviewCount: 241,
+            category: .animals,
+            cardHeight: 160
+        ),
+
+        .init(
+            name: "Golden Leap",
+            price: "$210",
+            assetName: "StoreFrontDolphinBeeswax",
+            description: "Carved from translucent beeswax, this dolphin captures motion and light together. A luminous object that shifts character as lighting changes.",
+            rating: 4.8,
+            reviewCount: 67,
+            category: .animals,
+            cardHeight: 200
+        ),
+
+        .init(
+            name: "Gentle Giant",
+            price: "$395",
+            assetName: "StoreFrontElephant",
+            description: "A polished blue marble elephant with soft curves and reassuring weight. The cool stone and rounded form give this piece lasting gravitas.",
+            rating: 4.9,
+            reviewCount: 184,
+            category: .stone,
+            cardHeight: 160
+        ),
+
+        .init(
+            name: "Inner Flame",
+            price: "$520",
+            assetName: "StoreFrontFirestone",
+            description: "An abstract crystal form with internal translucency and flowing geometry. Designed as a meditative object that responds beautifully to gallery lighting.",
+            rating: 4.7,
+            reviewCount: 52,
+            category: .crystal,
+            cardHeight: 190
+        ),
+
+        .init(
+            name: "Elder Presence",
+            price: "$740",
+            assetName: "StoreFrontIndian",
+            description: "A finely carved hardwood bust honoring wisdom, resilience, and tradition. The layered textures and solemn expression lend quiet authority.",
+            rating: 5.0,
+            reviewCount: 38,
+            category: .wood,
+            cardHeight: 160
+        ),
+
+        .init(
+            name: "Amber Sentinel",
+            price: "$680",
+            assetName: "StoreFrontLionAmber",
+            description: "A lioness carved from translucent amber, glowing warmly from within. A symbol of strength, grace, and watchful calm.",
+            rating: 4.9,
+            reviewCount: 71,
+            category: .crystal,
+            cardHeight: 200
         ),
 
         .init(
@@ -384,7 +400,7 @@ struct StoreItem: Identifiable {
             rating: 4.7,
             reviewCount: 23,
             category: .stone,
-            cardHeight: 200
+            cardHeight: 270
         ),
 
         .init(
@@ -395,18 +411,18 @@ struct StoreItem: Identifiable {
             rating: 4.8,
             reviewCount: 205,
             category: .animals,
-            cardHeight: 190
+            cardHeight: 170
         ),
-
+        
         .init(
-            name: "Quiet Growth",
-            price: "$310",
-            assetName: "StoreFrontTree",
-            description: "A stylized wooden tree carved with flowing lines and organic balance. Symbolizing resilience and renewal, it brings calm structure to any room.",
+            name: "Continuum No. 3",
+            price: "$1,450",
+            assetName: "StoreFrontAbstractPiece",
+            description: "A museum-style abstract sculpture with layered translucent materials and organic motion. Designed as a contemplative centerpiece that invites reflection and interpretation.",
             rating: 4.9,
-            reviewCount: 167,
+            reviewCount: 47,
             category: .sculptures,
-            cardHeight: 200
-        )
+            cardHeight: 280
+        ),
     ]
 }
