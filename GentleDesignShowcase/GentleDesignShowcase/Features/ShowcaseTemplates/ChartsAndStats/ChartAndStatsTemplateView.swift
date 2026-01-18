@@ -54,30 +54,9 @@ struct ChartAndStatsTemplateView: View {
         return Int(total / Double(days.count))
     }
 
-    private var totalWeeklyCalories: Int {
-        Int(days.reduce(0) { $0 + $1.kcalCarbs + $1.kcalProtein + $1.kcalFat })
-    }
-
     var body: some View {
         ScrollView {
-            VStack(spacing: design.layout.stack.loose) {
-
-                // MARK: - Hero Stats
-                HStack(spacing: design.layout.stack.regular) {
-                    statCard(
-                        value: "\(totalWeeklyCalories.formatted())",
-                        label: "Weekly Total",
-                        trend: "+12%",
-                        trendUp: true
-                    )
-
-                    statCard(
-                        value: "\(totalDailyAverage.formatted())",
-                        label: "Daily Average",
-                        trend: "-3%",
-                        trendUp: false
-                    )
-                }
+            VStack(spacing: design.layout.stack.regular) {
 
                 // MARK: - Donut Chart Card
                 card(title: "Calorie Breakdown", subtitle: "By food category") {
@@ -96,12 +75,12 @@ struct ChartAndStatsTemplateView: View {
                             }
                             .chartForegroundStyleScale(colorForCategory)
                             .chartLegend(.hidden)
-                            .frame(width: 140, height: 140)
+                            .frame(width: 120, height: 120)
 
                             // Center label
-                            VStack(spacing: 2) {
+                            VStack(spacing: 1) {
                                 Text("100%")
-                                    .gentleText(.title_xl)
+                                    .gentleText(.title3_ml)
                                 Text("Total")
                                     .gentleText(.bodySecondary_m)
                             }
@@ -110,12 +89,12 @@ struct ChartAndStatsTemplateView: View {
                         Spacer(minLength: 0)
 
                         // Legend
-                        VStack(alignment: .leading, spacing: 14) {
+                        VStack(alignment: .leading, spacing: 10) {
                             ForEach(categories) { item in
-                                HStack(spacing: 10) {
-                                    RoundedRectangle(cornerRadius: 4)
+                                HStack(spacing: 8) {
+                                    RoundedRectangle(cornerRadius: 3)
                                         .fill(colorForCategory.color(for: item.name) ?? .clear)
-                                        .frame(width: 16, height: 16)
+                                        .frame(width: 14, height: 14)
 
                                     Text(item.name)
                                         .gentleText(.callout_ms)
@@ -124,12 +103,12 @@ struct ChartAndStatsTemplateView: View {
                                     Spacer()
 
                                     Text("\(Int(item.percent))%")
-                                        .gentleText(.bodySecondary_m)
+                                        .gentleText(.footnote_s)
                                         .monospacedDigit()
                                 }
                             }
                         }
-                        .frame(maxWidth: 180)
+                        .frame(maxWidth: 160)
                     }
                 }
 
@@ -180,13 +159,18 @@ struct ChartAndStatsTemplateView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .frame(height: 160)
+                    .frame(height: 140)
                     .clipped()
                 }
 
                 // MARK: - Stacked Bar Card
-                card(title: "Daily Nutrition", subtitle: "This week's macros") {
-                    VStack(spacing: design.layout.stack.regular) {
+                cardWithStat(
+                    title: "Daily Nutrition",
+                    subtitle: "This week's macros",
+                    statValue: "\(totalDailyAverage.formatted())",
+                    statLabel: "Daily Avg"
+                ) {
+                    VStack(spacing: design.layout.stack.tight) {
 
                         Chart(macroRows) { row in
                             BarMark(
@@ -216,10 +200,10 @@ struct ChartAndStatsTemplateView: View {
                                     .foregroundStyle(.secondary)
                             }
                         }
-                        .frame(height: 180)
+                        .frame(height: 160)
 
                         // Legend
-                        HStack(spacing: design.layout.stack.loose) {
+                        HStack(spacing: design.layout.stack.regular) {
                             ForEach(Macro.allCases) { macro in
                                 macroLegendItem(macro)
                             }
@@ -234,69 +218,79 @@ struct ChartAndStatsTemplateView: View {
 
     // MARK: - Components
 
-    private func statCard(value: String, label: String, trend: String, trendUp: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(value)
-                    .gentleText(.title_xl)
-                    .monospacedDigit()
-
-                Text("cal")
-                    .gentleText(.bodySecondary_m)
-            }
-
-            HStack(spacing: 4) {
-                Text(label)
-                    .gentleText(.bodySecondary_m)
-
-                Spacer()
-
-                HStack(spacing: 2) {
-                    Image(systemName: trendUp ? "arrow.up.right" : "arrow.down.right")
-                        .font(.system(size: 10, weight: .bold))
-                    Text(trend)
-                        .gentleText(.callout_ms)
-                }
-                .foregroundStyle(trendUp ? .green : .orange)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .gentleInset(.card)
-    }
-
     private func card<Content: View>(
         title: String,
         subtitle: String? = nil,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        VStack(alignment: .leading, spacing: design.layout.stack.regular) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: design.layout.stack.tight) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .gentleText(.title_xl)
+                    .gentleText(.title3_ml)
 
                 if let subtitle {
                     Text(subtitle)
-                        .gentleText(.bodySecondary_m)
+                        .gentleText(.footnote_s)
                 }
             }
-            .padding(.top, 4)
 
             Divider()
                 .opacity(0.25)
 
             content()
-                .padding(.vertical, 4)
+        }
+        .gentleInset(.card)
+    }
+
+    private func cardWithStat<Content: View>(
+        title: String,
+        subtitle: String? = nil,
+        statValue: String,
+        statLabel: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: design.layout.stack.tight) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .gentleText(.title3_ml)
+
+                    if let subtitle {
+                        Text(subtitle)
+                            .gentleText(.footnote_s)
+                    }
+                }
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 2) {
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Text(statValue)
+                            .gentleText(.title3_ml)
+                            .monospacedDigit()
+                        Text("cal")
+                            .gentleText(.footnote_s)
+                    }
+                    Text(statLabel)
+                        .gentleText(.footnote_s)
+                }
+            }
+
+            Divider()
+                .opacity(0.25)
+
+            content()
         }
         .gentleInset(.card)
     }
 
     private func macroLegendItem(_ macro: Macro) -> some View {
-        HStack(spacing: 8) {
-            RoundedRectangle(cornerRadius: 4)
+        HStack(spacing: 6) {
+            RoundedRectangle(cornerRadius: 3)
                 .fill(colorForMacro(macro))
-                .frame(width: 16, height: 16)
+                .frame(width: 12, height: 12)
             Text(macro.rawValue)
-                .gentleText(.callout_ms)
+                .gentleText(.footnote_s)
         }
     }
 
