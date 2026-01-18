@@ -98,7 +98,7 @@ struct ChartsTemplateView: View {
                                         .frame(width: 14, height: 14)
 
                                     Text(item.name)
-                                        .gentleText(.callout_ms)
+                                        .gentleText(.subheadline_ms)
                                         .lineLimit(1)
 
                                     Spacer()
@@ -111,6 +111,7 @@ struct ChartsTemplateView: View {
                         }
                         .frame(maxWidth: 160)
                     }
+                    .gentleInset(.horizontal, .screen)
                 }
 
                 // MARK: - Weekly Trend Card
@@ -150,7 +151,7 @@ struct ChartsTemplateView: View {
                         AxisMarks { value in
                             AxisValueLabel()
                                 .font(.system(.caption, weight: .semibold))
-                                .foregroundStyle(design.color(.textPrimary))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                         }
                     }
                     .chartYAxis {
@@ -159,11 +160,12 @@ struct ChartsTemplateView: View {
                                 .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                             AxisValueLabel()
                                 .font(.system(.caption, weight: .semibold))
-                                .foregroundStyle(design.color(.textPrimary))
+                                .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                         }
                     }
                     .frame(height: 112)
                     .clipped()
+                    .gentleInset(.horizontal, .screen)
                 }
 
                 // MARK: - Stacked Bar Card
@@ -188,7 +190,7 @@ struct ChartsTemplateView: View {
                             AxisMarks { value in
                                 AxisValueLabel()
                                     .font(.system(.caption, weight: .semibold))
-                                    .foregroundStyle(design.color(.textPrimary))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                             }
                         }
                         .chartYAxis {
@@ -197,7 +199,7 @@ struct ChartsTemplateView: View {
                                     .foregroundStyle(design.color(.textPrimary).opacity(0.2))
                                 AxisValueLabel()
                                     .font(.system(.caption, weight: .semibold))
-                                    .foregroundStyle(design.color(.textPrimary))
+                                    .foregroundStyle(design.color(.textPrimary).opacity(0.5))
                             }
                         }
                         .frame(height: 128)
@@ -209,6 +211,7 @@ struct ChartsTemplateView: View {
                             }
                         }
                     }
+                    .gentleInset(.horizontal, .screen)
                 }
             }
             .padding(design.layout.stack.regular)
@@ -226,7 +229,8 @@ struct ChartsTemplateView: View {
         VStack(alignment: .leading, spacing: design.layout.stack.tight) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .gentleText(.title3_ml)
+                    .gentleText(.title_xl)
+                    .opacity(0.7)
 
                 if let subtitle {
                     Text(subtitle)
