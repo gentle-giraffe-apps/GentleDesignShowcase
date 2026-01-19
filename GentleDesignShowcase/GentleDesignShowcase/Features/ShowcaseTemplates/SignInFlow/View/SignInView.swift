@@ -14,74 +14,60 @@ struct SignInView: View {
     @State private var viewModel: SignInViewModel
     @State private var isPasswordVisible = false
     @GentleDesignRuntime private var gentleDesign
-    
+
     init(
         viewModel: SignInViewModel = SignInViewModel()
     ) {
         _viewModel = State(initialValue: viewModel)
     }
-        
-    var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                // Hero image placeholder
-                heroImagePlaceholder
-                    .frame(height: geometry.size.height * 0.38)
 
-                // White card with login form
+    // MARK: - Tuning knobs
+    private let cardHeightFraction: CGFloat = 0.64   // was 0.68; slightly shorter reads as "lower"
+    private let cardBottomLift: CGFloat = 0         // positive = move card DOWN (away from center)
+    private let titleTopPadding: CGFloat = 32        // was 32; makes title appear higher in the card
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .bottom) {
+
+                // Background: fill the entire screen predictably
+                Image("SignInBackground")
+                    .resizable()
+                    .scaledToFill()
+                    .overlay(
+                        LinearGradient(
+                            colors: [
+                                .black.opacity(0.4),
+                                .indigo.opacity(0.3),
+                                .blue.opacity(0.2),
+                                .clear,
+                                .clear
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
+
+                // Card: pinned to bottom with fixed height, nudged DOWN slightly
                 loginCard
-                    .frame(maxHeight: .infinity)
-                    .background(.white)
-                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32))
-                    .offset(y: -32)
+                    .frame(maxWidth: .infinity, alignment: .top)
+                    .frame(height: geo.size.height * cardHeightFraction, alignment: .top)
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
+                    // Move the whole card DOWN a bit (and keep it off the home indicator)
+                    .padding(.bottom, geo.safeAreaInsets.bottom + cardBottomLift)
             }
+            .frame(width: geo.size.width, height: geo.size.height)
         }
         .ignoresSafeArea()
     }
 
-    private var heroImagePlaceholder: some View {
-        ZStack {
-            // Background gradient similar to reference
-            LinearGradient(
-                colors: [
-                    Color(red: 0.75, green: 0.82, blue: 0.95),
-                    Color(red: 0.68, green: 0.75, blue: 0.92),
-                    Color(red: 0.58, green: 0.55, blue: 0.85)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-
-            // Decorative circles to mimic the organic shapes
-            Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.70, green: 0.85, blue: 0.80).opacity(0.8),
-                            Color(red: 0.55, green: 0.70, blue: 0.85).opacity(0.6)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 200, height: 200)
-                .offset(x: 20, y: 40)
-
-            Circle()
-                .fill(Color(red: 0.85, green: 0.80, blue: 0.70).opacity(0.6))
-                .frame(width: 60, height: 60)
-                .offset(x: -40, y: -20)
-
-            Circle()
-                .fill(Color(red: 0.75, green: 0.70, blue: 0.80).opacity(0.4))
-                .frame(width: 30, height: 30)
-                .offset(x: -60, y: -50)
-        }
-    }
-
     private var loginCard: some View {
         VStack(spacing: 20) {
-            // Title section
+
+            // Title section (higher inside the card)
             VStack(spacing: 8) {
                 Text("Sign In")
                     .font(.largeTitle)
@@ -91,24 +77,25 @@ struct SignInView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
-            .padding(.top, 32)
+            .padding(.top, titleTopPadding)
 
             // Form fields
             VStack(spacing: 16) {
+
                 // Username field
                 VStack(alignment: .leading, spacing: 4) {
                     TextField("Username", text: $viewModel.username)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
                         .background(Color(UIColor.systemGray6))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         .textContentType(.username)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                         .focused($focusedField, equals: .username)
                         .submitLabel(.next)
                         .onSubmit { focusedField = .password }
-                        .onChange(of: focusedField) { old, new in
+                        .onChange(of: focusedField) { old, _ in
                             if old == .username {
                                 viewModel.usernameHasBeenEdited = true
                             }
@@ -143,12 +130,12 @@ struct SignInView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)
                     .background(Color(UIColor.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .textContentType(.password)
                     .focused($focusedField, equals: .password)
                     .submitLabel(.go)
                     .onSubmit { signIn() }
-                    .onChange(of: focusedField) { old, new in
+                    .onChange(of: focusedField) { old, _ in
                         if old == .password {
                             viewModel.passwordHasBeenEdited = true
                         }
@@ -173,14 +160,13 @@ struct SignInView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(gentleDesign.themePrimary)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
             .disabled(viewModel.isSignInDisabled)
             .opacity(viewModel.isSignInDisabled ? 0.6 : 1)
 
             // Social sign in section
             VStack(spacing: 16) {
-                // Divider with text
                 HStack {
                     Rectangle()
                         .fill(Color(UIColor.systemGray4))
@@ -204,8 +190,7 @@ struct SignInView: View {
                 }
             }
             .padding(.top, 8)
-
-            Spacer()
+            .padding(.bottom, 24)
         }
         .padding(.horizontal, 24)
     }
@@ -256,14 +241,14 @@ struct SignInView: View {
                         Image(systemName: "apple.logo")
                             .font(.system(size: 28, weight: .medium))
                             .foregroundStyle(.black)
+
                     case .google:
-                        // Google logo already has proper spacing
                         Image(provider.iconName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: size, height: size)
+
                     case .facebook, .github:
-                        // Inset these logos to match Google's visual size
                         Image(provider.iconName)
                             .resizable()
                             .scaledToFit()
@@ -284,15 +269,12 @@ struct SignInView: View {
         Task {
             do {
                 try await viewModel.signIn()
-//                await MainActor.run {
-//                    session.signInSucceeded()
-//                }
             } catch {
                 print("Sign-in error: \(error)")
             }
         }
     }
-    
+
     private func credentialsPresent() -> Bool {
         !viewModel.username.isEmpty && !viewModel.password.isEmpty
     }
