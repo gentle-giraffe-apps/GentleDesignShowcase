@@ -198,7 +198,7 @@ extension ShowcaseItem {
         storefrontGrid,
         profileHeader,
         chartAndStats,
-        medicalIntakeForm,
-        onboardingPager
+        onboardingPager,
+        medicalIntakeForm
     ]
 }

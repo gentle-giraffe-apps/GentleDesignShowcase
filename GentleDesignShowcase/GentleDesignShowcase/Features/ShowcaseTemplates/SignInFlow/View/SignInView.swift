@@ -22,7 +22,7 @@ struct SignInView: View {
     }
 
     // MARK: - Tuning knobs
-    private let cardHeightFraction: CGFloat = 0.64   // was 0.68; slightly shorter reads as "lower"
+    private let cardHeightFraction: CGFloat = 0.66   // was 0.68; slightly shorter reads as "lower"
     private let cardBottomLift: CGFloat = 0         // positive = move card DOWN (away from center)
     private let titleTopPadding: CGFloat = 32        // was 32; makes title appear higher in the card
 
@@ -180,6 +180,26 @@ struct SignInView: View {
                 }
             }
             .padding(.top, 8)
+
+            // Secondary actions
+            HStack(spacing: 4) {
+                Button {
+                    // Handle create account
+                } label: {
+                    Text("Create an account")
+                        .gentleText(.subheadline_ms, colorRole: .primaryCTA)
+                }
+
+                Text("•")
+                    .foregroundStyle(.tertiary)
+
+                Button {
+                    // Handle forgot password
+                } label: {
+                    Text("Forgot Password?")
+                        .gentleText(.subheadline_ms, colorRole: .primaryCTA)
+                }
+            }
             .padding(.bottom, 24)
         }
         .padding(.horizontal, 24)
