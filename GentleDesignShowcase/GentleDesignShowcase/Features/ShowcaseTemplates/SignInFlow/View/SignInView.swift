@@ -70,100 +70,92 @@ struct SignInView: View {
             // Title section (higher inside the card)
             VStack(spacing: 8) {
                 Text("Sign In")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .gentleText(.title_xl)
 
                 Text("Enter Your Sign In Credentials")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .gentleText(.subheadline_ms)
             }
             .padding(.top, titleTopPadding)
 
             // Form fields
             VStack(spacing: 16) {
-
+                
                 // Username field
-                VStack(alignment: .leading, spacing: 4) {
-                    TextField("Username", text: $viewModel.username)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 14)
-                        .background(Color(UIColor.systemGray6))
-                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .textContentType(.username)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
-                        .focused($focusedField, equals: .username)
-                        .submitLabel(.next)
-                        .onSubmit { focusedField = .password }
-                        .onChange(of: focusedField) { old, _ in
-                            if old == .username {
-                                viewModel.usernameHasBeenEdited = true
-                            }
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "person")
+                            .fontWeight(.bold)
+                            .foregroundStyle(.secondary)
+                        TextField("Enter username", text: $viewModel.username)
+                    }
+                    .gentleTextField(.body_m, chrome: .standalone(shape: .rounded))
+                    .textContentType(.username)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
+                    .focused($focusedField, equals: .username)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .password }
+                    .onChange(of: focusedField) { old, new in
+                        if old == .username {
+                            viewModel.usernameHasBeenEdited = true
                         }
-
+                    }
                     if let error = viewModel.usernameError {
                         Text(error)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
+                            .gentleText(.footnote_s)
                             .padding(.leading, 4)
                     }
                 }
-
+                
                 // Password field
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "lock")
+                            .fontWeight(.bold)
+                            .foregroundStyle(.secondary)
                         ZStack {
-                            TextField("Password", text: $viewModel.password)
+                            TextField("Enter password", text: $viewModel.password)
                                 .opacity(isPasswordVisible ? 1 : 0)
-                            SecureField("Password", text: $viewModel.password)
+                            SecureField("Enter password", text: $viewModel.password)
                                 .opacity(isPasswordVisible ? 0 : 1)
                         }
-
                         Button {
                             isPasswordVisible.toggle()
                         } label: {
                             Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                                .fontWeight(.bold)
                                 .foregroundStyle(.secondary)
                         }
                         .buttonStyle(.plain)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 14)
-                    .background(Color(UIColor.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .gentleTextField(.body_m, chrome: .standalone(shape: .rounded))
                     .textContentType(.password)
                     .focused($focusedField, equals: .password)
                     .submitLabel(.go)
                     .onSubmit { signIn() }
-                    .onChange(of: focusedField) { old, _ in
+                    .onChange(of: focusedField) { old, new in
                         if old == .password {
                             viewModel.passwordHasBeenEdited = true
                         }
                     }
-
+                    
                     if let error = viewModel.passwordError {
                         Text(error)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
+                            .gentleText(.footnote_s)
                             .padding(.leading, 4)
                     }
                 }
             }
-
+            
             // Sign In button
             Button {
                 signIn()
             } label: {
                 Text("Login")
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(gentleDesign.themePrimary)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .padding(.vertical, 4)
             }
+            .gentleButton(.primary, shape: .rounded, expandsHorizontally: true)
             .disabled(viewModel.isSignInDisabled)
-            .opacity(viewModel.isSignInDisabled ? 0.6 : 1)
 
             // Social sign in section
             VStack(spacing: 16) {
@@ -173,9 +165,7 @@ struct SignInView: View {
                         .frame(height: 1)
 
                     Text("OR SIGN IN WITH")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .fixedSize()
+                        .gentleText(.footnote_s)
 
                     Rectangle()
                         .fill(Color(UIColor.systemGray4))
@@ -277,6 +267,16 @@ struct SignInView: View {
 
     private func credentialsPresent() -> Bool {
         !viewModel.username.isEmpty && !viewModel.password.isEmpty
+    }
+    
+    private func validationText(_ error: String?) -> some View {
+        Text(error ?? " ")
+            .gentleText(.footnote_s, colorRole: .destructive)
+            .padding(.leading, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 16)
+            .opacity(error != nil ? 0.8 : 0)
+            .animation(.easeInOut(duration: 0.2), value: error)
     }
 }
 
