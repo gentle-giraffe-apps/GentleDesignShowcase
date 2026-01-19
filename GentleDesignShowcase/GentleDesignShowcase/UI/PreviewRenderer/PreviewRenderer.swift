@@ -222,9 +222,7 @@ final class PreviewRenderer {
 
     /// URLs used by AsyncImage in template views that need pre-loading
     private var asyncImageURLs: [URL] {
-        [
-            URL(string: ProfileHeaderTemplateViewModel.sample.avatarURL)
-        ].compactMap { $0 }
+        []
     }
 
     /// Pre-downloads images into URLCache so AsyncImage can load them synchronously
