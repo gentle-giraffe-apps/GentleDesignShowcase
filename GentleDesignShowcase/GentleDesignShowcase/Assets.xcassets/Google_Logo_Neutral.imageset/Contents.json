@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Google_Logo_Neutral.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -100,14 +100,103 @@ struct SignInView: View {
                     .padding(.top, 4)
                 }
                 
-                Button("Sign In", action: signIn)
-                    .gentleButton(.primary, shape: .pill)
-                    .disabled(viewModel.isSignInDisabled)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                Button {
+                    signIn()
+                } label: {
+                    Text("Sign In")
+                        .padding(.vertical, 4)
+                }
+                .gentleButton(.primary, shape: .pill, expandsHorizontally: true)
+                .disabled(viewModel.isSignInDisabled)
+
+                // Social sign in section
+                VStack(spacing: 16) {
+                    Text("OR SIGN IN WITH")
+                        .gentleText(.footnote_s)
+                        .foregroundStyle(.secondary)
+
+                    HStack(spacing: 16) {
+                        SocialSignInButton(provider: .facebook)
+                        SocialSignInButton(provider: .google)
+                        SocialSignInButton(provider: .apple)
+                        SocialSignInButton(provider: .github)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 8)
             }
             .gentleInset(.screen)
         }
         .gentleSurface(.appBackground)
+    }
+
+    enum SocialProvider {
+        case facebook, google, apple, github
+
+        var iconName: String {
+            switch self {
+            case .facebook: "Facebook_Logo_Primary"
+            case .google: "Google_Logo_Neutral"
+            case .apple: "Apple_Logo_Black"
+            case .github: "GitHub_Invertocat_Black"
+            }
+        }
+
+        var backgroundColor: Color {
+            switch self {
+            case .facebook: Color(UIColor.systemGray5)
+            case .google: .white
+            case .apple: Color(UIColor.systemGray5)
+            case .github: Color(UIColor.systemGray5)
+            }
+        }
+
+        var foregroundColor: Color {
+            switch self {
+            case .facebook: .white
+            case .google: Color(red: 0.92, green: 0.26, blue: 0.21)
+            case .apple: .primary
+            case .github: .primary
+            }
+        }
+    }
+
+    struct SocialSignInButton: View {
+        let provider: SocialProvider
+        private let size: CGFloat = 64
+        private let iconSize: CGFloat = 32
+
+        var body: some View {
+            Button {
+                // Handle social sign in
+            } label: {
+                Group {
+                    switch provider {
+                    case .apple:
+                        Image(systemName: "apple.logo")
+                            .font(.system(size: 28, weight: .medium))
+                            .foregroundStyle(.black)
+                    case .google:
+                        // Google logo already has proper spacing
+                        Image(provider.iconName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: size, height: size)
+                    case .facebook, .github:
+                        // Inset these logos to match Google's visual size
+                        Image(provider.iconName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: iconSize, height: iconSize)
+                    }
+                }
+                .frame(width: size, height: size)
+                .background(provider.backgroundColor)
+                .clipShape(Circle())
+                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     struct InlineSignupText: View {
