@@ -22,27 +22,86 @@ struct SignInView: View {
     }
         
     var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                // Hero image placeholder
+                heroImagePlaceholder
+                    .frame(height: geometry.size.height * 0.38)
+
+                // White card with login form
+                loginCard
+                    .frame(maxHeight: .infinity)
+                    .background(.white)
+                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32))
+                    .offset(y: -32)
+            }
+        }
+        .ignoresSafeArea()
+    }
+
+    private var heroImagePlaceholder: some View {
         ZStack {
-            diagonalGradient()
-            
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(viewModel.title)
-                        .gentleText(.largeTitle_xxl)
-                    Color.clear.frame(height: 8)
-  
-                    InlineSignupText()
-                }
-                
-                VStack(spacing: 4) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        HStack(spacing: 12) {
-                            Image(systemName: "person")
-                                .fontWeight(.bold)
-                                .foregroundStyle(.secondary)
-                            TextField("Enter username", text: $viewModel.username)
-                        }
-                        .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
+            // Background gradient similar to reference
+            LinearGradient(
+                colors: [
+                    Color(red: 0.75, green: 0.82, blue: 0.95),
+                    Color(red: 0.68, green: 0.75, blue: 0.92),
+                    Color(red: 0.58, green: 0.55, blue: 0.85)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+
+            // Decorative circles to mimic the organic shapes
+            Circle()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.70, green: 0.85, blue: 0.80).opacity(0.8),
+                            Color(red: 0.55, green: 0.70, blue: 0.85).opacity(0.6)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 200, height: 200)
+                .offset(x: 20, y: 40)
+
+            Circle()
+                .fill(Color(red: 0.85, green: 0.80, blue: 0.70).opacity(0.6))
+                .frame(width: 60, height: 60)
+                .offset(x: -40, y: -20)
+
+            Circle()
+                .fill(Color(red: 0.75, green: 0.70, blue: 0.80).opacity(0.4))
+                .frame(width: 30, height: 30)
+                .offset(x: -60, y: -50)
+        }
+    }
+
+    private var loginCard: some View {
+        VStack(spacing: 20) {
+            // Title section
+            VStack(spacing: 8) {
+                Text("Sign In")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+
+                Text("Enter Your Sign In Credentials")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 32)
+
+            // Form fields
+            VStack(spacing: 16) {
+                // Username field
+                VStack(alignment: .leading, spacing: 4) {
+                    TextField("Username", text: $viewModel.username)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 14)
+                        .background(Color(UIColor.systemGray6))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                         .textContentType(.username)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
@@ -55,79 +114,100 @@ struct SignInView: View {
                             }
                         }
 
-                        validationText(viewModel.usernameError)
+                    if let error = viewModel.usernameError {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .padding(.leading, 4)
                     }
+                }
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        HStack(spacing: 12) {
-                            Image(systemName: "lock")
-                                .fontWeight(.bold)
+                // Password field
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        ZStack {
+                            TextField("Password", text: $viewModel.password)
+                                .opacity(isPasswordVisible ? 1 : 0)
+                            SecureField("Password", text: $viewModel.password)
+                                .opacity(isPasswordVisible ? 0 : 1)
+                        }
+
+                        Button {
+                            isPasswordVisible.toggle()
+                        } label: {
+                            Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
                                 .foregroundStyle(.secondary)
-                            ZStack {
-                                TextField("Enter password", text: $viewModel.password)
-                                    .opacity(isPasswordVisible ? 1 : 0)
-                                SecureField("Enter password", text: $viewModel.password)
-                                    .opacity(isPasswordVisible ? 0 : 1)
-                            }
-                            Button {
-                                isPasswordVisible.toggle()
-                            } label: {
-                                Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.secondary)
-                            }
-                            .buttonStyle(.plain)
                         }
-                        .gentleTextField(.body_m, chrome: .standalone(shape: .pill))
-                        .textContentType(.password)
-                        .focused($focusedField, equals: .password)
-                        .submitLabel(.go)
-                        .onSubmit { signIn() }
-                        .onChange(of: focusedField) { old, new in
-                            if old == .password {
-                                viewModel.passwordHasBeenEdited = true
-                            }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                    .background(Color(UIColor.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .textContentType(.password)
+                    .focused($focusedField, equals: .password)
+                    .submitLabel(.go)
+                    .onSubmit { signIn() }
+                    .onChange(of: focusedField) { old, new in
+                        if old == .password {
+                            viewModel.passwordHasBeenEdited = true
                         }
-
-                        validationText(viewModel.passwordError)
                     }
 
-                    Button(viewModel.forgotPassword) {
-                        // todo
-                    }
-                    .tint(gentleDesign.color(.primaryCTA))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 4)
-                }
-                
-                Button {
-                    signIn()
-                } label: {
-                    Text("Sign In")
-                        .padding(.vertical, 4)
-                }
-                .gentleButton(.primary, shape: .pill, expandsHorizontally: true)
-                .disabled(viewModel.isSignInDisabled)
-
-                // Social sign in section
-                VStack(spacing: 16) {
-                    Text("OR SIGN IN WITH")
-                        .gentleText(.footnote_s)
-                        .foregroundStyle(.secondary)
-
-                    HStack(spacing: 16) {
-                        SocialSignInButton(provider: .facebook)
-                        SocialSignInButton(provider: .google)
-                        SocialSignInButton(provider: .apple)
-                        SocialSignInButton(provider: .github)
+                    if let error = viewModel.passwordError {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .padding(.leading, 4)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 8)
             }
-            .gentleInset(.screen)
+
+            // Sign In button
+            Button {
+                signIn()
+            } label: {
+                Text("Login")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(gentleDesign.themePrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .disabled(viewModel.isSignInDisabled)
+            .opacity(viewModel.isSignInDisabled ? 0.6 : 1)
+
+            // Social sign in section
+            VStack(spacing: 16) {
+                // Divider with text
+                HStack {
+                    Rectangle()
+                        .fill(Color(UIColor.systemGray4))
+                        .frame(height: 1)
+
+                    Text("OR SIGN IN WITH")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .fixedSize()
+
+                    Rectangle()
+                        .fill(Color(UIColor.systemGray4))
+                        .frame(height: 1)
+                }
+
+                HStack(spacing: 16) {
+                    SocialSignInButton(provider: .facebook)
+                    SocialSignInButton(provider: .google)
+                    SocialSignInButton(provider: .apple)
+                    SocialSignInButton(provider: .github)
+                }
+            }
+            .padding(.top, 8)
+
+            Spacer()
         }
-        .gentleSurface(.appBackground)
+        .padding(.horizontal, 24)
     }
 
     enum SocialProvider {
@@ -199,31 +279,6 @@ struct SignInView: View {
         }
     }
 
-    struct InlineSignupText: View {
-        @GentleDesignRuntime private var design
-        
-        var body: some View {
-            Text(makeAttributedText())
-                .gentleText(.bodySecondary_m)
-                .onOpenURL { url in
-                    if url.absoluteString == "app://signup" {
-                        // navigate to sign up
-                    }
-                }
-        }
-
-        private func makeAttributedText() -> AttributedString {
-            var text = AttributedString("Don't have an account?  Sign up")
-
-            if let range = text.range(of: "Sign up") {
-                text[range].foregroundColor = design.color(.primaryCTA)
-                text[range].link = URL(string: "app://signup")
-            }
-
-            return text
-        }
-    }
-
     private func signIn() {
         guard credentialsPresent() else { return }
         Task {
@@ -240,25 +295,6 @@ struct SignInView: View {
     
     private func credentialsPresent() -> Bool {
         !viewModel.username.isEmpty && !viewModel.password.isEmpty
-    }
-    
-    private func diagonalGradient() -> some View {
-        LinearGradient(
-            colors: [gentleDesign.themePrimary.opacity(0.1), Color.clear],
-            startPoint: .topLeading,
-            endPoint: .center
-        )
-        .ignoresSafeArea()
-    }
-
-    private func validationText(_ error: String?) -> some View {
-        Text(error ?? " ")
-            .gentleText(.footnote_s, colorRole: .destructive)
-            .padding(.leading, 16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 16)
-            .opacity(error != nil ? 0.8 : 0)
-            .animation(.easeInOut(duration: 0.2), value: error)
     }
 }
 
