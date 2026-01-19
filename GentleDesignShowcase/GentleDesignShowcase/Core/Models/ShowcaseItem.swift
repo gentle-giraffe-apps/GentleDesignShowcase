@@ -196,9 +196,9 @@ extension ShowcaseItem {
     static let mocks: [ShowcaseItem] = [
         signInFlow,
         storefrontGrid,
+        profileHeader,
         chartAndStats,
         medicalIntakeForm,
-        profileHeader,
         onboardingPager
     ]
 }
