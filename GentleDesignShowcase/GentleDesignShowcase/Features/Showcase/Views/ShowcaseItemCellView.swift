@@ -90,6 +90,6 @@ struct ShowcaseItemCellView: View {
             width: previewCardSize.width,
             height: previewCardSize.height
         )
-        .gentleSurface(.cardChrome)
+        .gentleSurface(.card)
     }
 }
