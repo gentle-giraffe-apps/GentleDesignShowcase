@@ -6,6 +6,8 @@
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-first-blue.svg)](https://developer.apple.com/xcode/swiftui/)
 [![Tuist](https://img.shields.io/badge/Generated%20with-Tuist-blueviolet?logo=swift&logoColor=white)](https://tuist.io)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![Commit activity](https://img.shields.io/github/commit-activity/y/gentle-giraffe-apps/GentleDesignShowcase)
+![Last commit](https://img.shields.io/github/last-commit/gentle-giraffe-apps/GentleDesignShowcase)
 
 A showcase app demonstrating the **GentleDesignSystem** applied to common screens and flows. Browse through curated UI templates and see how the design system brings consistency and polish to typical iOS app patterns.
 
