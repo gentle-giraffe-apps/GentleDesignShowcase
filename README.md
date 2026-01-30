@@ -1,11 +1,11 @@
 <video
   align="right"
-  src="Docs/README_assets/demo.mp4"
+  src="GentleDesignShowcase/documentation/videos/readme_animation_preview.mp4"
   autoplay
   loop
   muted
   playsinline
-  width="360">
+  width="250">
 </video>
 
 ### Gentle Design Showcase
