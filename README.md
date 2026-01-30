@@ -1,4 +1,12 @@
-<img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="300" />
+<video
+  align="right"
+  src="Docs/README_assets/demo.mp4"
+  autoplay
+  loop
+  muted
+  playsinline
+  width="360">
+</video>
 
 ### Gentle Design Showcase
 
