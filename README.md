@@ -26,6 +26,22 @@
   - Live Design Editing
     - Open the Design tab to customize design tokens including colors, typography, spacing, and surface treatments
 
+#### Getting Started
+
+```bash
+# Install mise (if not already installed)
+curl https://mise.run | sh
+
+# Navigate to the project directory
+cd GentleDesignShowcase
+
+# Install Tuist (mise will use the version from mise.toml)
+mise install
+
+# Generate the Xcode project
+tuist generate
+```
+
 #### Workflow
 1. Browse the **Showcase** tab to see templates styled with the current design
 2. Switch to the **Design** tab to customize colors, typography, and other tokens
@@ -47,22 +63,6 @@
 - iOS 26.0+
 - Xcode 26.0+
 - Swift 6.0+
-
-#### Getting Started
-
-```bash
-# Install mise (if not already installed)
-curl https://mise.run | sh
-
-# Navigate to the project directory
-cd GentleDesignShowcase
-
-# Install Tuist (mise will use the version from mise.toml)
-mise install
-
-# Generate the Xcode project
-tuist generate
-```
 
 #### License
 
