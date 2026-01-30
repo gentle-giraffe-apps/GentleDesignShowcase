@@ -1,6 +1,6 @@
 <img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="360" />
 
-<img src="GentleDesignShowcase/documentation/images/gentle_design_showcase.png" width="300" />
+<img src="GentleDesignShowcase/documentation/images/gentle_design_showcase.png" width="400" />
 
 <p>
   A showcase app for the
