@@ -1,6 +1,6 @@
 <img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="300" />
 
-<img src="GentleDesignShowcase/documentation/images/title_gentle_design_showcase.svg" alt="Gentle Design Showcase" width="500" />
+### Gentle Design Showcase
 
 <p>
   A showcase app for the
@@ -18,7 +18,7 @@
 ![Commit activity](https://img.shields.io/github/commit-activity/y/gentle-giraffe-apps/GentleDesignShowcase)
 ![Last commit](https://img.shields.io/github/last-commit/gentle-giraffe-apps/GentleDesignShowcase)
 
-### Features
+#### Features
 - Showcase Gallery
   - Screen Previews
     - Browse a curated collection of common iOS UI patterns and templates
@@ -30,13 +30,13 @@
 
 💬 **[Join the discussion. Feedback and questions welcome](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/discussions)**
 
-### Workflow
+#### Workflow
 1. Browse the **Showcase** tab to see templates styled with the current design
 2. Switch to the **Design** tab to customize colors, typography, and other tokens
 3. Return to the **Showcase** tab - all previews automatically refresh to reflect your changes
 4. Iterate on your design until you achieve the look you want
 
-### Included Templates
+#### Included Templates
 - **Sign-In Flow**: Login form with email/password fields and validation
 - **Charts & Stats**: Data visualization with metrics and charts
 - **Storefront Grid**: Product grid layout for e-commerce
@@ -44,13 +44,13 @@
 - **Medical Intake Form**: Complex multi-section form
 - **Profile Header**: User profile with avatar and action buttons
 
-## Requirements
+#### Requirements
 
 - iOS 26.0+
 - Xcode 26.0+
 - Swift 6.0+
 
-## Getting Started
+#### Getting Started
 
 ```bash
 # Install mise (if not already installed)
@@ -66,7 +66,7 @@ mise install
 tuist generate
 ```
 
-## License
+#### License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
