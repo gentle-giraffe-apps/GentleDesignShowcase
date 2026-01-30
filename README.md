@@ -1,6 +1,6 @@
 <img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="300" />
 
-# Gentle Design Showcase
+<img src="GentleDesignShowcase/documentation/images/title_gentle_design_showcase.svg" alt="Gentle Design Showcase" width="600" />
 
 <p>
   A showcase app for the
@@ -18,7 +18,7 @@
 ![Commit activity](https://img.shields.io/github/commit-activity/y/gentle-giraffe-apps/GentleDesignShowcase)
 ![Last commit](https://img.shields.io/github/last-commit/gentle-giraffe-apps/GentleDesignShowcase)
 
-# Features
+### Features
 - Showcase Gallery
   - Screen Previews
     - Browse a curated collection of common iOS UI patterns and templates
@@ -28,13 +28,13 @@
   - Live Design Editing
     - Open the Design tab to customize design tokens including colors, typography, spacing, and surface treatments
 
+💬 **[Join the discussion. Feedback and questions welcome](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/discussions)**
+
 ### Workflow
 1. Browse the **Showcase** tab to see templates styled with the current design
 2. Switch to the **Design** tab to customize colors, typography, and other tokens
 3. Return to the **Showcase** tab - all previews automatically refresh to reflect your changes
 4. Iterate on your design until you achieve the look you want
-
-💬 **[Join the discussion. Feedback and questions welcome](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/discussions)**
 
 ### Included Templates
 - **Sign-In Flow**: Login form with email/password fields and validation
