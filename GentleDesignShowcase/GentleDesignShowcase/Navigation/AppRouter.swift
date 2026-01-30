@@ -43,6 +43,8 @@ class AppRouter {
             ProfileHeaderTemplateView()
         case .showcaseStoreFrontGrid(_):
             StorefrontGridTemplateView()
+        case .showcaseMapRoute(_):
+            MapRouteTemplateView()
         }
     }
     

@@ -197,6 +197,13 @@ final class PreviewRenderer {
                     .navigationTitle("Profile")
                     .navigationBarTitleDisplayMode(.inline)
             }
+
+        case .mapRoute:
+            NavigationStack {
+                MapRouteTemplateView()
+                    .navigationTitle("Map Route")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
     
