@@ -1,12 +1,4 @@
-<video
-  align="right"
-  autoplay
-  loop
-  muted
-  playsinline
-  width="360"
-  src="https://raw.githubusercontent.com/gentle-giraffe-apps/GentleDesignShowcase/main/GentleDesignShowcase/documentation/videos/readme_animation_preview.mp4">
-</video>
+<img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="360" />
 
 ### Gentle Design Showcase
 
