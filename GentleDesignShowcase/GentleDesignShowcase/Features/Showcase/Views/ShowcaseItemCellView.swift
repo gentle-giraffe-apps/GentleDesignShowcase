@@ -57,14 +57,14 @@ struct ShowcaseItemCellView: View {
                         Text(viewModel.itemModel.title)
                             .gentleText(
                                 .title3_ml,
-                                colorRole: .onSurfaceOverlayPrimary
+                                colorRole: .textOnScrim
                             )
 
                         if let subtitle = viewModel.itemModel.subtitle {
                             Text(subtitle)
                                 .gentleText(
                                     .callout_ms,
-                                    colorRole: .onSurfaceOverlaySecondary
+                                    colorRole: .textOnScrimSecondary
                                 )
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.7)
@@ -76,7 +76,7 @@ struct ShowcaseItemCellView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 20)
-                .gentleSurface(.surfaceOverlay)
+                .gentleSurface(.overlayScrim)
                 .opacity(0.9)
                 .overlay(
                     Rectangle()
