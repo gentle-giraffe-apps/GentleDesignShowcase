@@ -8,4 +8,5 @@ enum AppRoute: Hashable {
     case showcaseOnboardingFlow(ShowcaseItem)
     case showcaseProfileHeader(ShowcaseItem)
     case showcaseStoreFrontGrid(ShowcaseItem)
+    case showcaseMapRoute(ShowcaseItem)
 }

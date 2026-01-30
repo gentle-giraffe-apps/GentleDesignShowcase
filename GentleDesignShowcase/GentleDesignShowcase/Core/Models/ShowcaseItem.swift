@@ -44,6 +44,8 @@ extension ShowcaseItem {
             return .showcaseProfileHeader(self)
         case .storefrontGrid:
             return .showcaseStoreFrontGrid(self)
+        case .mapRoute:
+            return .showcaseMapRoute(self)
         }
     }
 }
@@ -193,12 +195,33 @@ extension ShowcaseItem {
         isViewed: false
     )
 
+    static let mapRoute = ShowcaseItem(
+        id: "map-route",
+        template: .mapRoute,
+        title: "Map Route",
+        subtitle: "Interactive map with route display",
+        symbolName: "map",
+        category: "Navigation",
+        description: "Demonstrates a map view with route visualization and location markers.",
+        tags: ["Map", "Routes", "Location", "Navigation"],
+        metadata: [
+            .make(label: "Map Type", value: "Standard"),
+            .make(label: "Features", value: "Route, Markers"),
+            .make(label: "Interaction", value: "Pan, Zoom")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
     static let mocks: [ShowcaseItem] = [
         signInFlow,
         storefrontGrid,
         profileHeader,
         chartAndStats,
         onboardingPager,
-        medicalIntakeForm
+        medicalIntakeForm,
+        mapRoute
     ]
 }
