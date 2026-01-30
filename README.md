@@ -19,6 +19,7 @@
 
 - **Showcase Gallery** — Explore common iOS UI patterns with fast, pre-rendered previews _(no rebuilds required)_
 - **Design Editor** — Live editing of design tokens including colors, typography, spacing, and surfaces _(see changes instantly)_
+- **Shareable Specs** — Export typography previews as PDF and design tokens as JSON
 
 ### Getting Started
 
