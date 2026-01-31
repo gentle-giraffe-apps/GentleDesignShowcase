@@ -40,6 +40,16 @@ let project = Project(
                 .package(product: "SmartAsyncImage"),
                 .package(product: "GentleDesignSystem"),
             ]
+        ),
+        .target(
+            name: "GentleDesignShowcaseTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "dev.tuist.GentleDesignShowcaseTests",
+            sources: ["GentleDesignShowcaseTests/**"],
+            dependencies: [
+                .target(name: "GentleDesignShowcase"),
+            ]
         )
     ]
 )
