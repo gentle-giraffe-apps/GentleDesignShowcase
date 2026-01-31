@@ -64,11 +64,11 @@ Carthage/Build/
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/#source-control
 
-fastlane/report.xml
-fastlane/report.html
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
+**/fastlane/report.xml
+**/fastlane/report.html
+**/fastlane/Preview.html
+**/fastlane/screenshots/**/*.png
+**/fastlane/test_output
 
 # Tuist -----
 
@@ -81,6 +81,7 @@ fastlane/test_output
 **/*.xcuserstate
 
 # Derived data & build artifacts
+**/fastlane/derived_data/
 DerivedData/
 build/
 *.moved-aside
@@ -100,3 +101,6 @@ Derived/
 
 ### Tuist managed dependencies ###
 Tuist/.build%
+
+# Coverage artifacts
+coverage.xml

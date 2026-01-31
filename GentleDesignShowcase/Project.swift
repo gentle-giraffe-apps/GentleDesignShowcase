@@ -2,6 +2,9 @@ import ProjectDescription
 
 let project = Project(
     name: "GentleDesignShowcase",
+    options: .options(
+        automaticSchemesOptions: .disabled
+    ),
     packages: [
         .remote(url: "https://github.com/gentle-giraffe-apps/SmartAsyncImage", requirement: .exact("0.1.1")),
         .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.10")),
@@ -50,6 +53,21 @@ let project = Project(
             dependencies: [
                 .target(name: "GentleDesignShowcase"),
             ]
+        )
+    ],
+    schemes: [
+        .scheme(
+            name: "GentleDesignShowcase",
+            shared: true,
+            buildAction: .buildAction(targets: ["GentleDesignShowcase"]),
+            testAction: .targets(["GentleDesignShowcaseTests"]),
+            runAction: .runAction(configuration: .debug, executable: "GentleDesignShowcase")
+        ),
+        .scheme(
+            name: "GentleDesignShowcaseTests",
+            shared: true,
+            buildAction: .buildAction(targets: ["GentleDesignShowcaseTests"]),
+            testAction: .targets(["GentleDesignShowcaseTests"])
         )
     ]
 )
