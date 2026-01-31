@@ -46,6 +46,8 @@ extension ShowcaseItem {
             return .showcaseStoreFrontGrid(self)
         case .mapRoute:
             return .showcaseMapRoute(self)
+        case .transitCard:
+            return .showcaseTransitCard(self)
         }
     }
 }
@@ -215,13 +217,34 @@ extension ShowcaseItem {
         isViewed: false
     )
 
+    static let transitCard = ShowcaseItem(
+        id: "transit-card",
+        template: .transitCard,
+        title: "Transit Card",
+        subtitle: "Balance and ride management",
+        symbolName: "creditcard.fill",
+        category: "Finance",
+        description: "Transit card dashboard with balance display, quick actions, and ride history.",
+        tags: ["Transit", "Cards", "Balance", "Payments"],
+        metadata: [
+            .make(label: "Layout", value: "Dashboard"),
+            .make(label: "Content", value: "Balance, Actions, History"),
+            .make(label: "Style", value: "Card-based")
+        ],
+        createdAt: Date(),
+        updatedAt: nil,
+        isFavorite: false,
+        isViewed: false
+    )
+
     static let mocks: [ShowcaseItem] = [
         signInFlow,
-        storefrontGrid,
         profileHeader,
+        transitCard,
         chartAndStats,
+        mapRoute,
+        storefrontGrid,
         onboardingPager,
         medicalIntakeForm,
-        mapRoute
     ]
 }

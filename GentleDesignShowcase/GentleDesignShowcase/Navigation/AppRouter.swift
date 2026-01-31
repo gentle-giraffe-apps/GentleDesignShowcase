@@ -45,6 +45,8 @@ class AppRouter {
             StorefrontGridTemplateView()
         case .showcaseMapRoute(_):
             MapRouteTemplateView()
+        case .showcaseTransitCard(_):
+            TransitCardTemplateView()
         }
     }
     
