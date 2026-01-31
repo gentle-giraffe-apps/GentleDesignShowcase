@@ -33,7 +33,7 @@ struct OnboardingPagerTemplateView: View {
 
     // MARK: - Layout constants
     private let cardCornerRadius: CGFloat = 40
-    private let cardHeightFraction: CGFloat = 0.40
+    private let cardHeightFraction: CGFloat = 0.50 // 0.40
 
     // MARK: - Page colors
     private var backgroundColors: [Color] {
