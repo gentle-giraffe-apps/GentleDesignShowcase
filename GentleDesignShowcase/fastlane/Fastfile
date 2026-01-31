@@ -19,10 +19,13 @@ platform :ios do
 
   desc "Run unit tests"
   lane :unit_tests do
+    sh("rm -rf ../fastlane/test_output")
+
     scan(
       workspace: "GentleDesignShowcase.xcworkspace",
       scheme: "GentleDesignShowcase",
-      device: "iPhone 16",
+      device: "iPhone 17",
+      clean: true,
 
       code_coverage: true,
 
