@@ -1,5 +1,6 @@
 //  Jonathan Ritchey
 import GentleDesignSystem
+import MapKit
 import SmartAsyncImage
 import SwiftUI
 import Observation
@@ -247,11 +248,17 @@ final class PreviewRenderer {
             }
         }
     }
-    
+
     /// Templates that contain AsyncImage or other async-loading content
     private var templatesWithAsyncContent: Set<ShowcaseTemplate> {
         [.profileHeader]
     }
+
+    /// Returns the wait duration for async content to load before snapshotting
+    private func asyncWaitDuration(for template: ShowcaseTemplate) -> Duration {
+        .milliseconds(100)
+    }
+
 
     func generateThumbnailIfNeeded(template: ShowcaseTemplate, for preview: some View, deviceSize: CGSize, colorScheme: ColorScheme) async {
         guard cache[template.key(using: colorScheme)] == nil else {
@@ -260,8 +267,16 @@ final class PreviewRenderer {
 
         // Allow extra time for templates with async content to load from cache
         let waitDuration: Duration = templatesWithAsyncContent.contains(template)
-            ? .milliseconds(100)
+            ? asyncWaitDuration(for: template)
             : .zero
+
+        // For map templates, use notification-based waiting
+        if template == .mapRoute {
+            if let uiImage = await snapshotMapTemplate(deviceSize: deviceSize, colorScheme: colorScheme) {
+                cache[template.key(using: colorScheme)] = Image(uiImage: uiImage)
+            }
+            return
+        }
 
         if let uiImage = await snapshotInHiddenContainer(
             view: ShowcaseFrame(
@@ -275,6 +290,108 @@ final class PreviewRenderer {
         ) {
             cache[template.key(using: colorScheme)] = Image(uiImage: uiImage)
         }
+    }
+
+    /// Tracks if the map annotation has appeared
+    private var mapAnnotationAppeared = false
+
+    /// Snapshots the map template, waiting for the annotation's onAppear callback
+    private func snapshotMapTemplate(deviceSize: CGSize, colorScheme: ColorScheme) async -> UIImage? {
+        guard let windowScene = activeWindowScene(),
+              let window = windowScene.windows.first(where: { $0.isKeyWindow })
+        else {
+            return nil
+        }
+
+        mapAnnotationAppeared = false
+
+        let mapView = NavigationStack {
+            MapRouteTemplateView(onMapReady: { [weak self] in
+                self?.mapAnnotationAppeared = true
+            })
+            .navigationTitle("Map Route")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .colorScheme(colorScheme)
+
+        let framedView: AnyView
+        if let theme {
+            framedView = AnyView(
+                ShowcaseFrame(size: deviceSize) {
+                    GentleThemeRoot(theme: theme) {
+                        mapView
+                    }
+                }
+            )
+        } else {
+            framedView = AnyView(
+                ShowcaseFrame(size: deviceSize) {
+                    mapView
+                }
+            )
+        }
+
+        let hosting = UIHostingController(rootView: framedView)
+        hosting.view.bounds = CGRect(origin: .zero, size: deviceSize)
+        hosting.view.backgroundColor = .clear
+        hosting.additionalSafeAreaInsets = .zero
+        hosting.view.insetsLayoutMarginsFromSafeArea = false
+        hosting.view.layoutMargins = .zero
+
+        let container = UIView(frame: hosting.view.bounds)
+        container.isHidden = true
+        container.alpha = 0.0
+        window.addSubview(container)
+        container.addSubview(hosting.view)
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
+
+        // Poll until annotation appears or timeout
+        let startTime = Date()
+        let timeout: TimeInterval = 10
+        while !mapAnnotationAppeared && Date().timeIntervalSince(startTime) < timeout {
+            try? await Task.sleep(for: .milliseconds(50))
+        }
+
+        // Wait for tiles to load after annotation appeared
+        try? await Task.sleep(for: .milliseconds(1000))
+        hosting.view.setNeedsLayout()
+        hosting.view.layoutIfNeeded()
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = window.windowScene?.screen.scale ?? hosting.traitCollection.displayScale
+        format.opaque = false
+
+        let renderer = UIGraphicsImageRenderer(size: deviceSize, format: format)
+        let full = renderer.image { _ in
+            hosting.view.drawHierarchy(in: hosting.view.bounds, afterScreenUpdates: true)
+        }
+
+        hosting.view.removeFromSuperview()
+        container.removeFromSuperview()
+
+        // Apply crop
+        let cropInsetsPoints = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)
+        let scale = full.scale
+        let cropRectPixels = CGRect(
+            x: cropInsetsPoints.left * scale,
+            y: cropInsetsPoints.top * scale,
+            width: (deviceSize.width - cropInsetsPoints.left - cropInsetsPoints.right) * scale,
+            height: (deviceSize.height - cropInsetsPoints.top - cropInsetsPoints.bottom) * scale
+        ).integral
+
+        guard
+            let cg = full.cgImage,
+            cropRectPixels.width > 1,
+            cropRectPixels.height > 1,
+            let croppedCG = cg.cropping(to: cropRectPixels)
+        else { return full }
+
+        return UIImage(
+            cgImage: croppedCG,
+            scale: scale,
+            orientation: full.imageOrientation
+        )
     }
         
     private func activeWindowScene() -> UIWindowScene? {
