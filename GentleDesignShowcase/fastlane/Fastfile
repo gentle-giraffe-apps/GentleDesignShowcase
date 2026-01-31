@@ -16,20 +16,26 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-    lane :build_simulator do
-      gym(
-        scheme: "GentleDesignShowcase",
-        project: "GentleDesignShowcase.xcodeproj",
-        configuration: "Debug",
 
-        sdk: "iphonesimulator",
-        destination: "generic/platform=iOS Simulator",
-        skip_archive: true,        # key: build, don't archive
-        clean: true,
+  desc "Run unit tests"
+  lane :unit_tests do
+    sh("rm -rf ../fastlane/test_output")
 
-        derived_data_path: "build/DerivedData",
-        buildlog_path: "build/logs"
-      )
-    end
+    scan(
+      workspace: "GentleDesignShowcase.xcworkspace",
+      scheme: "GentleDesignShowcase",
+      device: "iPhone 17",
+      clean: true,
+
+      code_coverage: true,
+
+      # make paths deterministic
+      derived_data_path: "fastlane/derived_data",
+      result_bundle: true,
+      result_bundle_path: "fastlane/test_output/GentleDesignShowcase.xcresult",
+
+      output_directory: "fastlane/test_output"
+    )
+  end
 end
+

@@ -23,6 +23,9 @@ jobs:
       - name: Install Tuist
         run: mise install
 
+      - name: Install xcresultparser
+        run: brew install xcresultparser
+
       - name: Generate Xcode project
         run: tuist generate --no-open
 
@@ -34,5 +37,17 @@ jobs:
           working-directory: GentleDesignShowcase
 
       - name: Build (Fastlane)
-        run: bundle exec fastlane ios build_simulator
+        run: bundle exec fastlane ios unit_tests
+
+      - name: Convert xcresult to coverage.xml
+        run: |
+          xcresultparser -o cobertura fastlane/test_output/*.xcresult > coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
