@@ -205,6 +205,13 @@ final class PreviewRenderer {
                     .navigationTitle("Map Route")
                     .navigationBarTitleDisplayMode(.inline)
             }
+
+        case .transitCard:
+            NavigationStack {
+                TransitCardTemplateView()
+                    .navigationTitle("Transit Card")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
     

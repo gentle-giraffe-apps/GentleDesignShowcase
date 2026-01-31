@@ -10,7 +10,8 @@ enum ShowcaseTemplate: String, Codable, CaseIterable, Hashable {
     case medicalIntakeForm
     case profileHeader
     case mapRoute
-    static let allCases: [ShowcaseTemplate] = [.signInFlow, .chartAndStats, .storefrontGrid, .onboardingPager, .medicalIntakeForm, .profileHeader, .mapRoute]
+    case transitCard
+    static let allCases: [ShowcaseTemplate] = [.signInFlow, .chartAndStats, .storefrontGrid, .onboardingPager, .medicalIntakeForm, .profileHeader, .mapRoute, .transitCard]
     func key(using colorScheme: ColorScheme) -> String {
         let colorSchemeKey = colorScheme == .dark ? "dark" : "light"
         return "\(self.self)_\(colorSchemeKey)"
