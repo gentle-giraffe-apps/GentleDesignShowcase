@@ -180,7 +180,7 @@ struct ViewExerciseTests {
     @MainActor
     @Test("RootView can be instantiated")
     func rootViewInstantiates() {
-        let view = RootView()
+        _ = RootView()
         #expect(true)
     }
 }
