@@ -67,9 +67,9 @@ struct ViewExerciseTests {
     func showcaseItemListViewInstantiates() {
         let repository = ShowcaseRepository.mockRepository()
         let viewModel = ShowcaseItemListViewModel(repository: repository)
-        let view = ShowcaseItemListView(viewModel: viewModel, selectedTab: .constant(.items))
+        _ = ShowcaseItemListView(viewModel: viewModel, selectedTab: .constant(.items))
         // Note: Can't access body directly without environment objects
-        #expect(view != nil)
+        #expect(true)
     }
 
     // MARK: - Tab Container View
@@ -77,16 +77,16 @@ struct ViewExerciseTests {
     @MainActor
     @Test("TabContainerView can be instantiated")
     func tabContainerViewInstantiates() {
-        let view = TabContainerView(selectedTab: .constant(.items))
+        _ = TabContainerView(selectedTab: .constant(.items))
         // Note: Can't access body directly without environment objects
-        #expect(view != nil)
+        #expect(true)
     }
 
     @MainActor
     @Test("TabContainerView with design tab selected")
     func tabContainerViewDesignTab() {
-        let view = TabContainerView(selectedTab: .constant(.design))
-        #expect(view != nil)
+        _ = TabContainerView(selectedTab: .constant(.design))
+        #expect(true)
     }
 
     // MARK: - RootViewTab Enum
@@ -180,7 +180,7 @@ struct ViewExerciseTests {
     @MainActor
     @Test("RootView can be instantiated")
     func rootViewInstantiates() {
-        let view = RootView()
-        #expect(view != nil)
+        _ = RootView()
+        #expect(true)
     }
 }
