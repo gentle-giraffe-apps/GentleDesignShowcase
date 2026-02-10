@@ -1,6 +1,16 @@
 <img align="right" src="GentleDesignShowcase/documentation/videos/readme_animation_preview.gif" width="360" />
 
-<img src="GentleDesignShowcase/documentation/images/gentle_design_showcase.png" width="400" />
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="GentleDesignShowcase/documentation/images/gentle_design_showcase_dark.png"
+  />
+  <img
+    src="GentleDesignShowcase/documentation/images/gentle_design_showcase_light.png"
+    width="400"
+    alt="GentleDesignShowcase"
+  />
+</picture>
 
 [![CI](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/gentle-giraffe-apps/GentleDesignShowcase/graph/badge.svg)](https://codecov.io/gh/gentle-giraffe-apps/GentleDesignShowcase)
