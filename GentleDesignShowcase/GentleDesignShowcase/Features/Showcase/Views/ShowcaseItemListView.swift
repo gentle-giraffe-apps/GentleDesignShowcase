@@ -8,6 +8,7 @@ struct ShowcaseItemListView: View {
     @Environment(PreviewRenderer.self) private var previewRenderer
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.gentleThemeManager) private var themeManager
+    @Environment(\.colorScheme) private var colorScheme
     @State private var viewModel: ShowcaseItemListViewModel
     @State private var isRenderingPreviews: Bool = true
     @Binding var selectedTab: RootViewTab
@@ -65,7 +66,7 @@ struct ShowcaseItemListView: View {
         guard isRenderingPreviews else { return }
         defer { isRenderingPreviews = false }
         previewRenderer.theme = themeManager?.theme
-        await previewRenderer.prefetch()
+        await previewRenderer.prefetch(activeColorScheme: colorScheme)
     }
 }
 
