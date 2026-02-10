@@ -10,7 +10,6 @@ struct ShowcaseItemListView: View {
     @Environment(\.gentleThemeManager) private var themeManager
     @State private var viewModel: ShowcaseItemListViewModel
     @State private var isRenderingPreviews: Bool = true
-    @State private var refreshID = UUID()
     @Binding var selectedTab: RootViewTab
 
     init(
@@ -26,12 +25,11 @@ struct ShowcaseItemListView: View {
         Group {
             let isLoading = viewModel.isLoading && viewModel.hasLoadedOnce == false
             if isLoading || isRenderingPreviews {
-                ProgressView("Loading showcase items...")
+                ProgressView("Rendering previews...")
             } else {
                 ShowcaseItemList()
             }
         }
-        .id(refreshID)
         .task(id: scenePhase) {
             guard scenePhase == .active else { return }
             await loadShowcaseItems()
@@ -48,7 +46,6 @@ struct ShowcaseItemListView: View {
     }
     
     func refresh() async {
-        refreshID = UUID()
         isRenderingPreviews = true
         previewRenderer.clearCache()
         await loadShowcaseItems()
