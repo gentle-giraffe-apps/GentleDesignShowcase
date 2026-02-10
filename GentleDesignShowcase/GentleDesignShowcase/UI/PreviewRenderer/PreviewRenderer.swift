@@ -46,9 +46,7 @@ final class PreviewRenderer {
         cropInsetsPoints: UIEdgeInsets = .zero,   // in points
         waitForAsync: Duration = .zero
     ) async -> UIImage? {
-        guard let windowScene = activeWindowScene(),
-              let window = windowScene.windows.first(where: { $0.isKeyWindow })
-        else {
+        guard let windowScene = activeWindowScene() else {
             return nil
         }
 
@@ -60,12 +58,15 @@ final class PreviewRenderer {
         hosting.view.insetsLayoutMarginsFromSafeArea = false
         hosting.view.layoutMargins = .zero
 
-        let container = UIView(frame: hosting.view.bounds)
-        container.isHidden = true
-        container.alpha = 0.0
-        window.addSubview(container)
+        // Use a dedicated off-screen window so drawHierarchy(afterScreenUpdates:true)
+        // doesn't force display refreshes on the main window (which causes flashing).
+        let renderWindow = UIWindow(windowScene: windowScene)
+        renderWindow.frame = CGRect(origin: .zero, size: size)
+        renderWindow.isHidden = false
+        renderWindow.windowLevel = .init(rawValue: -1)
+        renderWindow.isUserInteractionEnabled = false
+        renderWindow.rootViewController = hosting
 
-        container.addSubview(hosting.view)
         hosting.view.setNeedsLayout()
         hosting.view.layoutIfNeeded()
 
@@ -77,7 +78,7 @@ final class PreviewRenderer {
         }
 
         let format = UIGraphicsImageRendererFormat()
-        format.scale = window.windowScene?.screen.scale ?? hosting.traitCollection.displayScale
+        format.scale = windowScene.screen.scale
         format.opaque = false
 
         let renderer = UIGraphicsImageRenderer(size: size, format: format)
@@ -85,8 +86,8 @@ final class PreviewRenderer {
             hosting.view.drawHierarchy(in: hosting.view.bounds, afterScreenUpdates: true)
         }
 
-        hosting.view.removeFromSuperview()
-        container.removeFromSuperview()
+        renderWindow.rootViewController = nil
+        renderWindow.isHidden = true
 
         // No crop requested
         guard cropInsetsPoints != .zero else { return full }
@@ -304,9 +305,7 @@ final class PreviewRenderer {
 
     /// Snapshots the map template, waiting for the annotation's onAppear callback
     private func snapshotMapTemplate(deviceSize: CGSize, colorScheme: ColorScheme) async -> UIImage? {
-        guard let windowScene = activeWindowScene(),
-              let window = windowScene.windows.first(where: { $0.isKeyWindow })
-        else {
+        guard let windowScene = activeWindowScene() else {
             return nil
         }
 
@@ -345,11 +344,14 @@ final class PreviewRenderer {
         hosting.view.insetsLayoutMarginsFromSafeArea = false
         hosting.view.layoutMargins = .zero
 
-        let container = UIView(frame: hosting.view.bounds)
-        container.isHidden = true
-        container.alpha = 0.0
-        window.addSubview(container)
-        container.addSubview(hosting.view)
+        // Use a dedicated off-screen window to avoid flashing the main window.
+        let renderWindow = UIWindow(windowScene: windowScene)
+        renderWindow.frame = CGRect(origin: .zero, size: deviceSize)
+        renderWindow.isHidden = false
+        renderWindow.windowLevel = .init(rawValue: -1)
+        renderWindow.isUserInteractionEnabled = false
+        renderWindow.rootViewController = hosting
+
         hosting.view.setNeedsLayout()
         hosting.view.layoutIfNeeded()
 
@@ -366,7 +368,7 @@ final class PreviewRenderer {
         hosting.view.layoutIfNeeded()
 
         let format = UIGraphicsImageRendererFormat()
-        format.scale = window.windowScene?.screen.scale ?? hosting.traitCollection.displayScale
+        format.scale = windowScene.screen.scale
         format.opaque = false
 
         let renderer = UIGraphicsImageRenderer(size: deviceSize, format: format)
@@ -374,8 +376,8 @@ final class PreviewRenderer {
             hosting.view.drawHierarchy(in: hosting.view.bounds, afterScreenUpdates: true)
         }
 
-        hosting.view.removeFromSuperview()
-        container.removeFromSuperview()
+        renderWindow.rootViewController = nil
+        renderWindow.isHidden = true
 
         // Apply crop
         let cropInsetsPoints = UIEdgeInsets(top: 32, left: 0, bottom: 0, right: 0)

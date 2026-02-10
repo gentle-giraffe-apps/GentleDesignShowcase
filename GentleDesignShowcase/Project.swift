@@ -7,7 +7,7 @@ let project = Project(
     ),
     packages: [
         .remote(url: "https://github.com/gentle-giraffe-apps/SmartAsyncImage", requirement: .exact("0.1.1")),
-        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.10")),
+        .remote(url: "https://github.com/gentle-giraffe-apps/GentleDesignSystem", requirement: .exact("0.1.11")),
         .remote(url: "https://github.com/pointfreeco/swift-snapshot-testing", requirement: .upToNextMajor(from: "1.15.0")),
         .remote(url: "https://github.com/alexey1312/SnapshotTestingHEIC.git", requirement: .upToNextMajor(from: "1.6.0"))
     ],
