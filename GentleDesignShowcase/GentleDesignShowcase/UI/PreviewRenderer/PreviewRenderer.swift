@@ -61,7 +61,7 @@ final class PreviewRenderer {
         // Use a dedicated off-screen window so drawHierarchy(afterScreenUpdates:true)
         // doesn't force display refreshes on the main window (which causes flashing).
         let renderWindow = UIWindow(windowScene: windowScene)
-        renderWindow.frame = CGRect(origin: .zero, size: size)
+        renderWindow.frame = CGRect(origin: CGPoint(x: -size.width, y: -size.height), size: size)
         renderWindow.isHidden = false
         renderWindow.windowLevel = .init(rawValue: -1)
         renderWindow.isUserInteractionEnabled = false
@@ -216,23 +216,46 @@ final class PreviewRenderer {
         }
     }
     
-    func prefetch() async {
+    func prefetch(activeColorScheme: ColorScheme) async {
         // Pre-warm the URL cache so AsyncImage loads instantly from cache
         await preloadAsyncImageURLs()
 
-        for t in ShowcaseTemplate.allCases {
+        let inactiveColorScheme: ColorScheme = activeColorScheme == .light ? .dark : .light
+
+        // Render non-map templates first (map is the heaviest due to tile loading).
+        let nonMapTemplates = ShowcaseTemplate.allCases.filter { $0 != .mapRoute }
+
+        // Active color scheme first so the user sees results sooner.
+        for t in nonMapTemplates {
             await generateThumbnailIfNeeded(
                 template: t,
-                for: preview(for: t, colorScheme: .light),
+                for: preview(for: t, colorScheme: activeColorScheme),
                 deviceSize: deviceSize,
-                colorScheme: .light
+                colorScheme: activeColorScheme
             )
+            await Task.yield()
+        }
+
+        // Then the inactive color scheme.
+        for t in nonMapTemplates {
             await generateThumbnailIfNeeded(
                 template: t,
-                for: preview(for: t, colorScheme: .dark),
+                for: preview(for: t, colorScheme: inactiveColorScheme),
                 deviceSize: deviceSize,
-                colorScheme: .dark
+                colorScheme: inactiveColorScheme
             )
+            await Task.yield()
+        }
+
+        // Map template last (up to ~11s for tile loading).
+        for scheme in [activeColorScheme, inactiveColorScheme] {
+            await generateThumbnailIfNeeded(
+                template: .mapRoute,
+                for: preview(for: .mapRoute, colorScheme: scheme),
+                deviceSize: deviceSize,
+                colorScheme: scheme
+            )
+            await Task.yield()
         }
     }
 
@@ -346,7 +369,7 @@ final class PreviewRenderer {
 
         // Use a dedicated off-screen window to avoid flashing the main window.
         let renderWindow = UIWindow(windowScene: windowScene)
-        renderWindow.frame = CGRect(origin: .zero, size: deviceSize)
+        renderWindow.frame = CGRect(origin: CGPoint(x: -deviceSize.width, y: -deviceSize.height), size: deviceSize)
         renderWindow.isHidden = false
         renderWindow.windowLevel = .init(rawValue: -1)
         renderWindow.isUserInteractionEnabled = false
