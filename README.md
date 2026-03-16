@@ -12,11 +12,13 @@
 [![CI](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/gentle-giraffe-apps/GentleDesignShowcase/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/gentle-giraffe-apps/GentleDesignShowcase/graph/badge.svg)](https://codecov.io/gh/gentle-giraffe-apps/GentleDesignShowcase)
 [![Platform](https://img.shields.io/badge/platform-iOS-blue.svg)](https://developer.apple.com/ios/)
-![Swift](https://img.shields.io/badge/Swift-6.0–6.2-orange.svg)
+![Swift](https://img.shields.io/badge/Swift-6.1+-orange.svg)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-first-blue.svg)](https://developer.apple.com/xcode/swiftui/)
 [![Tuist](https://img.shields.io/badge/Generated%20with-Tuist-blueviolet?logo=swift&logoColor=white)](https://tuist.io)
 ![Commit activity](https://img.shields.io/github/commit-activity/y/gentle-giraffe-apps/GentleDesignShowcase)
 ![Last commit](https://img.shields.io/github/last-commit/gentle-giraffe-apps/GentleDesignShowcase)
+
+English | [Español](GentleDesignShowcase/documentation/README_es.md) | [Português](GentleDesignShowcase/documentation/README_pt.md) | [日本語](GentleDesignShowcase/documentation/README_ja.md) | [简体中文](GentleDesignShowcase/documentation/README_zh-CN.md) | [한국어](GentleDesignShowcase/documentation/README_ko.md) | [Русский](GentleDesignShowcase/documentation/README_ru.md)
 
 <p>
   Explore iOS UI patterns and live-edit design tokens (type, color, spacing, and surfaces) powered by
@@ -65,7 +67,7 @@ tuist generate
 
 - iOS 26.0+
 - Xcode 26.0+
-- Swift 6.0+
+- Swift 6.1+
 
 ### License
 
